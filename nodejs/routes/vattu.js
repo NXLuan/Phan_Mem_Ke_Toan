@@ -2,6 +2,19 @@ const express = require('express')
 const Router = express.Router()
 const connection = require("../connection")
 
+Router.get('/join', (req, res) => {
+  connection.query(
+    "SELECT MaVT, TenVT, vattu.MaLoai, TenLoai, vattu.MaDVT, TenDVT, MaTK " + 
+    "FROM vattu LEFT JOIN loaivattu ON vattu.MaLoai = loaivattu.MaLoai " +
+    "LEFT JOIN donvitinh ON vattu.MaDVT = donvitinh.MaDVT",
+    (err, rows) => {
+      if (!err) {
+        res.send(rows)
+      } else {
+        console.log(err)
+      }
+    })
+})
 Router.get('/', (req, res) => {
   connection.query("SELECT * FROM vattu", (err, rows) => {
     if (!err) {

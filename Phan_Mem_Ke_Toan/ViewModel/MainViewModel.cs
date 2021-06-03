@@ -81,22 +81,22 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 }},
                 new MenuViewModel(){ icon="Layers", text="Danh mục", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>(){
                     new NhomChucNangViewModel() { Title="Tài khoản", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Tài khoản", icon="CreditCardMultiple", iconColor="#4B32C3" },
+                        new ChucNangViewModel() { text="Tài khoản", icon="CreditCardMultiple", iconColor="#4B32C3", page = new TaiKhoanUC() },
                     }},
                     new NhomChucNangViewModel() { Title="Đối tượng", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Nhà cung cấp", icon="AccountTie", iconColor="#000000" },
+                        new ChucNangViewModel() { text="Nhà cung cấp", icon="AccountTie", iconColor="#000000", page = new NhaCungCapUC()},
                         new ChucNangViewModel() { text="Người giao", icon="AccountCowboyHat", iconColor="#F5DE19" },
-                        new ChucNangViewModel() { text="Bộ phận", icon="AccountGroup", iconColor="#4630EB" },
-                        new ChucNangViewModel() { text="Nhân viên", icon="HumanChild", iconColor="#01A5F4" },
+                        new ChucNangViewModel() { text="Bộ phận", icon="AccountGroup", iconColor="#4630EB", page = new BoPhanUC() },
+                        new ChucNangViewModel() { text="Nhân viên", icon="HumanChild", iconColor="#01A5F4", page = new NhanVienUC() },
                         new ChucNangViewModel() { text="Người nhận", icon="AccountHardHat", iconColor="#DD4C35", page= new UserControl1() },
                     }},
                     new NhomChucNangViewModel() { Title="Kho - Vật tư", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Kho vật tư", icon="Warehouse", iconColor="#06CC14" },
-                        new ChucNangViewModel() { text="Loại vật tư", icon="Cube", iconColor="#B17CFF" },
-                        new ChucNangViewModel() { text="Vật tư", icon="Wall", iconColor="#FB7604" },
+                        new ChucNangViewModel() { text="Kho vật tư", icon="Warehouse", iconColor="#06CC14", page = new KhoUC() },
+                        new ChucNangViewModel() { text="Loại vật tư", icon="Cube", iconColor="#B17CFF", page = new LoaiVatTuUC() },
+                        new ChucNangViewModel() { text="Vật tư", icon="Wall", iconColor="#FB7604", page = new VatTuUC() },
                     }},
                     new NhomChucNangViewModel() { Title="Công trình", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Công trình", icon="OfficeBuilding", iconColor="#4DCC89" },
+                        new ChucNangViewModel() { text="Công trình", icon="OfficeBuilding", iconColor="#4DCC89", page = new CongTrinhUC() },
                     }},
                 }},
                 new MenuViewModel(){ icon="FileSwap", text="Chứng từ" },

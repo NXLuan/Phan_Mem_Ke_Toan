@@ -37,5 +37,11 @@
     <SolidColorBrush x:Key="Warning"
                      Color="#FAAD14" />
 
+    <SolidColorBrush x:Key="Green"
+                     Color="#218838" />
+    <SolidColorBrush x:Key="Blue"
+                     Color="#17a2b8" />
+    <SolidColorBrush x:Key="Red"
+                     Color="#dc3545" />
 
 </ResourceDictionary>

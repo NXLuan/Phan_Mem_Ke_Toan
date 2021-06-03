@@ -29,10 +29,12 @@ Router.post('/', (req, res) => {
       res.send(`TaiKhoan with MaTK: ${params.MaTK} has been added`)
     } else {
       console.log(err)
+      res.status(400).send({
+        message: err
+      })
     }
   })
 })
-
 Router.put('/', (req, res) => {
   const { MaTK } = req.body
   connection.query('UPDATE taikhoan SET ? WHERE MaTK = ?', [req.body, MaTK], (err, rows) => {
@@ -42,7 +44,7 @@ Router.put('/', (req, res) => {
       console.log(err)
     }
   })
-})  
+})
 
 
-module.exports = Router;
+  module.exports = Router;

@@ -2,4 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewmodel="clr-namespace:Phan_Mem_Ke_Toan.ViewModel">
     <viewmodel:MainViewModel x:Key="MainVM" />
+    <viewmodel:DonViTinhViewModel x:Key="DonViTinhVM" />
+    <viewmodel:BoPhanViewModel x:Key="BoPhanVM" />
+    <viewmodel:CongTrinhViewModel x:Key="CongTrinhVM" />
+    <viewmodel:NhaCungCapViewModel x:Key="NhaCungCapVM" />
+    <viewmodel:LoaiVatTuViewModel x:Key="LoaiVatTuVM" />
+    <viewmodel:TaiKhoanViewModel x:Key="TaiKhoanVM" />
+    <viewmodel:NhanVienViewModel x:Key="NhanVienVM" />
+    <viewmodel:KhoViewModel x:Key="KhoVM" />
+    <viewmodel:VatTuViewModel x:Key="VatTuVM" />
 </ResourceDictionary>
