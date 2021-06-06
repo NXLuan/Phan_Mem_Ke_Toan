@@ -187,13 +187,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.InsertData("BBKiemKe", bb))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadTableData();
                         ClearTextboxValue();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -209,12 +209,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.UpdateData("BBKiemKe", bb))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadTableData();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     ((Window)p).Close();
                 }
@@ -225,8 +225,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 var itemData = p as BienBanDetail;
                 if (CRUD.DeleteData("BBKiemKe", itemData.SoBienBan))
                 {
-                    Console.WriteLine("Success");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadTableData();
+                } else
+                {
+                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
             });
@@ -464,14 +467,14 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.InsertData("CT_BBKiemKe", ctbb))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         GetListCT(txtSoBienBanCT);
                         ClearTextboxValueCT();
                         RemoveExistedVatTu();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -491,12 +494,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.UpdateData("CT_BBKiemKe", ctbb))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         GetListCT(txtSoBienBanCT);
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     ((Window)p).Close();
                 }
@@ -506,8 +509,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 var itemData = p as CT_BienBanDetail;
                 if (CRUD.DeleteData("CT_BBKiemKe", itemData.MaSo.ToString()))
                 {
-                    Console.WriteLine("Success");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     GetListCT(selectedBienBan.SoBienBan);
+                } else
+                {
+                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
             });

@@ -46,6 +46,14 @@
                   ItemsSource="{Binding ListData}"
                   CanUserAddRows="False"
                   AutoGenerateColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Setter Property="BorderThickness"
+                            Value="0" />
+                    <Setter Property="FocusVisualStyle"
+                            Value="{x:Null}" />
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding MaKho}"
                                     IsReadOnly="True"
