@@ -77,22 +77,42 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Converter\MoneyVNConvert.cs" />
+    <Compile Include="Model\BienBan.cs" />
+    <Compile Include="Model\BienBanDetail.cs" />
     <Compile Include="Model\BoPhan.cs" />
     <Compile Include="Model\CongTrinh.cs" />
+    <Compile Include="Model\CT_BienBan.cs" />
+    <Compile Include="Model\CT_BienBanDetail.cs" />
+    <Compile Include="Model\CT_PhieuNhap.cs" />
+    <Compile Include="Model\CT_PhieuNhapDetail.cs" />
+    <Compile Include="Model\CT_PhieuXuat.cs" />
+    <Compile Include="Model\CT_PhieuXuatDetail.cs" />
     <Compile Include="Model\DonViTinh.cs" />
     <Compile Include="Model\Kho.cs" />
     <Compile Include="Model\KhoDetail.cs" />
     <Compile Include="Model\LoaiVatTu.cs" />
+    <Compile Include="Model\NguoiGiao.cs" />
+    <Compile Include="Model\NguoiGiaoDetail.cs" />
+    <Compile Include="Model\NguoiNhan.cs" />
+    <Compile Include="Model\NguoiNhanDetail.cs" />
     <Compile Include="Model\NhaCungCap.cs" />
     <Compile Include="Model\NhanVien.cs" />
     <Compile Include="Model\NhanVienDetail.cs" />
+    <Compile Include="Model\PhieuNhap.cs" />
+    <Compile Include="Model\PhieuNhapDetail.cs" />
+    <Compile Include="Model\PhieuXuat.cs" />
+    <Compile Include="Model\PhieuXuatDetail.cs" />
     <Compile Include="Model\TaiKhoan.cs" />
     <Compile Include="Model\VatTu.cs" />
     <Compile Include="Model\VatTuDetail.cs" />
+    <Compile Include="ValidRule\DateValidRule.cs" />
+    <Compile Include="ValidRule\FloatNumber.cs" />
     <Compile Include="ValidRule\NotEmptyRule.cs" />
     <Compile Include="ValidRule\PhoneNumber.cs" />
     <Compile Include="ValidRule\Valid.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BienBanViewModel.cs" />
     <Compile Include="ViewModel\BoPhanViewModel.cs" />
     <Compile Include="ViewModel\CongTrinhViewModel.cs" />
     <Compile Include="ViewModel\DonViTinhViewModel.cs" />
@@ -101,11 +121,21 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ChucNangViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\NguoiGiaoViewModel.cs" />
+    <Compile Include="ViewModel\NguoiNhanViewModel.cs" />
     <Compile Include="ViewModel\NhaCungCapViewModel.cs" />
     <Compile Include="ViewModel\NhanVienViewModel.cs" />
     <Compile Include="ViewModel\NhomChucNangViewModel.cs" />
+    <Compile Include="ViewModel\PhieuNhapViewModel.cs" />
+    <Compile Include="ViewModel\PhieuXuatViewModel.cs" />
     <Compile Include="ViewModel\TaiKhoanViewModel.cs" />
     <Compile Include="ViewModel\VatTuViewModel.cs" />
+    <Compile Include="View\BienBanDialog.xaml.cs">
+      <DependentUpon>BienBanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BienBanUC.xaml.cs">
+      <DependentUpon>BienBanUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BoPhanDialog.xaml.cs">
       <DependentUpon>BoPhanDialog.xaml</DependentUpon>
     </Compile>
@@ -117,6 +147,15 @@
     </Compile>
     <Compile Include="View\CongTrinhUC.xaml.cs">
       <DependentUpon>CongTrinhUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CT_BienBanDialog.xaml.cs">
+      <DependentUpon>CT_BienBanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CT_PhieuNhapDialog.xaml.cs">
+      <DependentUpon>CT_PhieuNhapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CT_PhieuXuatDialog.xaml.cs">
+      <DependentUpon>CT_PhieuXuatDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DonViTinhDialog.xaml.cs">
       <DependentUpon>DonViTinhDialog.xaml</DependentUpon>
@@ -139,6 +178,18 @@
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\NguoiGiaoDialog.xaml.cs">
+      <DependentUpon>NguoiGiaoDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiGiaoUC.xaml.cs">
+      <DependentUpon>NguoiGiaoUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiNhanDialog.xaml.cs">
+      <DependentUpon>NguoiNhanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NguoiNhanUC.xaml.cs">
+      <DependentUpon>NguoiNhanUC.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NhaCungCapDialog.xaml.cs">
       <DependentUpon>NhaCungCapDialog.xaml</DependentUpon>
     </Compile>
@@ -150,6 +201,18 @@
     </Compile>
     <Compile Include="View\NhanVienUC.xaml.cs">
       <DependentUpon>NhanVienUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuNhapDialog.xaml.cs">
+      <DependentUpon>PhieuNhapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuNhapUC.xaml.cs">
+      <DependentUpon>PhieuNhapUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuXuatDialog.xaml.cs">
+      <DependentUpon>PhieuXuatDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhieuXuatUC.xaml.cs">
+      <DependentUpon>PhieuXuatUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TaiKhoanDialog.xaml.cs">
       <DependentUpon>TaiKhoanDialog.xaml</DependentUpon>
@@ -210,6 +273,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\BienBanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BienBanUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\BoPhanDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -223,6 +294,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CongTrinhUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CT_BienBanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CT_PhieuNhapDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CT_PhieuXuatDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -254,6 +337,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\NguoiGiaoDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiGiaoUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiNhanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NguoiNhanUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\NhaCungCapDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -267,6 +366,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NhanVienUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuNhapDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuNhapUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuXuatDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhieuXuatUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

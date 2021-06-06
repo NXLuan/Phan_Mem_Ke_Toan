@@ -7,7 +7,7 @@ Router.get('/', (req, res) => {
     if (!err) {
       res.send(rows)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -17,7 +17,7 @@ Router.delete('/:MaTK', (req, res) => {
     if (!err) {
       res.send(`TaiKhoan with MaTK: ${[req.params.MaTK]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -28,7 +28,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`TaiKhoan with MaTK: ${params.MaTK} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
       res.status(400).send({
         message: err
       })
@@ -41,7 +41,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`TaiKhoan with MaTK: ${MaTK} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })

@@ -43,5 +43,7 @@
                      Color="#17a2b8" />
     <SolidColorBrush x:Key="Red"
                      Color="#dc3545" />
+    <SolidColorBrush x:Key="TitleDarkBrush"
+                     Color="#637484" />
 
 </ResourceDictionary>

@@ -6,6 +6,7 @@ const connection = mysql.createConnection({
   password: "",
   database: "ketoan",
   multipleStatements: true,
+  dateStrings: true,
 })
 
 connection.connect((err) => {

@@ -11,4 +11,9 @@
     <viewmodel:NhanVienViewModel x:Key="NhanVienVM" />
     <viewmodel:KhoViewModel x:Key="KhoVM" />
     <viewmodel:VatTuViewModel x:Key="VatTuVM" />
+    <viewmodel:NguoiGiaoViewModel x:Key="NguoiGiaoVM" />
+    <viewmodel:NguoiNhanViewModel x:Key="NguoiNhanVM" />
+    <viewmodel:PhieuNhapViewModel x:Key="PhieuNhapVM" />
+    <viewmodel:PhieuXuatViewModel x:Key="PhieuXuatVM" />
+    <viewmodel:BienBanViewModel x:Key="BienBanVM" />
 </ResourceDictionary>

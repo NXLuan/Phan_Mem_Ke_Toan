@@ -7,7 +7,7 @@ Router.get('/', (req, res) => {
     if (!err) {
       res.send(rows)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -17,7 +17,7 @@ Router.delete('/:MaLoai', (req, res) => {
     if (!err) {
       res.send(`loaivattu with MaLoai: ${[req.params.MaLoai]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -28,7 +28,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`loaivattu with MaLoai: ${params.MaLoai} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -39,7 +39,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`loaivattu with MaLoai: ${MaLoai} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })  
