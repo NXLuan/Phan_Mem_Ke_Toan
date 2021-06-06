@@ -36,6 +36,8 @@
                      Color="#E80D00" />
     <SolidColorBrush x:Key="Warning"
                      Color="#FAAD14" />
+    <SolidColorBrush x:Key="Success"
+                     Color="#06CC14" />
 
     <SolidColorBrush x:Key="Green"
                      Color="#218838" />

@@ -39,7 +39,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set
             {
                 SetProperty(ref _selectedIndexWorking, value);
-                CurrentPage = PageWorkings[value].page;
+                if (value == -1) CurrentPage = null;
+                else
+                    CurrentPage = PageWorkings[value].page;
             }
         }
 

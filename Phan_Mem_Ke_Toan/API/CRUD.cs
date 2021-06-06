@@ -11,12 +11,12 @@ namespace Phan_Mem_Ke_Toan.API
 {
     public class CRUD
     {
-        public static string GeneratePrimaryKey(string lastKey) 
+        public static string GeneratePrimaryKey(string lastKey)
         {
-           string key = lastKey;
-           string tableName = "";
-           string num = "";
-           for (int i = 0; i < key.Length; i++)
+            string key = lastKey;
+            string tableName = "";
+            string num = "";
+            for (int i = 0; i < key.Length; i++)
                 if (char.IsDigit(key[i]))
                 {
                     tableName = key.Substring(0, i);
@@ -34,17 +34,24 @@ namespace Phan_Mem_Ke_Toan.API
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:5000/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync("/" + tableName).Result;     
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return response.Content.ReadAsStringAsync().Result;
+                    client.BaseAddress = new Uri("http://localhost:5000/");
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = client.GetAsync("/" + tableName).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsStringAsync().Result;
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                        return "[]";
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-                    return null;
+                    return "[]";
                 }
             }
         }
@@ -52,17 +59,24 @@ namespace Phan_Mem_Ke_Toan.API
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:5000/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync("/" + tableName + "/join").Result;
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return response.Content.ReadAsStringAsync().Result;
+                    client.BaseAddress = new Uri("http://localhost:5000/");
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = client.GetAsync("/" + tableName + "/join").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsStringAsync().Result;
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                        return "[]";
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-                    return null;
+                    return "[]";
                 }
             }
         }
@@ -94,7 +108,7 @@ namespace Phan_Mem_Ke_Toan.API
             {
                 client.BaseAddress = new Uri("http://localhost:5000/");
                 var response = client.DeleteAsync(tableName + "/" + primaryKey).Result;
-                return (response.IsSuccessStatusCode);       
+                return (response.IsSuccessStatusCode);
             }
         }
     }

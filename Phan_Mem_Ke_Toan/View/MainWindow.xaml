@@ -134,8 +134,7 @@
                         Width="230">
                 <TextBlock Text="{Binding TitleOption}"
                            Padding="15,16,0,16"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PrimaryHueMidBrush}" />
+                           FontWeight="Bold"/>
 
                 <!--page working-->
                 <Expander Header="Bàn làm việc"
@@ -154,7 +153,8 @@
                                             <DockPanel LastChildFill="False"
                                                        Cursor="Hand">
                                                 <TextBlock Text="{Binding text}"
-                                                           Padding="30,10,0,10">
+                                                           Padding="30,10,0,10"
+                                                           FontWeight="Medium">
                                                     <TextBlock.Style>
                                                         <Style TargetType="{x:Type TextBlock}">
                                                             <Style.Triggers>
@@ -265,7 +265,7 @@
 
         <!--page-->
         <Grid>
-            <UserControl Content="{Binding CurrentPage}" />
+            <UserControl Content="{Binding CurrentPage}"/>
         </Grid>
     </DockPanel>
 </Window>

@@ -19,6 +19,7 @@ const PhieuXuatRoutes = require('./routes/phieuxuat')
 const CT_PhieuXuatRoutes = require('./routes/ct_phieuxuat')
 const BBKiemKeRoutes = require('./routes/bbkiemke')
 const CT_BBKiemKeRoutes = require('./routes/ct_bbkiemke')
+const NguoiDung = require('./routes/nguoidung')
 
 const app = express()
 
@@ -46,6 +47,7 @@ app.use('/phieuxuat', PhieuXuatRoutes)
 app.use('/ct_phieuxuat', CT_PhieuXuatRoutes)
 app.use('/bbkiemke', BBKiemKeRoutes)
 app.use('/ct_bbkiemke', CT_BBKiemKeRoutes)
+app.use('/nguoidung', NguoiDung)
 
 
 app.listen(port, () => console.log(`Listen on port ${port}`))

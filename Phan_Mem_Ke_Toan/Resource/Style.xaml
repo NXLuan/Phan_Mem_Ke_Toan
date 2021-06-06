@@ -13,7 +13,7 @@
         <Setter Property="TextOptions.TextRenderingMode"
                 Value="Auto" />
         <Setter Property="Background"
-                Value="{DynamicResource MaterialDesignPaper}" />
+                Value="{DynamicResource MainHighBrush}" />
         <Setter Property="FontFamily"
                 Value="{DynamicResource MaterialDesignFont}" />
     </Style>

@@ -11,4 +11,5 @@
     <viewmodel:NhanVienViewModel x:Key="NhanVienVM" />
     <viewmodel:KhoViewModel x:Key="KhoVM" />
     <viewmodel:VatTuViewModel x:Key="VatTuVM" />
+    <viewmodel:LoginViewModel x:Key="LoginVM" />
 </ResourceDictionary>

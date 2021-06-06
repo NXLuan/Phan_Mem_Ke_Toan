@@ -77,6 +77,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\AccountSystem.cs" />
     <Compile Include="Model\BoPhan.cs" />
     <Compile Include="Model\CongTrinh.cs" />
     <Compile Include="Model\DonViTinh.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Model\TaiKhoan.cs" />
     <Compile Include="Model\VatTu.cs" />
     <Compile Include="Model\VatTuDetail.cs" />
+    <Compile Include="ValidRule\MatchPassword.cs" />
     <Compile Include="ValidRule\NotEmptyRule.cs" />
     <Compile Include="ValidRule\PhoneNumber.cs" />
     <Compile Include="ValidRule\Valid.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="ViewModel\DonViTinhViewModel.cs" />
     <Compile Include="ViewModel\KhoViewModel.cs" />
     <Compile Include="ViewModel\LoaiVatTuViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ChucNangViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
@@ -135,6 +138,9 @@
     </Compile>
     <Compile Include="View\LoaiVatTuUC.xaml.cs">
       <DependentUpon>LoaiVatTuUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -250,6 +256,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -295,8 +305,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resource\img\" />
+    <Resource Include="Resource\img\ke-toan-background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />
