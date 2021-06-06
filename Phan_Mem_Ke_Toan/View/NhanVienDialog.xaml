@@ -69,7 +69,8 @@
                       SelectedValuePath="MaBoPhan"
                       DisplayMemberPath="TenBoPhan"
                       HorizontalContentAlignment="Left"
-                      Margin="15 0" />
+                      Margin="15 0"
+                      IsEditable="True" />
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom"
                    LastChildFill="False"

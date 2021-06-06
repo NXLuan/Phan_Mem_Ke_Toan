@@ -217,13 +217,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.InsertData("PhieuNhap", pn))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadTableData();
                         ClearTextboxValue();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -243,12 +243,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.UpdateData("PhieuNhap", pn))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadTableData();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     ((Window)p).Close();
                 }
@@ -259,8 +259,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 var itemData = p as PhieuNhapDetail;
                 if (CRUD.DeleteData("PhieuNhap", itemData.SoPhieu))
                 {
-                    Console.WriteLine("Success");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadTableData();
+                }
+                else
+                {
+                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
             });
@@ -429,14 +433,14 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.InsertData("CT_PhieuNhap", ctpn))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         GetListCT(txtSoPhieuCT);
                         ClearTextboxValueCT();
                         RemoveExistedVatTu();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -452,12 +456,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.UpdateData("CT_PhieuNhap", ctpn))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         GetListCT(txtSoPhieuCT);
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     ((Window)p).Close();
                 }
@@ -468,8 +472,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 var itemData = p as CT_PhieuNhapDetail;
                 if (CRUD.DeleteData("CT_PhieuNhap", itemData.MaSo.ToString()))
                 {
-                    Console.WriteLine("Success");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     GetListCT(selectedPhieuNhap.SoPhieu);
+                }
+                else
+                {
+                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 UpdateTongTienPN();
 

@@ -49,7 +49,8 @@
                               SelectedValuePath="MaVT"
                               DisplayMemberPath="TenVT"
                               HorizontalContentAlignment="Left"
-                              Margin="15 0">
+                              Margin="15 0"
+                              IsEditable="True">
                         <ComboBox.SelectedValue>
                             <Binding Path="selectedMaVT"
                                      UpdateSourceTrigger="PropertyChanged">

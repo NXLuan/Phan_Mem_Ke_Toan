@@ -8,14 +8,14 @@
         xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         mc:Ignorable="d"
         Title="CreateUpdate"
-        Height="300"
+        Height="320"
         Width="400" 
         DataContext="{StaticResource BoPhanVM}"
         Style="{DynamicResource WindowStyle}"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         MinWidth="400"
-        MinHeight="300">
+        MinHeight="320">
     <DockPanel Name="dialog"
                Background="White">
         <DockPanel DockPanel.Dock="Top"

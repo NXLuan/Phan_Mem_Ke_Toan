@@ -73,7 +73,8 @@
                       SelectedValuePath="MaLoai"
                       DisplayMemberPath="TenLoai"
                       HorizontalContentAlignment="Left"
-                      Margin="15 0" />
+                      Margin="15 0"
+                      IsEditable="True"/>
         </StackPanel>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -88,7 +89,8 @@
                           SelectedValuePath="MaDVT"
                           DisplayMemberPath="TenDVT"
                           HorizontalContentAlignment="Center"
-                          Margin="15 0" />
+                          Margin="15 0"
+                          IsEditable="True"/>
             </StackPanel>
             <StackPanel Grid.Column="1"
                         Margin="0 15 0 0">
@@ -98,7 +100,8 @@
                           SelectedValuePath="MaTK"
                           DisplayMemberPath="TenTK"
                           HorizontalContentAlignment="Left"
-                          Margin="15 0" />
+                          Margin="15 0"
+                          IsEditable="True" />
             </StackPanel>
         </Grid>
         <DockPanel DockPanel.Dock="Bottom"

@@ -64,7 +64,8 @@
                               SelectedValuePath="MaNguoiNhan"
                               DisplayMemberPath="TenNguoiNhan"
                               HorizontalContentAlignment="Left"
-                              Margin="15 0" />
+                              Margin="15 0"
+                              IsEditable="True"/>
                 </StackPanel>
                 <TextBox materialDesign:HintAssist.Hint="Lý do"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -130,7 +131,8 @@
                           SelectedValuePath="MaKho"
                           DisplayMemberPath="TenKho"
                           HorizontalContentAlignment="Left"
-                          Margin="15 0" />
+                          Margin="15 0"
+                          IsEditable="True"/>
             </StackPanel>
             <StackPanel Grid.Column="1"
                         Margin="0 0 15 0">
@@ -139,7 +141,8 @@
                           SelectedValue="{Binding selectedTKNo}"
                           SelectedValuePath="MaTK"
                           DisplayMemberPath="TenTK"
-                          HorizontalContentAlignment="Left" />
+                          HorizontalContentAlignment="Left"
+                          IsEditable="True"/>
             </StackPanel>
             <StackPanel Grid.Column="2"
                         Margin="0 0 15 0">
@@ -148,7 +151,8 @@
                           SelectedValue="{Binding selectedTKCo}"
                           SelectedValuePath="MaTK"
                           DisplayMemberPath="TenTK"
-                          HorizontalContentAlignment="Left" />
+                          HorizontalContentAlignment="Left"
+                          IsEditable="True" />
             </StackPanel>
             <TextBox Grid.Column="3"
                      materialDesign:HintAssist.Hint="Tổng tiền"

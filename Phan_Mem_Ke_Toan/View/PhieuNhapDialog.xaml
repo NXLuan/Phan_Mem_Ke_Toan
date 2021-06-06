@@ -64,7 +64,8 @@
                               SelectedValuePath="MaNguoiGiao"
                               DisplayMemberPath="TenNguoiGiao"
                               HorizontalContentAlignment="Left"
-                              Margin="15 0" />
+                              Margin="15 0"
+                              IsEditable="True"/>
                 </StackPanel>
                 <TextBox materialDesign:HintAssist.Hint="Lý do"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -123,15 +124,15 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0"
-                        >
+            <StackPanel Grid.Column="0">
                 <TextBlock Margin="15 0 0 5">Nhập vào kho</TextBlock>
                 <ComboBox ItemsSource="{Binding ListKho}"
                           SelectedValue="{Binding selectedMaKho}"
                           SelectedValuePath="MaKho"
                           DisplayMemberPath="TenKho"
                           HorizontalContentAlignment="Left"
-                          Margin="15 0" />
+                          Margin="15 0"
+                          IsEditable="True" />
             </StackPanel>
             <StackPanel Grid.Column="1"
                         Margin="0 0 15 0">
@@ -140,7 +141,8 @@
                           SelectedValue="{Binding selectedTKNo}"
                           SelectedValuePath="MaTK"
                           DisplayMemberPath="TenTK"
-                          HorizontalContentAlignment="Left" />
+                          HorizontalContentAlignment="Left"
+                          IsEditable="True"/>
             </StackPanel>
             <StackPanel Grid.Column="2"
                         Margin="0 0 15 0">
@@ -149,7 +151,8 @@
                           SelectedValue="{Binding selectedTKCo}"
                           SelectedValuePath="MaTK"
                           DisplayMemberPath="TenTK"
-                          HorizontalContentAlignment="Left" />
+                          HorizontalContentAlignment="Left"
+                          IsEditable="True"/>
             </StackPanel>
             <TextBox Grid.Column="3"
                      materialDesign:HintAssist.Hint="Tổng tiền"

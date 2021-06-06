@@ -123,13 +123,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.InsertData("CongTrinh", ct))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadTableData();
                         ClearTextboxValue();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
@@ -143,12 +143,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     };
                     if (CRUD.UpdateData("CongTrinh", ct))
                     {
-                        Console.WriteLine("Success");
+                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                         LoadTableData();
                     }
                     else
                     {
-                        Console.WriteLine("Error");
+                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     ((Window)p).Close();
                 }
@@ -159,8 +159,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 var itemData = p as CongTrinh;
                 if (CRUD.DeleteData("CongTrinh", itemData.MaCongTrinh))
                 {
-                    Console.WriteLine("Success");
+                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadTableData();
+                } 
+                else
+                {
+                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 }
 
             });
