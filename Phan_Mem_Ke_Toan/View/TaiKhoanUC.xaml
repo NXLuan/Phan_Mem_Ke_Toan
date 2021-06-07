@@ -40,12 +40,12 @@
             </Grid>
         </Grid>
         <Separator Background="Silver" />
-        <ListView Name="listview"
+        <ListView x:Name="listview"
                   ItemsSource="{Binding ListData}"
                   Height="450"
                   HorizontalContentAlignment="Center">
             <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
+                <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="HorizontalAlignment"
                             Value="Left" />
                     <Setter Property="HorizontalContentAlignment"
@@ -102,7 +102,7 @@
                             <DataTemplate>
                                 <Button Background="Transparent"
                                         BorderThickness="0"
-                                        Command="{Binding ElementName=listview, Path=DataContext.EditCommand}"
+                                        Command="{Binding DataContext.EditCommand, ElementName=listview}"
                                         CommandParameter="{Binding}">
                                     <materialDesign:PackIcon Kind="Pencil"
                                                              Foreground="#ffc720" />
@@ -116,7 +116,7 @@
                             <DataTemplate>
                                 <Button Background="Transparent"
                                         BorderThickness="0"
-                                        Command="{Binding ElementName=listview, Path=DataContext.DeleteItemCommand}"
+                                        Command="{Binding DataContext.DeleteItemCommand, ElementName=listview}"
                                         CommandParameter="{Binding}">
                                     <materialDesign:PackIcon Kind="Delete"
                                                              Foreground="{DynamicResource Red}" />

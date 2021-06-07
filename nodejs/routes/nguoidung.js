@@ -17,10 +17,10 @@ Router.get("/token", (req, res) => {
   const {TenDangNhap, MatKhau} = req.query;
   connection.query(
     "SELECT * FROM nguoidung WHERE TenDangNhap = ? AND MatKhau = ?",
-    [TenDangNhap, Buffer.from(MatKhau, "utf8").toString("base64")],
+    [TenDangNhap, MatKhau],
     (err, rows) => {
       if (!err) {
-        res.send(rows);
+        res.send(rows[0]);
       } else {
         console.log(err);
       }
@@ -48,14 +48,13 @@ Router.delete("/:TenDangNhap", (req, res) => {
 
 Router.post("/", (req, res) => {
   const params = req.body;
-  params.MatKhau = Buffer.from(params.MatKhau, "utf8").toString("base64");
   connection.query("INSERT INTO nguoidung SET ?", params, (err, rows) => {
     if (!err) {
       res.send(
         `nguoidung with TenDangNhap: ${params.TenDangNhap} has been added`
       );
     } else {
-      res.status(412).send(err.message);
+      res.status(400).send(err.message);
     }
   });
 });

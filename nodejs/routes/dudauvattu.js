@@ -7,7 +7,7 @@ Router.get('/', (req, res) => {
     if (!err) {
       res.send(rows)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -17,7 +17,7 @@ Router.delete('/:MaSo', (req, res) => {
     if (!err) {
       res.send(`dudauvattu with MaSo: ${[req.params.MaSo]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -28,7 +28,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`dudauvattu with MaSo: ${params.MaSo} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -39,7 +39,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`dudauvattu with MaSo: ${MaSo} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })  

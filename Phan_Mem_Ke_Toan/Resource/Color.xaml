@@ -25,7 +25,7 @@
 
     <!-- app -->
     <SolidColorBrush x:Key="MainHighBrush"
-                     Color="#FFFFFF" />
+                     Color="#FAFAFA" />
     <SolidColorBrush x:Key="MainLowBrush"
                      Color="#F3F3F3" />
     <SolidColorBrush x:Key="ItemMenuNormal"
@@ -38,6 +38,8 @@
                      Color="#FAAD14" />
     <SolidColorBrush x:Key="Success"
                      Color="#06CC14" />
+    <SolidColorBrush x:Key="DividerBrush"
+                     Color="#E1E1E1" />
 
     <SolidColorBrush x:Key="Green"
                      Color="#218838" />
@@ -45,5 +47,7 @@
                      Color="#17a2b8" />
     <SolidColorBrush x:Key="Red"
                      Color="#dc3545" />
+    <SolidColorBrush x:Key="TitleDarkBrush"
+                     Color="#637484" />
 
 </ResourceDictionary>

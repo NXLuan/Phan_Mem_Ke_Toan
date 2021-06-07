@@ -80,6 +80,25 @@ namespace Phan_Mem_Ke_Toan.API
                 }
             }
         }
+        public static string GetDataByColumnName(string tableName, string columnName)
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5000/");
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.GetAsync(tableName + "/" + columnName).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return response.Content.ReadAsStringAsync().Result;
+                }
+                else
+                {
+                    Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                    return null;
+                }
+            }
+        }
+
         public static bool InsertData(string tableName, object s)
         {
             using (var client = new HttpClient())
@@ -108,6 +127,17 @@ namespace Phan_Mem_Ke_Toan.API
             {
                 client.BaseAddress = new Uri("http://localhost:5000/");
                 var response = client.DeleteAsync(tableName + "/" + primaryKey).Result;
+                return (response.IsSuccessStatusCode);
+            }
+        }
+        public static bool UpdateTongTien(string tableName, string SoPhieu, object s)
+        {
+            using (var client = new HttpClient())
+            {
+                var json = JsonConvert.SerializeObject(s);
+                var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:5000/");
+                var response = client.PutAsync("/" + tableName + "/" + SoPhieu, stringContent).Result;
                 return (response.IsSuccessStatusCode);
             }
         }

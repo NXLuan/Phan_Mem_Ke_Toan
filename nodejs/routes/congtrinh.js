@@ -7,7 +7,7 @@ Router.get('/', (req, res) => {
     if (!err) {
       res.send(rows)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -17,7 +17,7 @@ Router.delete('/:MaCongTrinh', (req, res) => {
     if (!err) {
       res.send(`congtrinh with MaCongTrinh: ${[req.params.MaCongTrinh]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -28,7 +28,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`congtrinh with MaCongTrinh: ${params.MaCongTrinh} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -39,7 +39,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`congtrinh with MaCongTrinh: ${MaCongTrinh} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })  

@@ -11,7 +11,7 @@ Router.get('/join', (req, res) => {
       if (!err) {
         res.send(rows)
       } else {
-        console.log(err)
+        console.log(err); res.status(400).send({ message: err })
       }
     })
 })
@@ -20,7 +20,7 @@ Router.get('/', (req, res) => {
     if (!err) {
       res.send(rows)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -30,7 +30,7 @@ Router.delete('/:MaVT', (req, res) => {
     if (!err) {
       res.send(`vattu with MaVT: ${[req.params.MaVT]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -41,7 +41,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`vattu with MaVT: ${params.MaVT} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -52,7 +52,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`vattu with MaVT: ${MaVT} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })  

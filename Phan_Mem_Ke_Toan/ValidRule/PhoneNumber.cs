@@ -16,7 +16,7 @@ namespace Phan_Mem_Ke_Toan.ValidRule
             if (value != null)
                return Regex.Match(value.ToString(), @"^(0\d{9})").Success
                ? ValidationResult.ValidResult
-               : new ValidationResult(false, "Số điện thoại Không hợp lệ");
+               : new ValidationResult(false, "Số điện thoại không hợp lệ");
             return ValidationResult.ValidResult;
         }
     }

@@ -17,6 +17,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public UserControl page { get; set; }
         public ICommand DeletePageWorkingCommand { get; set; }
         public ICommand SelectPageCommand { get; set; }
+        public bool isLogout { get; set; }
         public ChucNangViewModel()
         {
             DeletePageWorkingCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
@@ -32,7 +33,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
             SelectPageCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                InsertPageInWorkingList();
+                if (isLogout) Logout();
+                else
+                    InsertPageInWorkingList();
             });
         }
 
@@ -48,6 +51,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 mainVM.SelectedIndexWorking = listWorking.Count - 1;
             }
             else mainVM.SelectedIndexWorking = findIndex;
+        }
+
+        public void Logout()
+        {
+            MainViewModel.Instance.isLogout = true;
+            LoginViewModel.main.Close();
+            LoginViewModel.window.Show();
         }
     }
 }

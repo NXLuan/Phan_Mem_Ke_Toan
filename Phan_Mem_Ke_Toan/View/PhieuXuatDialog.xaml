@@ -1,0 +1,187 @@
+﻿<Window x:Class="Phan_Mem_Ke_Toan.View.PhieuXuatDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+        mc:Ignorable="d"
+        Title="PhieuNhapDialog"
+        Height="430"
+        Width="900"
+        xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
+        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Style="{DynamicResource WindowStyle}"
+        DataContext="{StaticResource PhieuXuatVM}"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        MinHeight="430"
+        MinWidth="900">
+    <Window.Resources>
+        <converter:MoneyVNConvert x:Key="moneyConverter" />
+    </Window.Resources>
+    <DockPanel Name="dialog"
+               Background="White">
+        <DockPanel DockPanel.Dock="Top"
+                   LastChildFill="False">
+            <TextBlock Text="{Binding TitleDialog}"
+                       FontSize="18"
+                       Padding="10" />
+            <Button DockPanel.Dock="Right"
+                    VerticalAlignment="Center"
+                    Margin="15 0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Padding="5"
+                    IsCancel="True">
+                <materialDesign:PackIcon Kind="Close"
+                                         Foreground="DimGray" />
+            </Button>
+        </DockPanel>
+        <Separator Background="Silver" />
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBox materialDesign:HintAssist.Hint="Số phiếu"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         VerticalAlignment="Center"
+                         Margin="15 10"
+                         IsEnabled="False">
+                    <TextBox.Text>
+                        <Binding Path="txtSoPhieu"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <StackPanel DockPanel.Dock="Top"
+                            Margin="0 20 0 0">
+                    <TextBlock Margin="15 0 0 5">Người nhận</TextBlock>
+                    <ComboBox ItemsSource="{Binding ListNguoiNhanDetail}"
+                              SelectedValue="{Binding selectedMaNguoiNhan}"
+                              SelectedValuePath="MaNguoiNhan"
+                              DisplayMemberPath="TenNguoiNhan"
+                              HorizontalContentAlignment="Left"
+                              Margin="15 0" />
+                </StackPanel>
+                <TextBox materialDesign:HintAssist.Hint="Lý do"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         VerticalAlignment="Center"
+                         Margin="15 30">
+                    <TextBox.Text>
+                        <Binding Path="txtLyDo"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Margin="30 0 15 0">
+                <DatePicker HorizontalAlignment="Left"
+                            Width="200"
+                            Margin="0 9"
+                            materialDesign:HintAssist.Hint="Ngày xuất"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                    <DatePicker.SelectedDate>
+                        <Binding Path="selectedNgayXuat"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rule:DateValidRule ValidatesOnTargetUpdated="True" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DatePicker.SelectedDate>
+                </DatePicker>
+                <TextBox materialDesign:HintAssist.Hint="Công trình"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         VerticalAlignment="Center"
+                         Margin="0 30 0 0"
+                         IsEnabled="False">
+                    <TextBox.Text>
+                        <Binding Path="txtTenCongTrinh"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBox materialDesign:HintAssist.Hint="Chứng từ liên quan"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         VerticalAlignment="Center"
+                         Margin="0 31 0 28">
+                    <TextBox.Text>
+                        <Binding Path="txtChungTuLQ"
+                                 UpdateSourceTrigger="PropertyChanged">
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </StackPanel>
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Margin="15 0 0 5">Xuất tại kho</TextBlock>
+                <ComboBox ItemsSource="{Binding ListKho}"
+                          SelectedValue="{Binding selectedMaKho}"
+                          SelectedValuePath="MaKho"
+                          DisplayMemberPath="TenKho"
+                          HorizontalContentAlignment="Left"
+                          Margin="15 0" />
+            </StackPanel>
+            <StackPanel Grid.Column="1"
+                        Margin="0 0 15 0">
+                <TextBlock Margin="0 0 0 5">Tài khoản nợ</TextBlock>
+                <ComboBox ItemsSource="{Binding ListTK}"
+                          SelectedValue="{Binding selectedTKNo}"
+                          SelectedValuePath="MaTK"
+                          DisplayMemberPath="TenTK"
+                          HorizontalContentAlignment="Left" />
+            </StackPanel>
+            <StackPanel Grid.Column="2"
+                        Margin="0 0 15 0">
+                <TextBlock Margin="0 0 0 5">Tài khoản có</TextBlock>
+                <ComboBox ItemsSource="{Binding ListTK}"
+                          SelectedValue="{Binding selectedTKCo}"
+                          SelectedValuePath="MaTK"
+                          DisplayMemberPath="TenTK"
+                          HorizontalContentAlignment="Left" />
+            </StackPanel>
+            <TextBox Grid.Column="3"
+                     materialDesign:HintAssist.Hint="Tổng tiền"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     VerticalAlignment="Center"
+                     IsEnabled="False">
+                <TextBox.Text>
+                    <Binding Path="txtTongTien"
+                             UpdateSourceTrigger="PropertyChanged"
+                             Converter="{StaticResource moneyConverter}">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </Grid>
+        <DockPanel DockPanel.Dock="Bottom"
+                   LastChildFill="False"
+                   Margin="15 20">
+            <Button Command="{Binding BtnCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Content="{Binding BtnContent}"
+                    Width="100"
+                    DockPanel.Dock="Right"
+                    Margin="10 0 0 0"
+                    Background="{DynamicResource Blue}">
+
+            </Button>
+            <Button Content="Huỷ"
+                    Width="100"
+                    DockPanel.Dock="Right"
+                    Background="Transparent"
+                    Foreground="{DynamicResource TitleDarkBrush}"
+                    BorderThickness="0"
+                    IsCancel="True" />
+        </DockPanel>
+    </DockPanel>
+</Window>

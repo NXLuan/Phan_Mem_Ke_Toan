@@ -9,7 +9,7 @@ Router.get('/join', (req, res) => {
       if (!err) {
         res.send(rows)
       } else {
-        console.log(err)
+        console.log(err); res.status(400).send({ message: err })
       }
     })
 })
@@ -18,7 +18,7 @@ Router.get('/', (req, res) => {
     if (!err) {
       res.send(rows)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -27,7 +27,7 @@ Router.delete('/:MaNV', (req, res) => {
     if (!err) {
       res.send(`NhanVien with MaNV: ${[req.params.MaNV]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -38,7 +38,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`NhanVien with MaNV: ${params.MaNV} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -49,7 +49,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`NhanVien with MaNV: ${MaNV} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })

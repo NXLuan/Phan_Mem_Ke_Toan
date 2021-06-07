@@ -18,6 +18,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
     class LoginViewModel : BaseViewModel
     {
         public static Window window { get; set; }
+        public static Window main { get; set; }
+        public static AccountSystem currentUser { get; set; }
         public AccountSystem account { get; set; }
         private AccountSystem _accountSignUp;
         public AccountSystem accountSignUp
@@ -115,10 +117,10 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             {
                 ShowError = "Collapsed";
                 if (IsValidAccount())
-                {
-                    MainWindow main = new MainWindow();
+                { 
+                    main = new MainWindow();
                     main.Show();
-                    window.Close();
+                    window.Hide();
                 }
                 else
                 {
@@ -146,7 +148,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             string url = "nguoidung/token/?TenDangNhap=" + account.TenDangNhap + "&MatKhau=" + account.MatKhau;
             string JsonData = CRUD.GetJsonData(url);
-            return !JsonData.Equals("[]");
+            currentUser = JsonConvert.DeserializeObject<AccountSystem>(JsonData);
+            return currentUser!=null;
         }
 
         public void LoadTableData()

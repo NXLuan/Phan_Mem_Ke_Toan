@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Phan_Mem_Ke_Toan.View
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for NguoiGiaoUC.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class NguoiGiaoUC : UserControl
     {
-        public UserControl1()
+        public NguoiGiaoUC()
         {
             InitializeComponent();
         }

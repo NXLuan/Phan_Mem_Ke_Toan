@@ -18,7 +18,7 @@ Router.delete('/:MaDVT', (req, res) => {
     if (!err) {
       res.send(`donvitinh with MaDVT: ${[req.params.MaDVT]} has been removed`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -29,7 +29,7 @@ Router.post('/', (req, res) => {
     if (!err) {
       res.send(`donvitinh with MaDVT: ${params.MaDVT} has been added`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })
@@ -40,7 +40,7 @@ Router.put('/', (req, res) => {
     if (!err) {
       res.send(`donvitinh with MaDVT: ${MaDVT} has been updated`)
     } else {
-      console.log(err)
+      console.log(err); res.status(400).send({ message: err })
     }
   })
 })  

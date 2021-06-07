@@ -14,6 +14,14 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         DataContext="{StaticResource MainVM}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ClosedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <DockPanel Background="{DynamicResource MainHighBrush}">
         <!--menu-->
         <StackPanel x:Name="nav_pnl"
@@ -134,7 +142,7 @@
                         Width="230">
                 <TextBlock Text="{Binding TitleOption}"
                            Padding="15,16,0,16"
-                           FontWeight="Bold"/>
+                           FontWeight="Bold" />
 
                 <!--page working-->
                 <Expander Header="Bàn làm việc"
@@ -175,15 +183,6 @@
                                                         Margin="5,0,20,0">
                                                     <materialDesign:PackIcon Kind="Delete"
                                                                              Foreground="{DynamicResource DangerOrError}"
-                                                                             VerticalAlignment="Center"
-                                                                             Width="14" />
-                                                </Button>
-                                                <Button DockPanel.Dock="Right"
-                                                        Style="{StaticResource MaterialDesignIconButton}"
-                                                        Height="20"
-                                                        Width="20">
-                                                    <materialDesign:PackIcon Kind="Refresh"
-                                                                             Foreground="{DynamicResource PrimaryHueLightBrush}"
                                                                              VerticalAlignment="Center"
                                                                              Width="14" />
                                                 </Button>
@@ -246,7 +245,7 @@
                                                             </DockPanel.Style>
                                                             <i:Interaction.Triggers>
                                                                 <i:EventTrigger EventName="MouseDown">
-                                                                    <i:InvokeCommandAction Command="{Binding SelectPageCommand}"/>
+                                                                    <i:InvokeCommandAction Command="{Binding SelectPageCommand}" />
                                                                 </i:EventTrigger>
                                                             </i:Interaction.Triggers>
                                                         </DockPanel>
@@ -265,7 +264,20 @@
 
         <!--page-->
         <Grid>
-            <UserControl Content="{Binding CurrentPage}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="230" />
+            </Grid.ColumnDefinitions>
+            <Grid Margin="20"
+                  Grid.Column="0">
+                <UserControl Content="{Binding CurrentPage}" />
+            </Grid>
+
+            <!--chart-->
+            <StackPanel Grid.Column="1"
+                        Background="White"
+                        HorizontalAlignment="Stretch">
+            </StackPanel>
         </Grid>
     </DockPanel>
 </Window>

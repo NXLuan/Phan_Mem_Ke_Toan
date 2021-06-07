@@ -97,7 +97,8 @@
                           SelectedValuePath="MaNV"
                           DisplayMemberPath="TenNV"
                           HorizontalContentAlignment="Left"
-                          Margin="15 0" />
+                          Margin="15 0"
+                          IsEditable="True"/>
             </StackPanel>
         </Grid>
         <DockPanel DockPanel.Dock="Bottom"
