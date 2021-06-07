@@ -11,7 +11,8 @@ namespace Phan_Mem_Ke_Toan.Model
         public int MaSo { get; set; }
         public string SoPhieu { get; set; }
         public string MaVT { get; set; }
-        public double SoLuong { get; set; }
+        public double SLSoSach { get; set; }
+        public double SLThucTe { get; set; }
         public decimal DonGia { get; set; }
         public decimal ThanhTien { get; set; }
     }

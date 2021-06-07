@@ -122,7 +122,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <TextBlock Margin="15 0 0 5">Xuất tại kho</TextBlock>
@@ -142,19 +141,9 @@
                           SelectedValuePath="MaTK"
                           DisplayMemberPath="TenTK"
                           HorizontalContentAlignment="Left"
-                          IsEditable="True"/>
-            </StackPanel>
-            <StackPanel Grid.Column="2"
-                        Margin="0 0 15 0">
-                <TextBlock Margin="0 0 0 5">Tài khoản có</TextBlock>
-                <ComboBox ItemsSource="{Binding ListTK}"
-                          SelectedValue="{Binding selectedTKCo}"
-                          SelectedValuePath="MaTK"
-                          DisplayMemberPath="TenTK"
-                          HorizontalContentAlignment="Left"
                           IsEditable="True" />
             </StackPanel>
-            <TextBox Grid.Column="3"
+            <TextBox Grid.Column="2"
                      materialDesign:HintAssist.Hint="Tổng tiền"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      VerticalAlignment="Center"

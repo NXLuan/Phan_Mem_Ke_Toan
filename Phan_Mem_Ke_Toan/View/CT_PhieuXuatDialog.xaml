@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="DonViTinhDialog"
         xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
-        Height="300"
+        Height="370"
         Width="600"
         xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -15,7 +15,7 @@
         DataContext="{StaticResource PhieuXuatVM}"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        MinHeight="240"
+        MinHeight="370"
         MinWidth="400">
     <Window.Resources>
         <converter:MoneyVNConvert x:Key="moneyConverter" />
@@ -115,23 +115,20 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <TextBox  materialDesign:HintAssist.Hint="Số lượng"
+            <StackPanel Grid.Column="0">
+                <TextBox  materialDesign:HintAssist.Hint="Số lượng sổ sách"
                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                           VerticalAlignment="Center"
                           Margin="15 10">
                     <TextBox.Text>
-                        <Binding Path="txtSoLuong"
+                        <Binding Path="txtSLSoSach"
                                  UpdateSourceTrigger="PropertyChanged"
                                  Delay="500">
 
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-            </Grid>
-            <Grid Grid.Column="1">
                 <TextBox  materialDesign:HintAssist.Hint="Đơn giá (VND)"
                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                           VerticalAlignment="Center"
@@ -145,8 +142,20 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-            </Grid>
-            <Grid Grid.Column="2">
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBox  materialDesign:HintAssist.Hint="Số lượng thực tế"
+                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                          VerticalAlignment="Center"
+                          Margin="15 10">
+                    <TextBox.Text>
+                        <Binding Path="txtSLThucTe"
+                                 UpdateSourceTrigger="PropertyChanged"
+                                 Delay="500">
+
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBox  materialDesign:HintAssist.Hint="Thành tiền"
                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                           VerticalAlignment="Center"
@@ -159,7 +168,7 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-            </Grid>
+            </StackPanel>
         </Grid>
 
         <DockPanel DockPanel.Dock="Bottom"
