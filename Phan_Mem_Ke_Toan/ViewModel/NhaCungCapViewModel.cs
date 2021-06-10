@@ -13,10 +13,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Phan_Mem_Ke_Toan.Utils;
+using System.Windows.Data;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class NhaCungCapViewModel : BaseViewModel
+    class NhaCungCapViewModel : TableViewModel<NhaCungCap>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -70,27 +72,38 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _tbVisibility, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
+        private string _search;
+        public string Search
+        {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    NhaCungCap item = element as NhaCungCap;
+                    return item.MaNCC.ToLower().Contains(text) || item.TenNCC.ToLower().Contains(text)
+                    || item.DiaChi.ToLower().Contains(text) || item.MaSoThue.ToLower().Contains(text)
+                    || item.SDT.Contains(text);
+                });
+            }
+        }
 
-        private ObservableCollection<NhaCungCap> _listData;
-        public ObservableCollection<NhaCungCap> ListData
+        public NhaCungCapViewModel():base("NhaCungCap")
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
+            tbVisibility = "Collapsed";
         }
-        public void ClearTextboxValue()
+
+        public override void Event()
         {
-            txtMaNCC = string.Empty;
-            txtTenNCC = string.Empty;
-            txtDiaChi = string.Empty;
-            txtMaSoThue = string.Empty;
-            txtSDT = string.Empty;
-        }
-        public NhaCungCapViewModel()
-        {
+            base.Event();
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                notify.init();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 NhaCungCapDialog dialog = new NhaCungCapDialog();
@@ -132,16 +145,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         MaSoThue = txtMaSoThue,
                         SDT = txtSDT,
                     };
-                    if (CRUD.InsertData("NhaCungCap", ncc))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }      
+                    AddData(ncc);
                 }
                 else
                 {
@@ -153,35 +157,30 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         MaSoThue = txtMaSoThue,
                         SDT = txtSDT,
                     };
-                    if (CRUD.UpdateData("NhaCungCap", ncc))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(ncc);
                 }
+                ((Window)p).Close();
 
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var itemData = p as NhaCungCap;
-                if (CRUD.DeleteData("NhaCungCap", itemData.MaNCC))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                DeleteData(itemData.MaNCC);
             });
-            LoadTableData();
         }
-        public void LoadTableData()
+
+        public override void InitFilter()
         {
-            string JsonData = CRUD.GetJsonData("NhaCungCap");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<NhaCungCap>>(JsonData);
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaNCC = string.Empty;
+            txtTenNCC = string.Empty;
+            txtDiaChi = string.Empty;
+            txtMaSoThue = string.Empty;
+            txtSDT = string.Empty;
         }
     }
 }

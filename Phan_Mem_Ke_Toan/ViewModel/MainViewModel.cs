@@ -83,7 +83,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 }},
                 new MenuViewModel(){ icon="Cog", text="Hệ thống", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>(){
                     new NhomChucNangViewModel() { Title="Quản trị người dùng", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Đổi mật khẩu", icon="Key", iconColor="#FAAD14", page = new PhieuXuatUC() },
+                        new ChucNangViewModel() { text="Đổi mật khẩu", icon="Key", iconColor="#FAAD14"},
                     }},
                     new NhomChucNangViewModel() { Title="Thoát", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
                         new ChucNangViewModel() { text="Đăng xuất", icon="Logout", iconColor="#E80D00", isLogout = true },
@@ -109,7 +109,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         new ChucNangViewModel() { text="Công trình", icon="OfficeBuilding", iconColor="#4DCC89", page = new CongTrinhUC() },
                     }},
                 }},
-                new MenuViewModel(){ icon="FileSwap", text="Chứng từ" },
+                new MenuViewModel(){ icon="FileSwap", text="Chứng từ", NhomChucNangVMs=new ObservableCollection<NhomChucNangViewModel>(){
+                       new NhomChucNangViewModel() { Title="Chứng từ", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
+                        new ChucNangViewModel() { text="Phiếu nhập kho", icon="HomeImportOutline", iconColor="#C64A31", page = new PhieuNhapUC() },
+                        new ChucNangViewModel() { text="Phiếu xuất kho", icon="HomeExportOutline", iconColor="#5099B8", page = new PhieuXuatUC() },
+                    }},
+                }},
                 new MenuViewModel(){ icon="Finance", text="Báo cáo" },
                 new MenuViewModel(){ icon="HelpCircle", text="Trợ giúp" },
             };

@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
-        xmlns:vm="clr-namespace:Phan_Mem_Ke_Toan.ViewModel"
+        xmlns:util="clr-namespace:Phan_Mem_Ke_Toan.Utils"
         mc:Ignorable="d"
         Title="Đăng nhập hệ thống"
         Height="500"
@@ -148,15 +148,15 @@
                                 <PasswordBox x:Name="signInPW"
                                              materialDesign:HintAssist.Hint="Mật khẩu"
                                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                                             vm:PasswordBoxAssistant.BindPassword="True">
-                                    <vm:PasswordBoxAssistant.BoundPassword>
+                                             util:PasswordBoxAssistant.BindPassword="True">
+                                    <util:PasswordBoxAssistant.BoundPassword>
                                         <Binding Path="account.MatKhau"
                                                  Mode="TwoWay">
                                             <Binding.ValidationRules>
                                                 <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
                                             </Binding.ValidationRules>
                                         </Binding>
-                                    </vm:PasswordBoxAssistant.BoundPassword>
+                                    </util:PasswordBoxAssistant.BoundPassword>
                                 </PasswordBox>
 
                             </DockPanel>
@@ -217,25 +217,25 @@
                                          Margin="0,0,0,15"
                                          materialDesign:HintAssist.Hint="Mật khẩu"
                                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                                         vm:PasswordBoxAssistant.BindPassword="True">
-                                <vm:PasswordBoxAssistant.BoundPassword>
+                                         util:PasswordBoxAssistant.BindPassword="True">
+                                <util:PasswordBoxAssistant.BoundPassword>
                                     <Binding Path="accountSignUp.MatKhau"
                                              Mode="TwoWay">
                                         <Binding.ValidationRules>
                                             <valid:NotEmptyRule ValidatesOnTargetUpdated="True" />
                                         </Binding.ValidationRules>
                                     </Binding>
-                                </vm:PasswordBoxAssistant.BoundPassword>
+                                </util:PasswordBoxAssistant.BoundPassword>
                             </PasswordBox>
                             <PasswordBox Margin="0,0,0,10"
                                          materialDesign:HintAssist.Hint="Nhập lại mật khẩu"
                                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                                         vm:PasswordBoxAssistant.BindPassword="True">
+                                         util:PasswordBoxAssistant.BindPassword="True">
                                 <PasswordBox.Resources>
                                     <valid:BindingProxy x:Key="TargetProxy"
                                                         Data="{Binding accountSignUp.MatKhau, Mode=TwoWay}" />
                                 </PasswordBox.Resources>
-                                <vm:PasswordBoxAssistant.BoundPassword>
+                                <util:PasswordBoxAssistant.BoundPassword>
                                     <Binding Path="PasswordConfirm"
                                              Mode="TwoWay">
                                         <Binding.ValidationRules>
@@ -245,7 +245,7 @@
                                             </valid:MatchPassword>
                                         </Binding.ValidationRules>
                                     </Binding>
-                                </vm:PasswordBoxAssistant.BoundPassword>
+                                </util:PasswordBoxAssistant.BoundPassword>
                             </PasswordBox>
                             <TextBox materialDesign:HintAssist.Hint="Họ tên"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"

@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class BoPhanViewModel : BaseViewModel
+    class BoPhanViewModel : TableViewModel<BoPhan>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -58,25 +58,35 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _tbVisibility, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
+        private string _search;
+        public string Search
+        {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    BoPhan item = element as BoPhan;
+                    return item.MaBoPhan.ToLower().Contains(text) || item.TenBoPhan.ToLower().Contains(text);
+                });
+            }
+        }
 
-        private ObservableCollection<BoPhan> _listData;
-        public ObservableCollection<BoPhan> ListData
+        public BoPhanViewModel() : base("BoPhan")
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
+            tbVisibility = "Collapsed";
         }
-        public void ClearTextboxValue()
+
+        public override void Event()
         {
-            txtMaBoPhan = string.Empty;
-            txtTenBoPhan = string.Empty;
-            txtMoTa = string.Empty;
-        }
-        public BoPhanViewModel()
-        {
+            base.Event();
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                notify.init();
+            });
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 BoPhanDialog dialog = new BoPhanDialog();
@@ -112,16 +122,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         TenBoPhan = txtTenBoPhan,
                         MoTa = txtMoTa,
                     };
-                    if (CRUD.InsertData("bophan", bp))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(bp);
                 }
                 else
                 {
@@ -131,35 +132,27 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         TenBoPhan = txtTenBoPhan,
                         MoTa = txtMoTa,
                     };
-                    if (CRUD.UpdateData("bophan", bp))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(bp);
                 }
-
+                              ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var itemData = p as BoPhan;
-                if (CRUD.DeleteData("bophan", itemData.MaBoPhan))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                DeleteData(itemData.MaBoPhan);
             });
-            LoadTableData();
         }
-        public void LoadTableData()
+
+        public override void InitFilter()
         {
-            string JsonData = CRUD.GetJsonData("bophan");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<BoPhan>>(JsonData);
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaBoPhan = string.Empty;
+            txtTenBoPhan = string.Empty;
+            txtMoTa = string.Empty;
         }
     }
 }

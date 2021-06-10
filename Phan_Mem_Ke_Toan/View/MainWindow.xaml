@@ -8,8 +8,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="600"
-        Width="800"
+        MinWidth="1400"
+        MinHeight="800"
         Style="{DynamicResource WindowStyle}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -268,14 +268,14 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="230" />
             </Grid.ColumnDefinitions>
-            <Grid Margin="20"
+            <Grid Margin="0,2,0,0"
                   Grid.Column="0">
                 <UserControl Content="{Binding CurrentPage}" />
             </Grid>
 
             <!--chart-->
             <StackPanel Grid.Column="1"
-                        Background="White"
+                        Background="{DynamicResource MainLowBrush}"
                         HorizontalAlignment="Stretch">
             </StackPanel>
         </Grid>

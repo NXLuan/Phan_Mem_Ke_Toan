@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
         mc:Ignorable="d"
-        Title="NhanVienDialog" Height="300" Width="400"
+        Title="NhanVienDialog" Height="350" Width="400"
         xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource WindowStyle}"
@@ -69,7 +69,8 @@
                       SelectedValuePath="MaBoPhan"
                       DisplayMemberPath="TenBoPhan"
                       HorizontalContentAlignment="Left"
-                      Margin="15 0" />
+                      Margin="15 0"
+                      IsEditable="True" />
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom"
                    LastChildFill="False"

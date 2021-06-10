@@ -4,7 +4,7 @@ const connection = require("../connection")
 
 Router.get('/:SoPhieu', (req, res) => {
   connection.query(
-    "SELECT MaSo, SoPhieu, ct_phieunhap.MaVT, TenVT, TenDVT, SoLuong, DonGia, ThanhTien " +
+    "SELECT MaSo, SoPhieu, ct_phieunhap.MaVT, TenVT, TenDVT, MaTK, SLSoSach, SLThucTe, DonGia, ThanhTien " +
     "FROM ct_phieunhap LEFT JOIN vattu ON ct_phieunhap.MaVT = vattu.MaVT " +
     "LEFT JOIN donvitinh ON vattu.MaDVT = donvitinh.MaDVT " +
     "WHERE SoPhieu = ?", [req.params.SoPhieu], (err, rows) => {

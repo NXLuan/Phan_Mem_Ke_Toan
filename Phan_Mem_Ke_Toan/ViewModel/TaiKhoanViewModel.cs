@@ -11,10 +11,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Phan_Mem_Ke_Toan.Utils;
+using System.Windows.Data;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class TaiKhoanViewModel : BaseViewModel
+    class TaiKhoanViewModel : TableViewModel<TaiKhoan>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -67,23 +69,28 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _txtLoaiTK, value);
         }
         private bool _MaTKEnable;
-        public bool MaTKEnable 
+        public bool MaTKEnable
         {
             get => _MaTKEnable;
             set => SetProperty(ref _MaTKEnable, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<TaiKhoan> _listData;
-        public ObservableCollection<TaiKhoan> ListData
+        private string _search;
+        public string Search
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    TaiKhoan item = element as TaiKhoan;
+                    return item.MaTK.ToLower().Contains(text) || item.TenTK.ToLower().Contains(text);
+                });
+            }
         }
+
         public ObservableCollection<int> ListCapTK { get; set; }
         private ObservableCollection<TaiKhoan> _listTKMe;
         public ObservableCollection<TaiKhoan> ListTKMe
@@ -91,16 +98,20 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _listTKMe;
             set => SetProperty(ref _listTKMe, value);
         }
-        public void ClearTextboxValue()
-        {
-            txtTenTK = string.Empty;
-            txtMaTK = string.Empty;
-            selectedCapTK = 1;
-            txtLoaiTK = string.Empty;
-        }
-        public TaiKhoanViewModel()
+        public TaiKhoanViewModel() : base("TaiKhoan")
         {
             ListCapTK = new ObservableCollection<int>() { 1, 2, 3 };
+        }
+
+        public override void Event()
+        {
+            base.Event();
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                notify.init();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 TaiKhoanDialog dialog = new TaiKhoanDialog();
@@ -139,49 +150,16 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     LoaiTK = txtLoaiTK,
                 };
                 if (BtnContent == "Thêm")
-                {
-                    if (CRUD.InsertData("TaiKhoan", tk))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                }
-                else
-                {
-                    if (CRUD.UpdateData("TaiKhoan", tk))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
-                }
+                    AddData(tk);
+                else UpdateData(tk);
 
+                ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var itemData = p as TaiKhoan;
-                if (CRUD.DeleteData("TaiKhoan", itemData.MaTK))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                DeleteData(itemData.MaTK);
             });
-            LoadTableData();
-        }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJsonData("TaiKhoan");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<TaiKhoan>>(JsonData);
         }
         public void GetListTK(int CapTK)
         {
@@ -194,6 +172,19 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     ListTKMe.Add(item);
                 }
             }
+        }
+
+        public override void InitFilter()
+        {
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtTenTK = string.Empty;
+            txtMaTK = string.Empty;
+            selectedCapTK = 1;
+            txtLoaiTK = string.Empty;
         }
     }
 }

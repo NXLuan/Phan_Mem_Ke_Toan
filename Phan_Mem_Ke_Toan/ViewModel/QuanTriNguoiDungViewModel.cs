@@ -1,209 +1,155 @@
 ﻿using Newtonsoft.Json;
 using Phan_Mem_Ke_Toan.API;
 using Phan_Mem_Ke_Toan.Model;
+using Phan_Mem_Ke_Toan.Utils;
+using Phan_Mem_Ke_Toan.ValidRule;
+using Phan_Mem_Ke_Toan.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    class QuanTriNguoiDungViewModel : BaseViewModel
+    class QuanTriNguoiDungViewModel : TableViewModel<AccountSystem>
     {
-        private string _titleDialog;
-        public string TitleDialog
-        {
-            get => _titleDialog;
-            set => SetProperty(ref _titleDialog, value);
-        }
-
         private string _btnContent;
         public string BtnContent
         {
             get => _btnContent;
             set => SetProperty(ref _btnContent, value);
         }
-
-        private string _tbVisibility;
-        public string tbVisibility
+        private AccountSystem _accountSignUp;
+        public AccountSystem accountSignUp
         {
-            get => _tbVisibility;
-            set => SetProperty(ref _tbVisibility, value);
-        }
-        private string _txtMaKho;
-        public string txtMaKho
-        {
-            get => _txtMaKho;
-            set => SetProperty(ref _txtMaKho, value);
-        }
-        private string _txtTenKho;
-        public string txtTenKho
-        {
-            get => _txtTenKho;
-            set => SetProperty(ref _txtTenKho, value);
-        }
-        private string _txtDiaChi;
-        public string txtDiaChi
-        {
-            get => _txtDiaChi;
-            set => SetProperty(ref _txtDiaChi, value);
-        }
-        private string _txtSDT;
-        public string txtSDT
-        {
-            get => _txtSDT;
-            set => SetProperty(ref _txtSDT, value);
+            get => _accountSignUp;
+            set => SetProperty(ref _accountSignUp, value);
         }
 
-        private string _selectedMaNV;
-        public string selectedMaNV
+        private string _passwordConfirm;
+        public string PasswordConfirm
         {
-            get => _selectedMaNV;
-            set => SetProperty(ref _selectedMaNV, value);
+            get => _passwordConfirm;
+            set
+            {
+                SetProperty(ref _passwordConfirm, value);
+            }
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        public ICommand LoadedCommand { get; set; }
-
-        private ObservableCollection<AccountSystem> _listData;
-        public ObservableCollection<AccountSystem> ListData
+        private ObservableCollection<BoPhan> _ListBoPhan;
+        public ObservableCollection<BoPhan> ListBoPhan
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
-        public void ClearTextboxValue()
-        {
-            txtMaKho = string.Empty;
-            txtTenKho = string.Empty;
-            txtDiaChi = string.Empty;
-            txtSDT = string.Empty;
-            selectedMaNV = string.Empty;
-        }
-        public QuanTriNguoiDungViewModel()
-        {
-            Event();
-            //GetListThuKho();
+            get => _ListBoPhan;
+            set => SetProperty(ref _ListBoPhan, value);
         }
 
-        private void Event()
+        private string _search;
+        public string Search
         {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    AccountSystem item = element as AccountSystem;
+                    return item.TenDangNhap.ToLower().Contains(text) || item.HoTen.ToLower().Contains(text);
+                });
+            }
+        }
+        private string _filterBoPhan;
+        public string FilterBoPhan
+        {
+            get => _filterBoPhan;
+            set
+            {
+                SetProperty(ref _filterBoPhan, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("BoPhan", element => ((AccountSystem)element).MaBoPhan.Equals(text));
+            }
+        }
+        private string _filterQuyen;
+        public string FilterQuyen
+        {
+            get => _filterQuyen;
+            set
+            {
+                SetProperty(ref _filterQuyen, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("Quyen", element => ((AccountSystem)element).Quyen.Equals(text));
+            }
+        }
+
+        public QuanTriNguoiDungViewModel() : base("nguoidung") { }
+
+        public override void Event()
+        {
+            base.Event();
             LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 LoadTableData();
+                GetListBoPhan();
+                notify.init();
             });
 
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                //KhoDialog dialog = new KhoDialog();
-                //TitleDialog = "Thêm kho";
-                //BtnContent = "Thêm";
-                //tbVisibility = "Collapsed";
-                //ClearTextboxValue();
-                //dialog.ShowDialog();
+                NguoiDungDialog dialog = new NguoiDungDialog();
+                dialog.Title = "Thêm người dùng";
+                BtnContent = "Thêm";
+                ClearTextboxValue();
+                dialog.ShowDialog();
             });
 
             EditCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                //KhoDialog dialog = new KhoDialog();
-                //TitleDialog = "Cập nhật kho";
-                //BtnContent = "Lưu";
-                //tbVisibility = "Visible";
-                //var itemData = p as KhoDetail;
-                //txtMaKho = itemData.MaKho;
-                //txtTenKho = itemData.TenKho;
-                //txtDiaChi = itemData.DiaChi;
-                //txtSDT = itemData.SDT;
-                //selectedMaNV = itemData.MaThuKho;
-                //dialog.ShowDialog();
+                NguoiDungDialog dialog = new NguoiDungDialog();
+                dialog.Title = "Chỉnh sửa người dùng";
+                BtnContent = "Lưu";
+                accountSignUp = new AccountSystem(p as AccountSystem);
+                PasswordConfirm = accountSignUp.MatKhau;
+                dialog.ShowDialog();
             });
-            BtnCommand = new RelayCommand<object>((p) =>
+            BtnCommand = new RelayCommand<object>((p) => { return Valid.IsValid(p as DependencyObject); }, (p) =>
             {
-                //bool checkSDT = string.IsNullOrEmpty(txtSDT) ? true : Valid.isPhoneNumber(txtSDT);
-                //return Valid.IsValid(p as DependencyObject) && checkSDT;
-                return true;
-            }, (p) =>
-            {
-                //if (BtnContent == "Thêm")
-                //{
-                //    Kho k = new Kho
-                //    {
-                //        MaKho = ListData.Count() == 0 ? "K001" : CRUD.GeneratePrimaryKey(ListData[ListData.Count() - 1].MaKho),
-                //        TenKho = txtTenKho,
-                //        DiaChi = txtDiaChi,
-                //        SDT = txtSDT,
-                //        MaThuKho = selectedMaNV == "" ? null : selectedMaNV,
-                //    };
-                //    if (CRUD.InsertData("Kho", k))
-                //    {
-                //        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                //        LoadTableData();
-                //        ClearTextboxValue();
-                //    }
-                //    else
-                //    {
-                //        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                //    }
-                //}
-                //else
-                //{
-                //    Kho k = new Kho
-                //    {
-                //        MaKho = txtMaKho,
-                //        TenKho = txtTenKho,
-                //        DiaChi = txtDiaChi,
-                //        SDT = txtSDT,
-                //        MaThuKho = selectedMaNV == "" ? null : selectedMaNV,
-                //    };
-                //    if (CRUD.UpdateData("Kho", k))
-                //    {
-                //        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                //        LoadTableData();
-                //    }
-                //    else
-                //    {
-                //        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                //    }
-                //    ((Window)p).Close();
-                //}
-
+                if (BtnContent == "Thêm")
+                    AddData(accountSignUp);
+                else UpdateData(accountSignUp);
+                ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                //var itemData = p as KhoDetail;
-                //if (CRUD.DeleteData("Kho", itemData.MaKho))
-                //{
-                //    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                //    LoadTableData();
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                //}
-
+                var itemData = p as AccountSystem;
+                DeleteData(itemData.TenDangNhap);
             });
         }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJsonData("nguoidung");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<AccountSystem>>(JsonData);
-        }
-        public void GetListThuKho()
-        {
-            //string data = CRUD.GetJoinTableData("NhanVien");
-            //var list = JsonConvert.DeserializeObject<ObservableCollection<NhanVienDetail>>(data);
-            //ListThuKho = new ObservableCollection<NhanVienDetail>(list.Where(item => item.TenBoPhan == "Kế toán vật tư").ToList());
-            //foreach (var item in ListThuKho)
-            //{
-            //    item.TenNV = item.MaNV + " - " + item.TenNV;
-            //}
 
+        public void GetListBoPhan()
+        {
+            string JsonData = CRUD.GetJsonData("bophan");
+            ListBoPhan = JsonConvert.DeserializeObject<ObservableCollection<BoPhan>>(JsonData);
+        }
+
+        public override void InitFilter()
+        {
+            FilterBoPhan = "";
+            FilterQuyen = "";
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            accountSignUp = new AccountSystem();
+            PasswordConfirm = "";
         }
     }
 }

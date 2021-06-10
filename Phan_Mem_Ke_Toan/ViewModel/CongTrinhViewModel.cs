@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class CongTrinhViewModel : BaseViewModel
+    class CongTrinhViewModel : TableViewModel<CongTrinh>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -63,27 +63,36 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _tbVisibility;
             set => SetProperty(ref _tbVisibility, value);
         }
-
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<CongTrinh> _listData;
-        public ObservableCollection<CongTrinh> ListData
+        private string _search;
+        public string Search
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    CongTrinh item = element as CongTrinh;
+                    return item.MaCongTrinh.ToLower().Contains(text) || item.TenCongTrinh.ToLower().Contains(text);
+                });
+            }
         }
-        public void ClearTextboxValue()
+        public CongTrinhViewModel():base("CongTrinh")
         {
-            txtMaCongTrinh = string.Empty;
-            txtTenCongTrinh = string.Empty;
-            txtDiaChi = string.Empty;
-            txtMoTa = string.Empty;
+            tbVisibility = "Collapsed";
         }
-        public CongTrinhViewModel()
+
+        public override void Event()
         {
+            base.Event();
+
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                notify.init();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 CongTrinhDialog dialog = new CongTrinhDialog();
@@ -95,7 +104,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             });
 
             EditCommand = new RelayCommand<object>((p) => true, (p) =>
-            { 
+            {
                 CongTrinhDialog dialog = new CongTrinhDialog();
                 TitleDialog = "Cập nhật công trình";
                 BtnContent = "Lưu";
@@ -121,16 +130,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         DiaChi = txtDiaChi,
                         MoTa = txtMoTa,
                     };
-                    if (CRUD.InsertData("CongTrinh", ct))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(ct);
                 }
                 else
                 {
@@ -141,35 +141,28 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         DiaChi = txtDiaChi,
                         MoTa = txtMoTa,
                     };
-                    if (CRUD.UpdateData("CongTrinh", ct))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(ct);
                 }
-
+                ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var itemData = p as CongTrinh;
-                if (CRUD.DeleteData("CongTrinh", itemData.MaCongTrinh))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                DeleteData(itemData.MaCongTrinh);
             });
-            LoadTableData();
         }
-        public void LoadTableData()
+
+        public override void InitFilter()
         {
-            string JsonData = CRUD.GetJsonData("CongTrinh");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<CongTrinh>>(JsonData);
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaCongTrinh = string.Empty;
+            txtTenCongTrinh = string.Empty;
+            txtDiaChi = string.Empty;
+            txtMoTa = string.Empty;
         }
     }
 }

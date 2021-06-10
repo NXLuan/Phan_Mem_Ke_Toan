@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class LoaiVatTuViewModel : BaseViewModel
+    class LoaiVatTuViewModel : TableViewModel<LoaiVatTu>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -57,26 +57,38 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _tbVisibility;
             set => SetProperty(ref _tbVisibility, value);
         }
-
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<LoaiVatTu> _listData;
-        public ObservableCollection<LoaiVatTu> ListData
+        private string _search;
+        public string Search
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    LoaiVatTu item = element as LoaiVatTu;
+                    return item.MaLoai.ToLower().Contains(text) || item.TenLoai.ToLower().Contains(text);
+                });
+            }
         }
-        public void ClearTextboxValue()
+
+        public LoaiVatTuViewModel():base("loaivattu")
         {
-            txtMaLoai = string.Empty;
-            txtTenLoai = string.Empty;
-            txtMoTa = string.Empty;
+            tbVisibility = "Collapsed";
         }
-        public LoaiVatTuViewModel()
+
+        public override void Event()
         {
+            base.Event();
+
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                notify.init();
+            });
+
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 LoaiVatTuDialog dialog = new LoaiVatTuDialog();
@@ -112,16 +124,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         TenLoai = txtTenLoai,
                         MoTa = txtMoTa,
                     };
-                    if (CRUD.InsertData("loaivattu", lvt))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(lvt);
                 }
                 else
                 {
@@ -131,35 +134,28 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         TenLoai = txtTenLoai,
                         MoTa = txtMoTa,
                     };
-                    if (CRUD.UpdateData("loaivattu", lvt))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    UpdateData(lvt);
                     ((Window)p).Close();
                 }
-
+                ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var itemData = p as LoaiVatTu;
-                if (CRUD.DeleteData("loaivattu", itemData.MaLoai))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                DeleteData(itemData.MaLoai);
             });
-            LoadTableData();
         }
-        public void LoadTableData()
+
+        public override void InitFilter()
         {
-            string JsonData = CRUD.GetJsonData("loaivattu");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<LoaiVatTu>>(JsonData);
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaLoai = string.Empty;
+            txtTenLoai = string.Empty;
+            txtMoTa = string.Empty;
         }
     }
 }

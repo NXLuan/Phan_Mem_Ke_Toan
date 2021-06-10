@@ -68,7 +68,8 @@
                         <ComboBox HorizontalContentAlignment="Center"
                                   SelectedItem="{Binding selectedCapTK}"
                                   ItemsSource="{Binding ListCapTK}"
-                                  Margin="5 0" />
+                                  Margin="5 0"
+                                  IsEditable="True"/>
                     </StackPanel>
                 </Grid>
             </Grid>
@@ -102,7 +103,8 @@
                                   ItemsSource="{Binding ListTKMe}"
                                   SelectedValue="{Binding selectedTK}"
                                   SelectedValuePath="MaTK"
-                                  DisplayMemberPath="TenTK" />
+                                  DisplayMemberPath="TenTK"
+                                  IsEditable="True"/>
                     </StackPanel>
                 </Grid>
             </Grid>

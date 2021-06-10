@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class VatTuViewModel : BaseViewModel
+    class VatTuViewModel : TableViewModel<VatTu>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -68,17 +68,6 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _selectedMaTK, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<VatTuDetail> _listData;
-        public ObservableCollection<VatTuDetail> ListData
-        {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
         private ObservableCollection<LoaiVatTu> _ListLoaiVT;
         public ObservableCollection<LoaiVatTu> ListLoaiVT
         {
@@ -97,16 +86,64 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _ListTaiKhoan;
             set => SetProperty(ref _ListTaiKhoan, value);
         }
-        public void ClearTextboxValue()
+        public VatTuViewModel():base("VatTu")
         {
-            txtMaVT = string.Empty;
-            txtTenVT = string.Empty;
-            selectedMaLoai = string.Empty;
-            selectedMaDVT = string.Empty;
-            selectedMaTK = string.Empty;
+            tbVisibility = "Collapsed";
         }
-        public VatTuViewModel()
+
+        private string _search;
+        public string Search
         {
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    VatTu item = element as VatTu;
+                    return item.MaVT.ToLower().Contains(text) || item.TenVT.ToLower().Contains(text);
+                });
+            }
+        }
+        private string _filterTaiKhoan;
+        public string FilterTaiKhoan
+        {
+            get => _filterTaiKhoan;
+            set
+            {
+                SetProperty(ref _filterTaiKhoan, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("TaiKhoan", element => ((VatTu)element).MaTK.Equals(text));
+            }
+        }
+        private string _filterLoaiVatTu;
+        public string FilterLoaiVatTu
+        {
+            get => _filterLoaiVatTu;
+            set
+            {
+                SetProperty(ref _filterLoaiVatTu, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("LoaiVatTu", element => ((VatTu)element).MaLoai.Equals(text));
+            }
+        }
+
+        public override void Event()
+        {
+            base.Event();
+
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                GetListLoaiVT();
+                GetListDVT();
+                GetListTK();
+                notify.init();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 VatTuDialog dialog = new VatTuDialog();
@@ -123,7 +160,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 TitleDialog = "Cập nhật vật tư";
                 BtnContent = "Lưu";
                 tbVisibility = "Visible";
-                var itemData = p as VatTuDetail;
+                var itemData = p as VatTu;
                 txtMaVT = itemData.MaVT;
                 txtTenVT = itemData.TenVT;
                 selectedMaLoai = itemData.MaLoai;
@@ -142,20 +179,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     {
                         MaVT = ListData.Count() == 0 ? "VT001" : CRUD.GeneratePrimaryKey(ListData[ListData.Count() - 1].MaVT),
                         TenVT = txtTenVT,
-                        MaLoai = selectedMaLoai == "" ? null : selectedMaLoai ,
+                        MaLoai = selectedMaLoai == "" ? null : selectedMaLoai,
                         MaDVT = selectedMaDVT == "" ? null : selectedMaDVT,
                         MaTK = selectedMaTK == "" ? null : selectedMaTK,
                     };
-                    if (CRUD.InsertData("VatTu", vt))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(vt);
                 }
                 else
                 {
@@ -167,38 +195,15 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         MaDVT = selectedMaDVT,
                         MaTK = selectedMaTK,
                     };
-                    if (CRUD.UpdateData("VatTu", vt))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(vt);
                 }
-
+                ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var itemData = p as VatTuDetail;
-                if (CRUD.DeleteData("VatTu", itemData.MaVT))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                var itemData = p as VatTu;
+                DeleteData(itemData.MaVT);
             });
-            GetListLoaiVT();
-            GetListDVT();
-            GetListTK();
-            LoadTableData();
-        }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJoinTableData("VatTu");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<VatTuDetail>>(JsonData);
         }
         public void GetListLoaiVT()
         {
@@ -218,6 +223,22 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             {
                 item.TenTK = item.MaTK + " - " + item.TenTK;
             }
+        }
+
+        public override void InitFilter()
+        {
+            Search = "";
+            FilterTaiKhoan = "";
+            FilterLoaiVatTu = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaVT = string.Empty;
+            txtTenVT = string.Empty;
+            selectedMaLoai = string.Empty;
+            selectedMaDVT = string.Empty;
+            selectedMaTK = string.Empty;
         }
     }
 }

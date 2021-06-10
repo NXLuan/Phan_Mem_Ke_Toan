@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class NguoiNhanViewModel : BaseViewModel
+    class NguoiNhanViewModel : TableViewModel<NguoiNhan>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -61,32 +61,54 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _selectedMaCongTrinh, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<NguoiNhanDetail> _listData;
-        public ObservableCollection<NguoiNhanDetail> ListData
-        {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
         private ObservableCollection<CongTrinh> _ListCongTrinh;
         public ObservableCollection<CongTrinh> ListCongTrinh
         {
             get => _ListCongTrinh;
             set => SetProperty(ref _ListCongTrinh, value);
         }
-        public void ClearTextboxValue()
+        private string _search;
+        public string Search
         {
-            txtMaNguoiNhan = string.Empty;
-            txtTenNguoiNhan = string.Empty;
-            txtDiaChi = string.Empty;
-            selectedMaCongTrinh = string.Empty;
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    NguoiNhan item = element as NguoiNhan;
+                    return item.MaNguoiNhan.ToLower().Contains(text) || item.TenNguoiNhan.ToLower().Contains(text) ||
+                    item.DiaChi.ToLower().Contains(text);
+                });
+            }
         }
-        public NguoiNhanViewModel()
+        private string _filterCongTrinh;
+        public string FilterCongTrinh
         {
+            get => _filterCongTrinh;
+            set
+            {
+                SetProperty(ref _filterCongTrinh, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("CongTrinh", element => ((NguoiNhan)element).MaCongTrinh.Equals(text));
+            }
+        }
+        public NguoiNhanViewModel() : base("NguoiNhan")
+        {
+            tbVisibility = "Collapsed";
+        }
+
+        public override void Event()
+        {
+            base.Event();
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {       
+                LoadTableData();
+                GetListCongTrinh();
+                notify.init();
+            });
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 NguoiNhanDialog dialog = new NguoiNhanDialog();
@@ -103,7 +125,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 TitleDialog = "Cập nhật người nhận";
                 BtnContent = "Lưu";
                 tbVisibility = "Visible";
-                var itemData = p as NguoiNhanDetail;
+                var itemData = p as NguoiNhan;
                 txtMaNguoiNhan = itemData.MaNguoiNhan;
                 txtTenNguoiNhan = itemData.TenNguoiNhan;
                 txtDiaChi = itemData.DiaChi;
@@ -124,16 +146,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         DiaChi = txtDiaChi,
                         MaCongTrinh = selectedMaCongTrinh == "" ? null : selectedMaCongTrinh,
                     };
-                    if (CRUD.InsertData("NguoiNhan", nn))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(nn);
                 }
                 else
                 {
@@ -144,41 +157,34 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         DiaChi = txtDiaChi,
                         MaCongTrinh = selectedMaCongTrinh == "" ? null : selectedMaCongTrinh,
                     };
-                    if (CRUD.UpdateData("NguoiNhan", nn))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(nn);
                 }
-
+                 ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var itemData = p as NguoiNhanDetail;
-                if (CRUD.DeleteData("NguoiNhan", itemData.MaNguoiNhan))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                var itemData = p as NguoiNhan;
+                DeleteData(itemData.MaNguoiNhan);
             });
-            GetListCongTrinh();
-            LoadTableData();
-        }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJoinTableData("NguoiNhan");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<NguoiNhanDetail>>(JsonData);
         }
         public void GetListCongTrinh()
         {
             string data = CRUD.GetJsonData("CongTrinh");
             ListCongTrinh = JsonConvert.DeserializeObject<ObservableCollection<CongTrinh>>(data);
+        }
+
+        public override void InitFilter()
+        {
+            Search = "";
+            FilterCongTrinh = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaNguoiNhan = string.Empty;
+            txtTenNguoiNhan = string.Empty;
+            txtDiaChi = string.Empty;
+            selectedMaCongTrinh = string.Empty;
         }
     }
 }

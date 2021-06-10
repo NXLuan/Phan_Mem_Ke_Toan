@@ -40,6 +40,10 @@
                      Color="#06CC14" />
     <SolidColorBrush x:Key="DividerBrush"
                      Color="#E1E1E1" />
+    <SolidColorBrush x:Key="SearchBrush"
+                     Color="#E8E8E8" />
+    <SolidColorBrush x:Key="SearchForegroundBrush"
+                     Color="#868686" />
 
     <SolidColorBrush x:Key="Green"
                      Color="#218838" />

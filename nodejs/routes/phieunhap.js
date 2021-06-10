@@ -7,7 +7,7 @@ const connection = require("../connection")
 Router.get('/join', (req, res) => {
   connection.query(
     "SELECT SoPhieu, NgayNhap, phieunhap.MaNCC, TenNCC, phieunhap.MaNguoiGiao, TenNguoiGiao, " + 
-    "phieunhap.MaKho, TenKho, LyDo, TKNo, TKCo, TongTien, ChungTuLQ " +
+    "phieunhap.MaKho, TenKho, kho.DiaChi, LyDo, TKCo, TongTien, ChungTuLQ " +
     "FROM phieunhap LEFT JOIN nhacungcap ON phieunhap.MaNCC = nhacungcap.MaNCC " +
     "LEFT JOIN nguoigiao ON phieunhap.MaNguoiGiao = nguoigiao.MaNguoiGiao " +
     "LEFT JOIN kho ON phieunhap.MaKho = kho.MaKho",

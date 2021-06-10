@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class KhoViewModel : BaseViewModel
+    class KhoViewModel : TableViewModel<Kho>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -68,33 +68,56 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _selectedMaNV, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<KhoDetail> _listData;
-        public ObservableCollection<KhoDetail> ListData
-        {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
         private ObservableCollection<NhanVienDetail> _ListThuKho;
         public ObservableCollection<NhanVienDetail> ListThuKho
         {
             get => _ListThuKho;
             set => SetProperty(ref _ListThuKho, value);
         }
-        public void ClearTextboxValue()
+        private string _search;
+        public string Search
         {
-            txtMaKho = string.Empty;
-            txtTenKho = string.Empty;
-            txtDiaChi = string.Empty;
-            txtSDT = string.Empty;
-            selectedMaNV = string.Empty;
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    Kho item = element as Kho;
+                    return item.MaKho.ToLower().Contains(text) || item.TenKho.ToLower().Contains(text) ||
+                    item.DiaChi.ToLower().Contains(text) || item.SDT.ToLower().Contains(text);
+                });
+            }
         }
-        public KhoViewModel()
+        private string _filterThuKho;
+        public string FilterThuKho
         {
+            get => _filterThuKho;
+            set
+            {
+                SetProperty(ref _filterThuKho, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("ThuKho", element => ((Kho)element).MaThuKho.Equals(text));
+            }
+        }
+        public KhoViewModel() : base("Kho")
+        {
+            tbVisibility = "Collapsed";
+        }
+
+        public override void Event()
+        {
+            base.Event();
+
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                GetListThuKho();
+                notify.init();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 KhoDialog dialog = new KhoDialog();
@@ -111,7 +134,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 TitleDialog = "Cập nhật kho";
                 BtnContent = "Lưu";
                 tbVisibility = "Visible";
-                var itemData = p as KhoDetail;
+                var itemData = p as Kho;
                 txtMaKho = itemData.MaKho;
                 txtTenKho = itemData.TenKho;
                 txtDiaChi = itemData.DiaChi;
@@ -135,16 +158,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         SDT = txtSDT,
                         MaThuKho = selectedMaNV == "" ? null : selectedMaNV,
                     };
-                    if (CRUD.InsertData("Kho", k))
-                    {
-                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    AddData(k);
                 }
                 else
                 {
@@ -156,51 +170,40 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         SDT = txtSDT,
                         MaThuKho = selectedMaNV == "" ? null : selectedMaNV,
                     };
-                    if (CRUD.UpdateData("Kho", k))
-                    {
-                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    ((Window)p).Close();
+                    UpdateData(k);
                 }
-
+                ((Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var itemData = p as KhoDetail;
-                if (CRUD.DeleteData("Kho", itemData.MaKho))
-                {
-                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LoadTableData();
-                } else
-                {
-                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-
+                var itemData = p as Kho;
+                DeleteData(itemData.MaKho);
             });
-            GetListThuKho();
-            LoadTableData();
-        }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJoinTableData("Kho");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<KhoDetail>>(JsonData);
         }
         public void GetListThuKho()
         {
             string data = CRUD.GetJoinTableData("NhanVien");
             var list = JsonConvert.DeserializeObject<ObservableCollection<NhanVienDetail>>(data);
             ListThuKho = new ObservableCollection<NhanVienDetail>(list.Where(item => item.TenBoPhan == "Kế toán vật tư").ToList());
-            foreach(var item in ListThuKho)
+            foreach (var item in ListThuKho)
             {
                 item.TenNV = item.MaNV + " - " + item.TenNV;
             }
+        }
 
+        public override void InitFilter()
+        {
+            Search = "";
+            FilterThuKho = "";
+        }
 
+        public override void ClearTextboxValue()
+        {
+            txtMaKho = string.Empty;
+            txtTenKho = string.Empty;
+            txtDiaChi = string.Empty;
+            txtSDT = string.Empty;
+            selectedMaNV = string.Empty;
         }
     }
 }

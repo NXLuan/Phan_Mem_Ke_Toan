@@ -13,5 +13,15 @@ namespace Phan_Mem_Ke_Toan.Model
         public string HoTen { get; set; }
         public string Quyen { get; set; }
         public string MaBoPhan { get; set; }
+
+        public AccountSystem() { }
+        public AccountSystem(AccountSystem data)
+        {
+            HoTen = data.HoTen;
+            MaBoPhan = data.MaBoPhan;
+            MatKhau = data.MatKhau;
+            Quyen = data.Quyen;
+            TenDangNhap = data.TenDangNhap;
+        }
     }
 }

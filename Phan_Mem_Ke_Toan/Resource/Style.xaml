@@ -30,6 +30,12 @@
         <Setter Property="VerticalAlignment"
                 Value="Center" />
     </Style>
+    
+    <Style TargetType="ComboBox"
+           x:Key="comboboxColumn">
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+    </Style>
 
     <!--DataGridRow-->
     <Style  TargetType="DataGridRow"

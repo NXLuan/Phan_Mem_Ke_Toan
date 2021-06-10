@@ -11,10 +11,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Phan_Mem_Ke_Toan.Utils;
+using System.Windows.Data;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class NguoiGiaoViewModel : BaseViewModel
+    class NguoiGiaoViewModel : TableViewModel<NguoiGiao>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -49,8 +51,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _txtTenNguoiGiao, value);
         }
         private string _txtDiaChi;
-        public string txtDiaChi 
-        { 
+        public string txtDiaChi
+        {
             get => _txtDiaChi;
             set => SetProperty(ref _txtDiaChi, value);
         }
@@ -61,32 +63,54 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _selectedMaNCC, value);
         }
 
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<NguoiGiaoDetail> _listData;
-        public ObservableCollection<NguoiGiaoDetail> ListData
-        {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
         private ObservableCollection<NhaCungCap> _ListNCC;
         public ObservableCollection<NhaCungCap> ListNCC
         {
             get => _ListNCC;
             set => SetProperty(ref _ListNCC, value);
         }
-        public void ClearTextboxValue()
+        private string _search;
+        public string Search
         {
-            txtMaNguoiGiao = string.Empty;
-            txtTenNguoiGiao = string.Empty;
-            txtDiaChi = string.Empty;
-            selectedMaNCC = string.Empty;
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    NguoiGiao item = element as NguoiGiao;
+                    return item.MaNguoiGiao.ToLower().Contains(text) || item.TenNguoiGiao.ToLower().Contains(text)
+                    || item.DiaChi.ToLower().Contains(text);
+                });
+            }
         }
-        public NguoiGiaoViewModel()
+        private string _filterNhaCungCap;
+        public string FilterNhaCungCap
         {
+            get => _filterNhaCungCap;
+            set
+            {
+                SetProperty(ref _filterNhaCungCap, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("NhaCungCap", element => ((NguoiGiao)element).MaNCC.Equals(text));
+            }
+        }
+        public NguoiGiaoViewModel():base("NguoiGiao")
+        {
+            tbVisibility = "Collapsed";
+        }
+        public override void Event()
+        {
+            base.Event();
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                GetListNCC();
+                notify.init();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 NguoiGiaoDialog dialog = new NguoiGiaoDialog();
@@ -103,7 +127,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 TitleDialog = "Cập nhật người giao";
                 BtnContent = "Lưu";
                 tbVisibility = "Visible";
-                var itemData = p as NguoiGiaoDetail;
+                var itemData = p as NguoiGiao;
                 txtMaNguoiGiao = itemData.MaNguoiGiao;
                 txtTenNguoiGiao = itemData.TenNguoiGiao;
                 txtDiaChi = itemData.DiaChi;
@@ -124,16 +148,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         DiaChi = txtDiaChi,
                         MaNCC = selectedMaNCC == "" ? null : selectedMaNCC,
                     };
-                    if (CRUD.InsertData("NguoiGiao", ng))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(ng);
                 }
                 else
                 {
@@ -144,41 +159,34 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         DiaChi = txtDiaChi,
                         MaNCC = selectedMaNCC == "" ? null : selectedMaNCC,
                     };
-                    if (CRUD.UpdateData("NguoiGiao", ng))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(ng);
                 }
 
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var itemData = p as NguoiGiaoDetail;
-                if (CRUD.DeleteData("NguoiGiao", itemData.MaNguoiGiao))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                var itemData = p as NguoiGiao;
+                DeleteData(itemData.MaNguoiGiao);
             });
-            GetListNCC();
-            LoadTableData();
-        }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJoinTableData("NguoiGiao");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<NguoiGiaoDetail>>(JsonData);
         }
         public void GetListNCC()
         {
             string data = CRUD.GetJsonData("NhaCungCap");
             ListNCC = JsonConvert.DeserializeObject<ObservableCollection<NhaCungCap>>(data);
+        }
+
+        public override void InitFilter()
+        {
+            FilterNhaCungCap = "";
+            Search = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaNguoiGiao = string.Empty;
+            txtTenNguoiGiao = string.Empty;
+            txtDiaChi = string.Empty;
+            selectedMaNCC = string.Empty;
         }
     }
 }

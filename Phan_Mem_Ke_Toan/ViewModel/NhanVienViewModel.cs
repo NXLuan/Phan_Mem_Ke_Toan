@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class NhanVienViewModel : BaseViewModel
+    class NhanVienViewModel : TableViewModel<NhanVien>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -54,32 +54,52 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _selectedMaBP;
             set => SetProperty(ref _selectedMaBP, value);
         }
-
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
-
-        private ObservableCollection<NhanVienDetail> _listData;
-        public ObservableCollection<NhanVienDetail> ListData
-        {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
-        }
         private ObservableCollection<BoPhan> _ListBoPhan;
         public ObservableCollection<BoPhan> ListBoPhan
         {
             get => _ListBoPhan;
             set => SetProperty(ref _ListBoPhan, value);
         }
-        public void ClearTextboxValue()
+        private string _search;
+        public string Search
         {
-            txtMaNV = string.Empty;
-            txtTenNV = string.Empty;
-            selectedMaBP = string.Empty;
+            get => _search;
+            set
+            {
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    NhanVien item = element as NhanVien;
+                    return item.MaNV.ToLower().Contains(text) || item.TenNV.ToLower().Contains(text);
+                });
+            }
         }
-        public NhanVienViewModel()
+        private string _filterBoPhan;
+        public string FilterBoPhan
         {
+            get => _filterBoPhan;
+            set
+            {
+                SetProperty(ref _filterBoPhan, value);
+                string text = value.Trim();
+                if (text == "") return;
+                filter.AddFilter("BoPhan", element => ((NhanVien)element).MaBoPhan.Equals(text));
+            }
+        }
+        public NhanVienViewModel():base("NhanVien")
+        {
+            tbVisibility = "Collapsed";
+        }
+        public override void Event()
+        {
+            base.Event();
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                GetListBoPhan();
+                notify.init();
+            });
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 NhanVienDialog dialog = new NhanVienDialog();
@@ -96,7 +116,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 TitleDialog = "Cập nhật nhân viên";
                 BtnContent = "Lưu";
                 tbVisibility = "Visible";
-                var itemData = p as NhanVienDetail;
+                var itemData = p as NhanVien;
                 txtMaNV = itemData.MaNV;
                 txtTenNV = itemData.TenNV;
                 selectedMaBP = itemData.MaBoPhan;
@@ -106,7 +126,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             {
                 return Valid.IsValid(p as DependencyObject);
             }, (p) =>
-            {       
+            {
                 if (BtnContent == "Thêm")
                 {
                     NhanVien nv = new NhanVien
@@ -115,16 +135,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         TenNV = txtTenNV,
                         MaBoPhan = selectedMaBP == "" ? null : selectedMaBP,
                     };
-                    if (CRUD.InsertData("NhanVien", nv))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                        ClearTextboxValue();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
+                    AddData(nv);
                 }
                 else
                 {
@@ -134,41 +145,34 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         TenNV = txtTenNV,
                         MaBoPhan = selectedMaBP == "" ? null : selectedMaBP,
                     };
-                    if (CRUD.UpdateData("NhanVien", nv))
-                    {
-                        Console.WriteLine("Success");
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error");
-                    }
-                    ((Window)p).Close();
+                    UpdateData(nv);
                 }
+                ((Window)p).Close();
 
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                var itemData = p as NhanVienDetail;
-                if (CRUD.DeleteData("NhanVien", itemData.MaNV))
-                {
-                    Console.WriteLine("Success");
-                    LoadTableData();
-                }
-
+                var itemData = p as NhanVien;
+                DeleteData(itemData.MaNV);
             });
-            GetListBoPhan();
-            LoadTableData();
-        }
-        public void LoadTableData()
-        {
-            string JsonData = CRUD.GetJoinTableData("NhanVien");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<NhanVienDetail>>(JsonData);
         }
         public void GetListBoPhan()
         {
             string data = CRUD.GetJsonData("BoPhan");
             ListBoPhan = JsonConvert.DeserializeObject<ObservableCollection<BoPhan>>(data);
+        }
+
+        public override void InitFilter()
+        {
+            Search = "";
+            FilterBoPhan = "";
+        }
+
+        public override void ClearTextboxValue()
+        {
+            txtMaNV = string.Empty;
+            txtTenNV = string.Empty;
+            selectedMaBP = string.Empty;
         }
     }
 }
