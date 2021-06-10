@@ -132,7 +132,8 @@
                 <TextBox  materialDesign:HintAssist.Hint="Đơn giá (VND)"
                           Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                           VerticalAlignment="Center"
-                          Margin="15 10">
+                          Margin="15 10"
+                          IsEnabled="False">
                     <TextBox.Text>
                         <Binding Path="txtDonGia"
                                  UpdateSourceTrigger="PropertyChanged">

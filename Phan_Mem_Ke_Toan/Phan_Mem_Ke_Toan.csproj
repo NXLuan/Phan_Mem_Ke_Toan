@@ -95,6 +95,7 @@
     <Compile Include="Model\CT_PhieuXuat.cs" />
     <Compile Include="Model\CT_PhieuXuatDetail.cs" />
     <Compile Include="Model\DonViTinh.cs" />
+    <Compile Include="Model\DuDauVatTu.cs" />
     <Compile Include="Model\Kho.cs" />
     <Compile Include="Model\KhoDetail.cs" />
     <Compile Include="Model\LoaiVatTu.cs" />
@@ -176,6 +177,9 @@
     </Compile>
     <Compile Include="View\DonViTinhUC.xaml.cs">
       <DependentUpon>DonViTinhUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\KhoCalculateDialog.xaml.cs">
+      <DependentUpon>KhoCalculateDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\KhoDialog.xaml.cs">
       <DependentUpon>KhoDialog.xaml</DependentUpon>
@@ -331,6 +335,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DonViTinhUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\KhoCalculateDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

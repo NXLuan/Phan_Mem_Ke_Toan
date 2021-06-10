@@ -78,25 +78,39 @@
                         </Border>
                     </DockPanel>
 
-                    <Grid HorizontalAlignment="Right"
-                          Width="120">
-                        <Button Command="{Binding AddCommand}"
-                                Content="Thêm mới"
-                                Padding="10 0 00 0"
-                                Background="{DynamicResource Green}"
-                                BorderThickness="0" />
-                        <materialDesign:PackIcon Kind="PlusCircle"
-                                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                                 VerticalAlignment="Center"
-                                                 Width="30"
-                                                 Height="20" />
-                    </Grid>
+                    <DockPanel HorizontalAlignment="Right">
+                        <Grid Width="160">
+                            <Button Command="{Binding CalculateCommand}"
+                                    Content="Tính giá xuất kho"
+                                    Padding="10 0 00 0"
+                                    Background="{DynamicResource Blue}"
+                                    BorderThickness="0" />
+                            <materialDesign:PackIcon Kind="Calculator"
+                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                                     VerticalAlignment="Center"
+                                                     Width="30"
+                                                     Height="20" />
+                        </Grid>
+
+                        <Grid Margin="20,0,0,0"
+                              Width="120">
+                            <Button Command="{Binding AddCommand}"
+                                    Content="Thêm mới"
+                                    Padding="10 0 00 0"
+                                    Background="{DynamicResource Green}"
+                                    BorderThickness="0" />
+                            <materialDesign:PackIcon Kind="PlusCircle"
+                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                                     VerticalAlignment="Center"
+                                                     Width="30"
+                                                     Height="20" />
+                        </Grid>
+                    </DockPanel>
                 </DockPanel>
                 <Grid>
                     <TextBlock Text="Danh sách kho"
                                VerticalAlignment="Center"
                                FontWeight="Medium" />
-
                     <TextBlock Text="{Binding notify.ContentNotify}"
                                TextAlignment="Center"
                                HorizontalAlignment="Center"

@@ -42,7 +42,5 @@ Router.put('/', (req, res) => {
       console.log(err); res.status(400).send({ message: err })
     }
   })
-})  
-
-
+})
 module.exports = Router;
