@@ -15,6 +15,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0"
                        Text="DANH SÁCH KHO"
@@ -22,8 +23,18 @@
                        FontSize="15"
                        Padding="20,20,0,15" />
             <Grid Grid.Column="1"
-                  Width="120"
+                  Width="160"
                   Margin="15,10,0,10">
+                <Button Command="{Binding CalculateCommand}"
+                        Content="Tính giá xuất kho"
+                        Padding="10 0 00 0"
+                        Background="{DynamicResource Blue}"
+                        BorderThickness="0" />
+                <materialDesign:PackIcon Kind="Calculator"
+                                         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                         VerticalAlignment="Center"
+                                         Width="30"
+                                         Height="20" />
             </Grid>
             <Grid Grid.Column="2"
                   Width="120"

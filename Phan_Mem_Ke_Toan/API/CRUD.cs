@@ -127,5 +127,27 @@ namespace Phan_Mem_Ke_Toan.API
                 return (response.IsSuccessStatusCode);
             }
         }
+        public static bool TinhGiaXuatKho(DateTime start, DateTime end)
+        {
+            using (var client = new HttpClient())
+            {
+                KhoangThoiGian s = new KhoangThoiGian
+                {
+                    NgayBD = start,
+                    NgayKT = end,
+                };
+                var json = JsonConvert.SerializeObject(s);
+                var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+                client.BaseAddress = new Uri("http://localhost:5000/");
+                var response = client.PutAsync("/vattu/tinhgiaxuat" , stringContent).Result;
+                return (response.IsSuccessStatusCode);
+            }
+        }
+    }
+    public class KhoangThoiGian
+    {
+        public DateTime NgayBD { get; set; }
+        public DateTime NgayKT { get; set; }
+
     }
 }

@@ -438,8 +438,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
                 if (BtnContent == "Thêm")
                 {
+                    int n = ListDataCT.Count;
                     CT_PhieuXuat ctpn = new CT_PhieuXuat
-                    {
+                    {  
                         SoPhieu = txtSoPhieuCT,
                         MaVT = selectedMaVT,
                         SLSoSach = txtSLSoSach,
@@ -861,6 +862,6 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     Process.Start(sfd.FileName);
                 }
             }
-        }
+        }  
     }
 }

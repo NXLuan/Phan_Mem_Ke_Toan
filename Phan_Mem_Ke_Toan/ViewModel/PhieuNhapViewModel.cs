@@ -440,6 +440,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
          
                 if (BtnContent == "Thêm")
                 {
+                    int n = ListDataCT.Count;
                     CT_PhieuNhap ctpn = new CT_PhieuNhap
                     {
                         SoPhieu = txtSoPhieuCT,
