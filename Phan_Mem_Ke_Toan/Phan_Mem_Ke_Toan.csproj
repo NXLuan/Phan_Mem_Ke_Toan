@@ -94,6 +94,7 @@
     <Compile Include="Model\CT_PhieuNhapDetail.cs" />
     <Compile Include="Model\CT_PhieuXuat.cs" />
     <Compile Include="Model\CT_PhieuXuatDetail.cs" />
+    <Compile Include="Model\DataNhapXuat.cs" />
     <Compile Include="Model\DonViTinh.cs" />
     <Compile Include="Model\DuDauVatTu.cs" />
     <Compile Include="Model\Kho.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="ViewModel\CongTrinhViewModel.cs" />
     <Compile Include="ViewModel\DonViTinhViewModel.cs" />
     <Compile Include="ViewModel\KhoViewModel.cs" />
+    <Compile Include="ViewModel\LapSoChiTietViewModel.cs" />
+    <Compile Include="ViewModel\LapTheKhoViewModel.cs" />
     <Compile Include="ViewModel\LoaiVatTuViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -186,6 +189,12 @@
     </Compile>
     <Compile Include="View\KhoUC.xaml.cs">
       <DependentUpon>KhoUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LapSoChiTietUC.xaml.cs">
+      <DependentUpon>LapSoChiTietUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LapTheKhoUC.xaml.cs">
+      <DependentUpon>LapTheKhoUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LoaiVatTuDialog.xaml.cs">
       <DependentUpon>LoaiVatTuDialog.xaml</DependentUpon>
@@ -347,6 +356,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\KhoUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LapSoChiTietUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LapTheKhoUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

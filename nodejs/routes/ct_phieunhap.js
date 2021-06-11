@@ -2,18 +2,45 @@ const express = require('express')
 const Router = express.Router()
 const connection = require("../connection")
 
-Router.get('/:SoPhieu', (req, res) => {
-  connection.query(
-    "SELECT MaSo, SoPhieu, ct_phieunhap.MaVT, TenVT, TenDVT, MaTK, SLSoSach, SLThucTe, DonGia, ThanhTien " +
-    "FROM ct_phieunhap LEFT JOIN vattu ON ct_phieunhap.MaVT = vattu.MaVT " +
-    "LEFT JOIN donvitinh ON vattu.MaDVT = donvitinh.MaDVT " +
-    "WHERE SoPhieu = ?", [req.params.SoPhieu], (err, rows) => {
+Router.get('/ctpnthang', (req, res) => {
+  const { MaVT, MaKho, NgayBD, Thang, Nam } = req.query;
+  let sql = `SELECT NgayNhap as Ngay, ct_phieunhap.SoPhieu, SLThucTe, DonGia, ThanhTien, LyDo, TKCo as MaTK ` +
+    `FROM ct_phieunhap LEFT JOIN phieunhap ON ct_phieunhap.SoPhieu = phieunhap.SoPhieu ` +
+    `WHERE MaVT = ? AND MaKho = ? AND NgayNhap >= ? AND MONTH(NgayNhap) = ? AND YEAR(NgayNhap) = ?`
+  connection.query(sql, [MaVT, MaKho, NgayBD, Thang, Nam], (err, rows) => {
     if (!err) {
       res.send(rows)
     } else {
       console.log(err); res.status(400).send({ message: err })
     }
   })
+})
+
+Router.get('/ctpn', (req, res) => {
+  const { MaVT, MaKho, NgayBD, NgayKT } = req.query;
+  let sql = `SELECT NgayNhap as Ngay, ct_phieunhap.SoPhieu, SLThucTe, DonGia, ThanhTien, LyDo ` +
+    `FROM ct_phieunhap LEFT JOIN phieunhap ON ct_phieunhap.SoPhieu = phieunhap.SoPhieu ` +
+    `WHERE MaVT = ? AND MaKho = ? AND NgayNhap >= ? AND NgayNhap <= ?`
+  connection.query(sql, [MaVT, MaKho, NgayBD, NgayKT], (err, rows) => {
+    if (!err) {
+      res.send(rows)
+    } else {
+      console.log(err); res.status(400).send({ message: err })
+    }
+  })
+})
+Router.get('/:SoPhieu', (req, res) => {
+  connection.query(
+    "SELECT MaSo, SoPhieu, ct_phieunhap.MaVT, TenVT, TenDVT, MaTK, SLSoSach, SLThucTe, DonGia, ThanhTien " +
+    "FROM ct_phieunhap LEFT JOIN vattu ON ct_phieunhap.MaVT = vattu.MaVT " +
+    "LEFT JOIN donvitinh ON vattu.MaDVT = donvitinh.MaDVT " +
+    "WHERE SoPhieu = ?", [req.params.SoPhieu], (err, rows) => {
+      if (!err) {
+        res.send(rows)
+      } else {
+        console.log(err); res.status(400).send({ message: err })
+      }
+    })
 })
 Router.get('/', (req, res) => {
   connection.query("SELECT * FROM ct_phieunhap", (err, rows) => {
@@ -55,7 +82,7 @@ Router.put('/', (req, res) => {
       console.log(err); res.status(400).send({ message: err })
     }
   })
-})  
+})
 
 
 module.exports = Router;

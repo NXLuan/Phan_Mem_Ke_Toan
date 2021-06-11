@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="MainWindow"
         MinWidth="1400"
-        MinHeight="800"
+        MinHeight="600"        
         Style="{DynamicResource WindowStyle}"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"

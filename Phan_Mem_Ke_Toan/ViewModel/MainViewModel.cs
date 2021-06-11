@@ -112,10 +112,16 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 new MenuViewModel(){ icon="FileSwap", text="Chứng từ", NhomChucNangVMs=new ObservableCollection<NhomChucNangViewModel>(){
                        new NhomChucNangViewModel() { Title="Chứng từ", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
                         new ChucNangViewModel() { text="Phiếu nhập kho", icon="HomeImportOutline", iconColor="#C64A31", page = new PhieuNhapUC() },
-                        new ChucNangViewModel() { text="Phiếu xuất kho", icon="HomeExportOutline", iconColor="#5099B8", page = new PhieuXuatUC() },
+                        new ChucNangViewModel() { text="Phiếu xuất kho", icon="HomeExportOutline", iconColor="#5099B8", page = new PhieuXuatUC() }, 
+                        new ChucNangViewModel() { text="Biên bản kiểm kê", icon="FileTableOutline", iconColor="#FF4500", page = new BienBanUC() },
                     }},
                 }},
-                new MenuViewModel(){ icon="Finance", text="Báo cáo" },
+                new MenuViewModel(){ icon="Finance", text="Báo cáo", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>() { 
+                    new NhomChucNangViewModel() { Title="Kho", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
+                        new ChucNangViewModel() { text="Thẻ kho", icon="TextBox", iconColor="#ca0035", page = new LapTheKhoUC()},
+                        new ChucNangViewModel() { text="Sổ chi tiết vật tư", icon="NotebookMultiple", iconColor="#ffc400", page = new LapSoChiTietUC()},
+                    }}
+                }},
                 new MenuViewModel(){ icon="HelpCircle", text="Trợ giúp" },
             };
 

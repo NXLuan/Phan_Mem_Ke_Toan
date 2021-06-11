@@ -18,4 +18,6 @@
     <viewmodel:PhieuNhapViewModel x:Key="PhieuNhapVM" />
     <viewmodel:PhieuXuatViewModel x:Key="PhieuXuatVM" />
     <viewmodel:BienBanViewModel x:Key="BienBanVM" />
+    <viewmodel:LapTheKhoViewModel x:Key="LapTheKhoVM" />
+    <viewmodel:LapSoChiTietViewModel x:Key="LapSoChiTietVM" />
 </ResourceDictionary>
