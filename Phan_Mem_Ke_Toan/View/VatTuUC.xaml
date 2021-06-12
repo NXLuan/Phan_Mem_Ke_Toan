@@ -327,7 +327,7 @@
                                             ElementStyle="{StaticResource comboboxColumn}" />
                     <DataGridComboBoxColumn ItemsSource="{Binding ListTaiKhoan, Source={StaticResource VatTuVM}}"
                                             SelectedValuePath="MaTK"
-                                            DisplayMemberPath="TenTK"
+                                            DisplayMemberPath="MaTK"
                                             SelectedValueBinding="{Binding MaTK}"
                                             IsReadOnly="True"
                                             Header="Tài khoản"
