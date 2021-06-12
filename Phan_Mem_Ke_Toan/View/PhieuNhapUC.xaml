@@ -4,17 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d"
              d:DesignWidth="800"
              xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Style="{DynamicResource WindowStyle}"
-             DataContext="{StaticResource PhieuNhapVM}"
-             Height="718">
+             DataContext="{StaticResource PhieuNhapVM}">
     <UserControl.Resources>
         <converter:MoneyVNConvert x:Key="moneyConverter" />
     </UserControl.Resources>
-    <StackPanel>
+    <!--<StackPanel>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -104,141 +104,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding SoPhieu}"
-                                    IsReadOnly="True"
-                                    Header="Số phiếu"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding NgayNhap, StringFormat=dd/MM/yyyy}"
-                                    IsReadOnly="True"
-                                    Header="Ngày nhập"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TenNCC}"
-                                    IsReadOnly="True"
-                                    Header="Nhà cung cấp"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Left" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TenNguoiGiao}"
-                                    IsReadOnly="True"
-                                    Header="Người giao"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Left" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TenKho}"
-                                    IsReadOnly="True"
-                                    Header="Nhập tại kho"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Left" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LyDo}"
-                                    IsReadOnly="True"
-                                    Header="Lý do"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TKCo}"
-                                    IsReadOnly="True"
-                                    Header="TK có"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TongTien, Converter={StaticResource moneyConverter}}"
-                                    IsReadOnly="True"
-                                    Header="Tổng tiền"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Right" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ChungTuLQ}"
-                                    IsReadOnly="True"
-                                    Header="Chứng từ LQ"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Left" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+               
             </DataGrid.Columns>
         </DataGrid>
         <Separator Background="Silver" />
@@ -319,127 +185,219 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding MaVT}"
-                                    IsReadOnly="True"
-                                    Header="Mã vật tư"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TenVT}"
-                                    IsReadOnly="True"
-                                    Header="Tên vật tư"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding TenDVT}"
-                                    IsReadOnly="True"
-                                    Header="Đơn vị tính"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding MaTK}"
-                                    IsReadOnly="True"
-                                    Header="TK nợ"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding SLSoSach}"
-                                    IsReadOnly="True"
-                                    Header="Số lượng sổ sách"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding SLThucTe}"
-                                    IsReadOnly="True"
-                                    Header="Số lượng thực tế"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Center" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding DonGia, Converter={StaticResource moneyConverter}}"
-                                    IsReadOnly="True"
-                                    Header="Đơn giá"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Right" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding ThanhTien, Converter={StaticResource moneyConverter}}"
-                                    IsReadOnly="True"
-                                    Header="Thành tiền"
-                                    Width="auto">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment"
-                                    Value="Right" />
-                            <Setter Property="VerticalAlignment"
-                                    Value="Center" />
-                            <Setter Property="Margin"
-                                    Value="5 0" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
+               
         </DataGrid>
-    </StackPanel>
+    </StackPanel>-->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Background="White">
+        <DockPanel Margin="40,10,40,30">
+            <StackPanel DockPanel.Dock="Top">
+                <DockPanel>
+                    <TextBlock Text="Chứng từ"
+                               FontWeight="Medium"
+                               VerticalAlignment="Center"
+                               Padding="0,10,4,10" />
+                    <materialDesign:PackIcon Kind="ChevronRight"
+                                             VerticalAlignment="Center"
+                                             Foreground="{DynamicResource PrimaryHueMidBrush}" />
+                    <TextBlock Text="Phiếu nhập"
+                               FontWeight="Medium"
+                               VerticalAlignment="Center"
+                               Padding="4,10,0,10"
+                               Foreground="{DynamicResource PrimaryHueMidBrush}" />
+                </DockPanel>
+                <Separator Background="{DynamicResource DividerBrush}" />
+                <DockPanel Margin="0,15,0,15">
+                    <Border CornerRadius="4"
+                            Width="200"
+                            Background="{DynamicResource SearchBrush}"
+                            HorizontalAlignment="Left"
+                            Padding="8,0,0,0">
+                        <DockPanel>
+                            <materialDesign:PackIcon Kind="Search"
+                                                     VerticalAlignment="Center"
+                                                     Foreground="{DynamicResource SearchForegroundBrush}" />
+                            <TextBox materialDesign:HintAssist.Hint="Tìm kiếm"
+                                     Height="30"
+                                     Padding="8"
+                                     FontSize="13"
+                                     Background="Transparent"
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                     BorderThickness="0"
+                                     Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+                        </DockPanel>
+                    </Border>
+
+                    <DockPanel  HorizontalAlignment="Right">
+                        <Grid Width="120">
+                            <Button Command="{Binding AddCommand}"
+                                    Content="Thêm mới"
+                                    Padding="10 0 00 0"
+                                    Background="{DynamicResource Green}"
+                                    BorderThickness="0" />
+                            <materialDesign:PackIcon Kind="PlusCircle"
+                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                                     VerticalAlignment="Center"
+                                                     Width="30"
+                                                     Height="20" />
+                        </Grid>
+                    </DockPanel>
+
+                </DockPanel>
+                <Grid>
+                    <TextBlock Text="Danh sách phiếu nhập"
+                               VerticalAlignment="Center"
+                               FontWeight="Medium" />
+
+                    <TextBlock Text="{Binding notify.ContentNotify}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource Success}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding notify.IsError}"
+                                                 Value="true">
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource DangerOrError}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                            Content="Hiển thị tất cả"
+                            HorizontalAlignment="Right"
+                            Command="{Binding ShowAllCommand}" />
+                </Grid>
+            </StackPanel>
+
+            <DataGrid x:Name="listview"
+                      ItemsSource="{Binding ListData}"
+                      CanUserAddRows="False"
+                      AutoGenerateColumns="False"
+                      CellStyle="{StaticResource CellStyle}"
+                      BorderThickness="1"
+                      RowStyle="{StaticResource RowStyle}"
+                      AlternationCount="2"
+                      DockPanel.Dock="Top">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Tuỳ chọn" CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.ShowDetailCommand}"
+                                             CommandParameter="{Binding}"
+                                             Width="24"
+                                             Height="24"
+                                             ToolTip="Xem chi tiết">
+                                        <materialDesign:PackIcon Kind="TextBoxSearch"
+                                                                 Foreground="{DynamicResource PrimaryHueLightBrush}"
+                                                                 Width="18" />
+
+                                    </Button>
+                                    <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.ExportCommand}"
+                                             CommandParameter="{Binding}"
+                                             Width="24"
+                                             Height="24"
+                                             ToolTip="Xuất file Word">
+                                        <materialDesign:PackIcon Kind="FileWordBox"
+                                                                 Foreground="#275090"
+                                                                 Width="18" />
+                                    </Button>
+                                </DockPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Tuỳ chỉnh"
+                                            CanUserResize="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.EditCommand}"
+                                             CommandParameter="{Binding}"
+                                             Width="24"
+                                             Height="24"
+                                             ToolTip="Chỉnh sửa">
+                                        <materialDesign:PackIcon Kind="Pencil"
+                                                                 Foreground="#ffc720"
+                                                                 Width="16" />
+                                    </Button>
+                                    <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                             Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.DeleteItemCommand}"
+                                             CommandParameter="{Binding}"
+                                             Width="24"
+                                             Height="24"
+                                             ToolTip="Xoá">
+                                        <materialDesign:PackIcon Kind="Delete"
+                                                                 Foreground="{DynamicResource Red}"
+                                                                 Width="16" />
+
+                                    </Button>
+                                </DockPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding SoPhieu}"
+                                        IsReadOnly="True"
+                                        Header="Số phiếu"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding NgayNhap, StringFormat=dd/MM/yyyy}"
+                                        IsReadOnly="True"
+                                        Header="Ngày nhập"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding TenNCC}"
+                                        IsReadOnly="True"
+                                        Header="Nhà cung cấp"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding TenNguoiGiao}"
+                                        IsReadOnly="True"
+                                        Header="Người giao"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding TenKho}"
+                                        IsReadOnly="True"
+                                        Header="Nhập tại kho"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding LyDo}"
+                                        IsReadOnly="True"
+                                        Header="Lý do"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding TKCo}"
+                                        IsReadOnly="True"
+                                        Header="TK có"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding TongTien, Converter={StaticResource moneyConverter}}"
+                                        IsReadOnly="True"
+                                        Header="Tổng tiền"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding ChungTuLQ}"
+                                        IsReadOnly="True"
+                                        Header="Chứng từ LQ"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
 </UserControl>

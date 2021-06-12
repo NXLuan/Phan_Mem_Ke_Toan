@@ -51,7 +51,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
         public void LoadTableData()
         {
-            string JsonData = CRUD.GetJsonData(tableName);
+            string JsonData;
+            if (typeof(T).Name.Contains("Detail")) JsonData = CRUD.GetJoinTableData(tableName);
+            else JsonData = CRUD.GetJsonData(tableName);
             ListData = JsonConvert.DeserializeObject<ObservableCollection<T>>(JsonData);
             filter.FilterView = (CollectionView)CollectionViewSource.GetDefaultView(ListData);
             showAll();

@@ -127,18 +127,18 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             LoadedCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                isLogout = false;
-                ChucNangViewModel CNVM = new ChucNangViewModel() { text = "Quản trị người dùng", icon = "AccountDetails", iconColor = "#3773E1", page = new QuanTriNguoiDung() };
-                var CNVMList = Menu[1].NhomChucNangVMs[0].ChucNangVMs;
-                bool isContain = Menu[1].NhomChucNangVMs[0].ChucNangVMs.Count == 2;
-                if (LoginViewModel.currentUser.Quyen.Equals("admin") && !isContain)
-                {
-                    CNVMList.Add(CNVM);
-                }
-                else if (LoginViewModel.currentUser.Quyen.Equals("user") && isContain)
-                {
-                    CNVMList.Remove(CNVM);
-                }
+                //isLogout = false;
+                //ChucNangViewModel CNVM = new ChucNangViewModel() { text = "Quản trị người dùng", icon = "AccountDetails", iconColor = "#3773E1", page = new QuanTriNguoiDung() };
+                //var CNVMList = Menu[1].NhomChucNangVMs[0].ChucNangVMs;
+                //bool isContain = Menu[1].NhomChucNangVMs[0].ChucNangVMs.Count == 2;
+                //if (LoginViewModel.currentUser.Quyen.Equals("admin") && !isContain)
+                //{
+                //    CNVMList.Add(CNVM);
+                //}
+                //else if (LoginViewModel.currentUser.Quyen.Equals("user") && isContain)
+                //{
+                //    CNVMList.Remove(CNVM);
+                //}
 
                 if (PageWorkings.Count != 0) PageWorkings.Clear();
                 SelectedIndexMenu = 0;

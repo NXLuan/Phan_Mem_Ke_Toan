@@ -5,191 +5,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
         mc:Ignorable="d"
-        Title="DonViTinhDialog"
+        Title="Chi tiết phiếu nhập"
         xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
-        Height="370"
-        Width="600"
+        Height="600"
+        Width="900"
         xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource WindowStyle}"
         DataContext="{StaticResource PhieuNhapVM}"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
-        MinHeight="370"
-        MinWidth="400">
+        MinHeight="600"
+        MinWidth="900">
     <Window.Resources>
         <converter:MoneyVNConvert x:Key="moneyConverter" />
     </Window.Resources>
-    <DockPanel Name="dialog"
-               Background="White">
-        <DockPanel DockPanel.Dock="Top"
-                   LastChildFill="False">
-            <TextBlock Text="{Binding TitleDialogCT}"
-                       FontSize="18"
-                       Padding="10" />
-            <Button DockPanel.Dock="Right"
-                    VerticalAlignment="Center"
-                    Margin="15 0"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Padding="5"
-                    IsCancel="True">
-                <materialDesign:PackIcon Kind="Close"
-                                         Foreground="DimGray" />
-            </Button>
-        </DockPanel>
-        <Separator Background="Silver" />
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <StackPanel  Margin="0 5 0 0">
-                    <TextBlock Margin="15 0 0 5">Mã vật tư</TextBlock>
-                    <ComboBox ItemsSource="{Binding ListVT}"
-                              IsEnabled="{Binding EnableListVT}"
-                              SelectedValuePath="MaVT"
-                              DisplayMemberPath="TenVT"
-                              HorizontalContentAlignment="Left"
-                              Margin="15 0"
-                              IsEditable="True">
-                        <ComboBox.SelectedValue>
-                            <Binding Path="selectedMaVT"
-                                     UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <rule:NotEmptyRule ValidatesOnTargetUpdated="True" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </ComboBox.SelectedValue>
-                    </ComboBox>
+    <DockPanel Background="White">
+        <DockPanel Name="dialog"
+                   LastChildFill="False"
+                   Margin="20,0,20,20">
+            <Separator Background="{DynamicResource DividerBrush}"
+                       DockPanel.Dock="Top" />
+            <Grid DockPanel.Dock="Top"
+                  Margin="20,10,20,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Margin="0,0,80,0">
+                    <TextBox materialDesign:HintAssist.Hint="Số phiếu"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center"
+                             IsEnabled="False"
+                             Text="{Binding txtSoPhieu}" />
+
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Margin="40 0 0 0">
+                    <TextBox materialDesign:HintAssist.Hint="Tổng tiền"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             VerticalAlignment="Center"
+                             IsEnabled="False"
+                             Text="{Binding txtTongTien, Converter={StaticResource moneyConverter}}" />
+
                 </StackPanel>
             </Grid>
-            <Grid Grid.Column="1">
-                <TextBox materialDesign:HintAssist.Hint="Số phiếu"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         VerticalAlignment="Center"
-                         Margin="15 10"
-                         IsEnabled="False">
-                    <TextBox.Text>
-                        <Binding Path="txtSoPhieuCT"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </Grid>
-        </Grid>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <TextBox materialDesign:HintAssist.Hint="Tên vật tư"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         VerticalAlignment="Center"
-                         Margin="15 10"
-                         IsEnabled="False">
-                    <TextBox.Text>
-                        <Binding Path="txtTenVT"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </Grid>
-            <Grid Grid.Column="1">
-                <TextBox materialDesign:HintAssist.Hint="Đơn vị tính"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         VerticalAlignment="Center"
-                         Margin="15 10"
-                         IsEnabled="False">
-                    <TextBox.Text>
-                        <Binding Path="txtTenDVT"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </Grid>
-        </Grid>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <TextBox  materialDesign:HintAssist.Hint="Số lượng sổ sách"
-                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                          VerticalAlignment="Center"
-                          Margin="15 10">
-                    <TextBox.Text>
-                        <Binding Path="txtSLSoSach"
-                                 UpdateSourceTrigger="PropertyChanged"
-                                 Delay="500">
-
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBox  materialDesign:HintAssist.Hint="Đơn giá (VND)"
-                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                          VerticalAlignment="Center"
-                          Margin="15 10">
-                    <TextBox.Text>
-                        <Binding Path="txtDonGia"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <rule:NotEmptyRule ValidatesOnTargetUpdated="True" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <TextBox  materialDesign:HintAssist.Hint="Số lượng thực tế"
-                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                          VerticalAlignment="Center"
-                          Margin="15 10">
-                    <TextBox.Text>
-                        <Binding Path="txtSLThucTe"
-                                 UpdateSourceTrigger="PropertyChanged"
-                                 Delay="500">
-
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBox  materialDesign:HintAssist.Hint="Thành tiền"
-                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                          VerticalAlignment="Center"
-                          Margin="15 10"
-                          IsEnabled="False">
-                    <TextBox.Text>
-                        <Binding Path="txtThanhTien"
-                                 UpdateSourceTrigger="PropertyChanged"
-                                 Converter="{StaticResource moneyConverter}">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </StackPanel>
-        </Grid>
-
-        <DockPanel DockPanel.Dock="Bottom"
-                   LastChildFill="False"
-                   Margin="15 20">
-            <Button Command="{Binding BtnCommandCT}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="{Binding BtnContent}"
-                    Width="100"
-                    DockPanel.Dock="Right"
-                    Margin="10 0 0 0"
-                    Background="{DynamicResource Blue}">
-
-            </Button>
-            <Button Content="Huỷ"
-                    Width="100"
-                    DockPanel.Dock="Right"
-                    Background="Transparent"
-                    Foreground="{DynamicResource TitleDarkBrush}"
-                    BorderThickness="0"
-                    IsCancel="True" />
+            <DataGrid x:Name="listview"
+                      ItemsSource="{Binding ListDataCT}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CellStyle="{StaticResource CellStyle}"
+                      BorderThickness="1"
+                      RowStyle="{StaticResource RowStyle}"
+                      AlternationCount="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding MaVT}"
+                                        Header="Mã vật tư"
+                                        Width="*"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding TenVT}"
+                                        Header="Tên vật tư"
+                                        Width="*"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding TenDVT}"
+                                        Header="Đơn vị tính"
+                                        Width="*"
+                                        IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding MaTK}"
+                                        Header="Tài khoản có"
+                                        Width="*"
+                                        IsReadOnly="True"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                    <DataGridTextColumn Binding="{Binding SLSoSach}"
+                                        Header="Số lượng sổ sách"
+                                        Width="*"
+                                        IsReadOnly="True"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                    <DataGridTextColumn Binding="{Binding SLThucTe}"
+                                        Header="Số lượng Thực tế"
+                                        Width="*"
+                                        IsReadOnly="True"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                    <DataGridTextColumn Binding="{Binding DonGia, Converter={StaticResource moneyConverter}}"
+                                        Header="Đơn giá (VND)"
+                                        Width="*"
+                                        IsReadOnly="True"
+                                        HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                    <DataGridTextColumn Binding="{Binding ThanhTien, Converter={StaticResource moneyConverter}}"
+                                        Header="Thành tiền"
+                                        Width="*"
+                                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
         </DockPanel>
     </DockPanel>
 </Window>
