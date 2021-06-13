@@ -679,29 +679,29 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     MainTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
 
                     //STT
-                    MainTable.Columns[1].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[1].Width = 0.073f * PageWidth;
                     MainTable.Cell(1, 1).Range.Text = "STT";
                     //Tên
-                    MainTable.Columns[2].Width = app.CentimetersToPoints(7.5f);
+                    MainTable.Columns[2].Width = 0.273f * PageWidth;
                     MainTable.Cell(1, 2).Range.Text = "Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ sản phẩm, hàng hoá";
                     //Mã số
-                    MainTable.Columns[3].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[3].Width = 0.091f * PageWidth;
                     MainTable.Cell(1, 3).Range.Text = "Mã số";
                     //Đơn vị tính
-                    MainTable.Columns[4].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[4].Width = 0.091f * PageWidth;
                     MainTable.Cell(1, 4).Range.Text = "Đơn vị tính";
                     //Số lượng
-                    MainTable.Columns[5].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[5].Width = 0.109f * PageWidth;
                     MainTable.Cell(1, 5).Range.Text = "Số lượng";
                     MainTable.Cell(2, 5).Range.Text = "Theo chứng từ";
-                    MainTable.Columns[6].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[6].Width = 0.109f * PageWidth;
                     MainTable.Cell(2, 6).Range.Text = "Thực nhập";
 
-                    MainTable.Columns[7].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[7].Width = 0.109f * PageWidth;
                     MainTable.Cell(1, 7).Range.Text = "Đơn giá";
 
                     //Ghi chú
-                    MainTable.Columns[8].Width = PageWidth - app.CentimetersToPoints(23.5f);
+                    MainTable.Columns[8].Width = 0.143f * PageWidth;
                     MainTable.Cell(1, 8).Range.Text = "Thành tiền";
 
                     MainTable.Cell(1, 1).Merge(MainTable.Cell(2, 1));

@@ -120,6 +120,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     new NhomChucNangViewModel() { Title="Kho", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
                         new ChucNangViewModel() { text="Thẻ kho", icon="TextBox", iconColor="#ca0035", page = new LapTheKhoUC()},
                         new ChucNangViewModel() { text="Sổ chi tiết vật tư", icon="NotebookMultiple", iconColor="#ffc400", page = new LapSoChiTietUC()},
+                        new ChucNangViewModel() { text="Báo cáo nhập xuất tồn", icon="NotebookMultiple", iconColor="#ffc400", page = new LapBaoCaoNXTUC()},
                     }}
                 }},
                 new MenuViewModel(){ icon="HelpCircle", text="Trợ giúp" },
