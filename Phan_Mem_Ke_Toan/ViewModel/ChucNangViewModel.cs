@@ -14,7 +14,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public string icon { get; set; }
         public string iconColor { get; set; }
         public string text { get; set; }
-        public UserControl page { get; set; }
+        public object page { get; set; }
         public ICommand DeletePageWorkingCommand { get; set; }
         public ICommand SelectPageCommand { get; set; }
         public bool isLogout { get; set; }

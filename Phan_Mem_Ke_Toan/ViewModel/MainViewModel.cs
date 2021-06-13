@@ -29,8 +29,10 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set
             {
                 SetProperty(ref _selectedIndexMenu, value);
-                NhomChucNangVMs = Menu[_selectedIndexMenu].NhomChucNangVMs;
-                TitleOption = Menu[_selectedIndexMenu].text;
+                if (value == -1) return;
+                if (value == 0) SelectedIndexWorking = -1;
+                NhomChucNangVMs = Menu[value].NhomChucNangVMs;
+                TitleOption = Menu[value].text;
             }
         }
 
@@ -41,14 +43,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set
             {
                 SetProperty(ref _selectedIndexWorking, value);
-                if (value == -1)
-                {
-                    CurrentPage = null;
-                }
-                else
-                {
-                    CurrentPage = PageWorkings[value].page;
-                }
+                ShowPage(value);
             }
         }
 
@@ -72,6 +67,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         }
         public ICommand ClosedCommand { get; set; }
         public ICommand LoadedCommand { get; set; }
+
+        public UserControl BangDieuKhien { get; set; }
 
         public MainViewModel()
         {
@@ -111,21 +108,24 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 }},
                 new MenuViewModel(){ icon="FileSwap", text="Chứng từ", NhomChucNangVMs=new ObservableCollection<NhomChucNangViewModel>(){
                        new NhomChucNangViewModel() { Title="Chứng từ", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Phiếu nhập kho", icon="HomeImportOutline", iconColor="#C64A31", page = new PhieuNhapUC() },
-                        new ChucNangViewModel() { text="Phiếu xuất kho", icon="HomeExportOutline", iconColor="#5099B8", page = new PhieuXuatUC() }, 
-                        new ChucNangViewModel() { text="Biên bản kiểm kê", icon="FileTableOutline", iconColor="#FF4500", page = new BienBanUC() },
+                        new ChucNangViewModel() { text="Phiếu nhập kho", icon="FileImport", iconColor="#C64A31", page = new PhieuNhapUC() },
+                        new ChucNangViewModel() { text="Phiếu xuất kho", icon="FileExport", iconColor="#5099B8", page = new PhieuXuatUC() },
+                    }},
+                       new NhomChucNangViewModel() { Title="Kiểm kê", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
+                        new ChucNangViewModel() { text="Biên bản kiểm kê", icon="ClipboardCheck", iconColor="#FF4500", page = new BienBanUC() },
                     }},
                 }},
-                new MenuViewModel(){ icon="Finance", text="Báo cáo", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>() { 
+                new MenuViewModel(){ icon="Finance", text="Báo cáo", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>() {
                     new NhomChucNangViewModel() { Title="Kho", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Thẻ kho", icon="TextBox", iconColor="#ca0035", page = new LapTheKhoUC()},
-                        new ChucNangViewModel() { text="Sổ chi tiết vật tư", icon="NotebookMultiple", iconColor="#ffc400", page = new LapSoChiTietUC()},
+                        new ChucNangViewModel() { text="Thẻ kho", icon="CardText", iconColor="#ffc400", page = new LapTheKhoUC()},
+                        new ChucNangViewModel() { text="Sổ chi tiết vật tư", icon="NotebookMultiple", iconColor="#1C1C1C", page = new LapSoChiTietUC()},
                     }}
                 }},
                 new MenuViewModel(){ icon="HelpCircle", text="Trợ giúp" },
             };
 
             PageWorkings = new ObservableCollection<ChucNangViewModel>();
+            BangDieuKhien = new BangDieuKhien();
             Event();
         }
 
@@ -155,6 +155,22 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 if (!isLogout)
                     Application.Current.Shutdown();
             });
+        }
+
+        public void ShowPage(int value)
+        {
+            if (value == -1)
+            {
+                CurrentPage = BangDieuKhien;
+            }
+            else
+            {
+                if (SelectedIndexMenu == 0) SelectedIndexMenu = -1;
+                object page = PageWorkings[value].page;
+                if (page == null) return;
+                if (page.GetType().BaseType.Name == "Window") ((Window)page).Show();
+                else CurrentPage = page as UserControl;
+            }
         }
     }
 }

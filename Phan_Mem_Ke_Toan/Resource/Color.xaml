@@ -44,6 +44,8 @@
                      Color="#E8E8E8" />
     <SolidColorBrush x:Key="SearchForegroundBrush"
                      Color="#868686" />
+    <SolidColorBrush x:Key="PathBrush"
+                     Color="#59A3FC" />
 
     <SolidColorBrush x:Key="Green"
                      Color="#218838" />

@@ -150,6 +150,9 @@
     <Compile Include="ViewModel\TableViewModel.cs" />
     <Compile Include="ViewModel\TaiKhoanViewModel.cs" />
     <Compile Include="ViewModel\VatTuViewModel.cs" />
+    <Compile Include="View\BangDieuKhien.xaml.cs">
+      <DependentUpon>BangDieuKhien.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BienBanDialog.xaml.cs">
       <DependentUpon>BienBanDialog.xaml</DependentUpon>
     </Compile>
@@ -302,6 +305,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resource\ViewModelResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BangDieuKhien.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

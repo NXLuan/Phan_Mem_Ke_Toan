@@ -392,6 +392,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             DeleteItemCommandCT = new RelayCommand<object>((p) => true, (p) =>
             {
                 ListDataCT.Remove(p as CT_PhieuNhapDetail);
+                OnPropertyChanged("ListVTSelect");
             });
         }
 
