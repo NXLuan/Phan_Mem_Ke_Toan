@@ -35,6 +35,8 @@
            x:Key="comboboxColumn">
         <Setter Property="VerticalAlignment"
                 Value="Center" />
+        <Setter Property="IsEditable"
+                Value="False" />
     </Style>
 
     <!--DataGridRow-->
@@ -58,5 +60,21 @@
                         Value="#F1F1F1" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type DataGridColumnHeader}"
+           BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+           x:Key="HeaderDataGridWrap">
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock TextWrapping="Wrap"
+                               Text="{Binding}"
+                               TextAlignment="Left" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

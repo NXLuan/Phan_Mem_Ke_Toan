@@ -9,14 +9,14 @@ using System.Windows.Controls;
 
 namespace Phan_Mem_Ke_Toan.ValidRule
 {
-    class FloatNumber : ValidationRule
+    class MoneyValidRule : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (string.IsNullOrWhiteSpace((string)value)) return new ValidationResult(false, "Số không hợp lệ");
-            return Regex.Match(value.ToString(), @"^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$").Success
+            if (string.IsNullOrWhiteSpace((string)value)) return new ValidationResult(false, "Giá trị không hợp lệ");
+            return Regex.Match((string)value, @"^\d+,?").Success
             ? ValidationResult.ValidResult
-            : new ValidationResult(false, "Số không hợp lệ");
+            : new ValidationResult(false, "Giá trị không hợp lệ");
         }
     }
 }

@@ -23,7 +23,7 @@ using System.Globalization;
 
 namespace Phan_Mem_Ke_Toan.ViewModel
 {
-    public class PhieuNhapViewModel : BaseViewModel
+    class PhieuNhapViewModel : TableViewModel<PhieuNhapDetail>
     {
         private string _titleDialog;
         public string TitleDialog
@@ -38,7 +38,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _btnContent;
             set => SetProperty(ref _btnContent, value);
         }
-        #region PhieuNhapDialog
+
         private string _txtSoPhieu;
         public string txtSoPhieu
         {
@@ -129,56 +129,122 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             get => _ListTK;
             set => SetProperty(ref _ListTK, value);
         }
-        private PhieuNhapDetail _selectedPhieuNhap;
-        public PhieuNhapDetail selectedPhieuNhap
+
+        public ICommand ExportCommand { get; set; }
+        public ICommand ShowDetailCommand { get; set; }
+        public ICommand AddCommandCT { get; set; }
+        public ICommand DeleteItemCommandCT { get; set; }
+
+
+        private ObservableCollection<CT_PhieuNhapDetail> _listDataCT;
+        public ObservableCollection<CT_PhieuNhapDetail> ListDataCT
         {
-            get => _selectedPhieuNhap;
-            set
+            get => _listDataCT;
+            set => SetProperty(ref _listDataCT, value);
+        }
+        public IEnumerable<VatTuDetail> ListVTSelect
+        {
+            get
             {
-                SetProperty(ref _selectedPhieuNhap, value);
-                if (selectedPhieuNhap != null)
+                if (ListVT == null) return null;
+                if (ListDataCT.Count == 0) return ListVT;
+                return ListVT.Where(x =>
                 {
-                    GetListCT(selectedPhieuNhap.SoPhieu);
-                } else
-                {
-                    ListDataCT = null;
-                }
+                    foreach (var item in ListDataCT)
+                    {
+                        if (item.MaVT == x.MaVT) return false;
+                    }
+                    return true;
+                });
             }
         }
-        public ICommand ExportCommand { get; set; }
-        public ICommand AddCommand { get; set; }
-        public ICommand EditCommand { get; set; }
-        public ICommand BtnCommand { get; set; }
-        public ICommand DeleteItemCommand { get; set; }
+        private ObservableCollection<VatTuDetail> _listVT;
+        public ObservableCollection<VatTuDetail> ListVT
+        {
+            get => _listVT;
+            set => SetProperty(ref _listVT, value);
+        }
 
-        private ObservableCollection<PhieuNhapDetail> _listData;
-        public ObservableCollection<PhieuNhapDetail> ListData
+        private decimal _txtThanhTien;
+        public decimal txtThanhTien
         {
-            get => _listData;
-            set => SetProperty(ref _listData, value);
+            get => _txtThanhTien;
+            set => SetProperty(ref _txtThanhTien, value);
         }
-        public void ClearTextboxValue()
+
+        private string _search;
+        public string Search
         {
-            txtSoPhieu = string.Empty;
-            selectedMaNguoiGiao = string.Empty;
-            selectedMaKho = string.Empty;
-            selectedMaNCC = string.Empty;
-            selectedNgayNhap = DateTime.Now;
-            txtTenNCC = string.Empty;
-            txtChungTuLQ = string.Empty;
-            txtLyDo = string.Empty;
-            selectedTKCo = string.Empty;
-            txtTongTien = 0;
-        }
-        public void InitPhieuNhapCommand()
-        {
-            ExportCommand = new RelayCommand<object>((p) => selectedPhieuNhap != null && ListDataCT.Count > 0, (p) =>
+            get => _search;
+            set
             {
-                ExportPhieuNhap();
+                SetProperty(ref _search, value);
+                string text = value.Trim().ToLower();
+                filter.AddFilter("Search", element =>
+                {
+                    PhieuNhapDetail item = element as PhieuNhapDetail;
+                    return item.SoPhieu.ToLower().Contains(text);
+                });
+            }
+        }
+        public VatTuDetail selectedVT { get; set; }
+        public PhieuNhapViewModel() : base("PhieuNhap")
+        {
+            ListDataCT = new ObservableCollection<CT_PhieuNhapDetail>();
+        }
+
+        public override void Event()
+        {
+            base.Event();
+            ExportCommand = new RelayCommand<object>((p) => p != null, (p) =>
+            {
+                var selectedPhieuNhap = p as PhieuNhapDetail;
+                GetListCT(selectedPhieuNhap.SoPhieu);
+                if (ListDataCT.Count == 0)
+                {
+                    notify.updateDataFail("Chưa có dữ liệu chi tiết, không thể xuất file");
+                    return;
+                }
+                if (selectedPhieuNhap.TongTien == 0)
+                {
+                    notify.updateDataFail("Yêu cầu tính giá xuất kho");
+                    return;
+                }
+                try
+                {
+                    ExportPhieuNhap(selectedPhieuNhap);
+                }
+                catch
+                {
+                    notify.updateDataFail("Xuất file thất bại");
+                }
             });
+
+            LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LoadTableData();
+                GetListNguoiGiao();
+                GetListKho();
+                GetListVatTu();
+                GetListTaiKhoan();
+                notify.init();
+            });
+
+            ShowDetailCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                var selectedPhieuNhap = p as PhieuNhapDetail;
+                txtSoPhieu = selectedPhieuNhap.SoPhieu;
+                txtTongTien = selectedPhieuNhap.TongTien;
+                GetListCT(selectedPhieuNhap.SoPhieu);
+                CT_PhieuNhapDialog dialog = new CT_PhieuNhapDialog();
+                dialog.ShowDialog();
+            });
+
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 PhieuNhapDialog dialog = new PhieuNhapDialog();
+                GetListVatTu();
+                txtSoPhieu = ListData.Count() == 0 ? "PN001" : CRUD.GeneratePrimaryKey(ListData[ListData.Count() - 1].SoPhieu);
                 TitleDialog = "Thêm phiếu nhập";
                 BtnContent = "Thêm";
                 ClearTextboxValue();
@@ -188,6 +254,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             EditCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 PhieuNhapDialog dialog = new PhieuNhapDialog();
+                GetListVatTu();
                 TitleDialog = "Cập nhật phiếu nhập";
                 BtnContent = "Lưu";
                 var itemData = p as PhieuNhapDetail;
@@ -199,6 +266,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 txtLyDo = itemData.LyDo;
                 selectedTKCo = itemData.TKCo;
                 txtTongTien = itemData.TongTien;
+                GetListCT(itemData.SoPhieu);
+                OnPropertyChanged("ListVTSelect");
                 dialog.ShowDialog();
             });
             BtnCommand = new RelayCommand<object>((p) =>
@@ -206,30 +275,49 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 return Valid.IsValid(p as DependencyObject);
             }, (p) =>
             {
+                bool isSuccess = true;
                 if (BtnContent == "Thêm")
                 {
                     PhieuNhap pn = new PhieuNhap
                     {
-                        SoPhieu = ListData.Count() == 0 ? "PN001" : CRUD.GeneratePrimaryKey(ListData[ListData.Count() - 1].SoPhieu),
+                        SoPhieu = txtSoPhieu,
                         NgayNhap = selectedNgayNhap.Date,
                         MaNguoiGiao = selectedMaNguoiGiao == "" ? null : selectedMaNguoiGiao,
                         MaNCC = selectedMaNCC == "" ? null : selectedMaNCC,
                         MaKho = selectedMaKho == "" ? null : selectedMaKho,
                         LyDo = txtLyDo,
                         TKCo = selectedTKCo == "" ? null : selectedTKCo,
-                        TongTien = txtTongTien,
                         ChungTuLQ = txtChungTuLQ,
                     };
+
                     if (CRUD.InsertData("PhieuNhap", pn))
                     {
-                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadTableData();
-                        ClearTextboxValue();
+                        foreach (var item in ListDataCT)
+                        {
+                            item.ThanhTien = (decimal)item.SLThucTe * item.DonGia;
+                            CT_PhieuNhap ctpn = new CT_PhieuNhap
+                            {
+                                SoPhieu = txtSoPhieu,
+                                MaVT = item.MaVT,
+                                SLSoSach = item.SLSoSach,
+                                SLThucTe = item.SLThucTe,
+                                DonGia = item.DonGia,
+                                ThanhTien = item.ThanhTien,
+                            };
+                            isSuccess = CRUD.InsertData("CT_PhieuNhap", ctpn);
+
+                            if (!isSuccess) break;
+                        }
                     }
-                    else
+                    else isSuccess = false;
+
+                    if (isSuccess)
                     {
-                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
+                        UpdateTongTienPN(pn);
+                        LoadTableData();
+                        notify.updateDataSuccess("Thêm phiếu nhập thành công");
                     }
+                    else notify.updateDataFail();
                 }
                 else
                 {
@@ -242,282 +330,88 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         MaKho = selectedMaKho == "" ? null : selectedMaKho,
                         LyDo = txtLyDo,
                         TKCo = selectedTKCo == "" ? null : selectedTKCo,
-                        TongTien = txtTongTien,
                         ChungTuLQ = txtChungTuLQ,
                     };
+
                     if (CRUD.UpdateData("PhieuNhap", pn))
                     {
-                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadTableData();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    ((System.Windows.Window)p).Close();
-                }
+                        if (CRUD.DeleteData("CT_PhieuNhap", txtSoPhieu))
+                        {
+                            foreach (var item in ListDataCT)
+                            {
+                                item.ThanhTien = (decimal)item.SLThucTe * item.DonGia;
+                                CT_PhieuXuat ctpn = new CT_PhieuXuat
+                                {
+                                    SoPhieu = txtSoPhieu,
+                                    MaVT = item.MaVT,
+                                    SLSoSach = item.SLSoSach,
+                                    SLThucTe = item.SLThucTe,
+                                    DonGia = item.DonGia,
+                                    ThanhTien = item.ThanhTien,
+                                };
+                                isSuccess = CRUD.InsertData("CT_PhieuNhap", ctpn);
 
+                                if (!isSuccess) break;
+                            }
+                        }
+                        else isSuccess = false;
+                    }
+                    else isSuccess = false;
+
+
+                    if (isSuccess)
+                    {
+                        UpdateTongTienPN(pn);
+                        LoadTableData();
+                        notify.updateDataSuccess("Cập nhật phiếu nhập thành công");
+                    }
+                    else notify.updateDataFail();
+                }
+                 ((System.Windows.Window)p).Close();
             });
             DeleteItemCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 var itemData = p as PhieuNhapDetail;
-                if (CRUD.DeleteData("PhieuNhap", itemData.SoPhieu))
-                {
-                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LoadTableData();
-                }
-                else
-                {
-                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-
-            });
-        }
-        #endregion
-
-        #region CTPhieuNhapDialog
-        private ObservableCollection<CT_PhieuNhapDetail> _listDataCT;
-        public ObservableCollection<CT_PhieuNhapDetail> ListDataCT
-        {
-            get => _listDataCT;
-            set => SetProperty(ref _listDataCT, value);
-        }
-        private ObservableCollection<VatTuDetail> _listVT;
-        public ObservableCollection<VatTuDetail> ListVT
-        {
-            get => _listVT;
-            set => SetProperty(ref _listVT, value);
-        }
-        private int _MaSo;
-        public int MaSo
-        {
-            get => _MaSo;
-            set => SetProperty(ref _MaSo, value);
-        }
-        private string _TitleDialogCT;
-        public string TitleDialogCT
-        {
-            get => _TitleDialogCT;
-            set => SetProperty(ref _TitleDialogCT, value);
-        }
-        private string _selectedMaVT;
-        public string selectedMaVT
-        {
-            get => _selectedMaVT;
-            set
-            {
-                SetProperty(ref _selectedMaVT, value);
-                if (!string.IsNullOrEmpty(selectedMaVT))
-                {
-                    foreach(var item in ListVT) 
-                        if (item.MaVT == selectedMaVT)
-                        {
-                            txtTenVT = item.TenVT;
-                            txtTenDVT = item.TenDVT;
-                        }
-                }
-            }
-        }
-        private string _txtSoPhieuCT;
-        public string txtSoPhieuCT
-        {
-            get => _txtSoPhieuCT;
-            set => SetProperty(ref _txtSoPhieuCT, value);
-        }
-        private string _txtTenVT;
-        public string txtTenVT
-        {
-            get => _txtTenVT;
-            set => SetProperty(ref _txtTenVT, value);
-        }
-        private string _txtTenDVT;
-        public string txtTenDVT
-        {
-            get => _txtTenDVT;
-            set => SetProperty(ref _txtTenDVT, value);
-        }
-        private double _txtSLSoSach;
-        public double txtSLSoSach
-        {
-            get => _txtSLSoSach;
-            set 
-            {
-                if (value < 0)
-                    value *= -1;
-                SetProperty(ref _txtSLSoSach, value); 
-            }
-        }
-        private double _txtSLThucTe;
-        public double txtSLThucTe
-        {
-            get => _txtSLThucTe;
-            set
-            {
-                if (value < 0)
-                    value *= -1;
-                SetProperty(ref _txtSLThucTe, value);
-                txtThanhTien = (decimal)txtSLThucTe * txtDonGia;
-            }
-        }
-        private decimal _txtDonGia;
-        public decimal txtDonGia
-        {
-            get => _txtDonGia;
-            set
-            {
-                if (value < 0)
-                    value *= -1;
-                SetProperty(ref _txtDonGia, value);
-                txtThanhTien = (decimal)txtSLThucTe * txtDonGia;
-            }
-        }
-        private decimal _txtThanhTien;
-        public decimal txtThanhTien
-        {
-            get => _txtThanhTien;
-            set => SetProperty(ref _txtThanhTien, value);
-        }
-        private bool _EnableListVT;
-        public bool EnableListVT
-        {
-            get => _EnableListVT;
-            set => SetProperty(ref _EnableListVT, value);
-        }
-        public ICommand AddCommandCT { get; set; }
-        public ICommand EditCommandCT { get; set; }
-        public ICommand BtnCommandCT { get; set; }
-        public ICommand DeleteItemCommandCT { get; set; }
-
-        public void ClearTextboxValueCT()
-        {
-            selectedMaVT = string.Empty;
-            txtTenVT = string.Empty;
-            txtTenDVT = string.Empty;
-            txtSLSoSach = txtSLThucTe = 0;
-            txtDonGia = 0;
-            txtThanhTien = 0;
-
-        }
-        public void InitCTPhieuNhapCommand()
-        {
-            AddCommandCT = new RelayCommand<object>((p) => selectedPhieuNhap != null, (p) =>
-            {
-                GetListVatTu();
-                CT_PhieuNhapDialog dialog = new CT_PhieuNhapDialog();
-                TitleDialogCT = "Thêm chi tiết phiếu nhập";
-                txtSoPhieuCT = selectedPhieuNhap.SoPhieu;
-                BtnContent = "Thêm";
-                EnableListVT = true;
-                ClearTextboxValueCT();
-                RemoveExistedVatTu();
-                dialog.ShowDialog();
+                DeleteData(itemData.SoPhieu);
             });
 
-            EditCommandCT = new RelayCommand<object>((p) => true, (p) =>
+            AddCommandCT = new RelayCommand<object>((p) => selectedVT != null, (p) =>
             {
-                GetListVatTu();
-                CT_PhieuNhapDialog dialog = new CT_PhieuNhapDialog();
-                TitleDialogCT = "Cập nhật chi tiết phiếu nhập";
-                BtnContent = "Lưu";
-                var itemData = p as CT_PhieuNhapDetail;
-                MaSo = itemData.MaSo;
-                txtSoPhieuCT = itemData.SoPhieu;
-                selectedMaVT = itemData.MaVT;
-                txtTenVT = itemData.TenVT;
-                txtTenDVT = itemData.TenDVT;
-                txtSLSoSach = itemData.SLSoSach;
-                txtSLThucTe = itemData.SLThucTe;
-                txtDonGia = itemData.DonGia;
-                txtThanhTien = itemData.ThanhTien;
-                EnableListVT = false;
-                dialog.ShowDialog();
-            });
-            BtnCommandCT = new RelayCommand<object>((p) =>
-            {
-                return Valid.IsValid(p as DependencyObject);
-            }, (p) =>
-            {
-         
-                if (BtnContent == "Thêm")
+                CT_PhieuNhapDetail ct = new CT_PhieuNhapDetail()
                 {
-                    int n = ListDataCT.Count;
-                    CT_PhieuNhap ctpn = new CT_PhieuNhap
-                    {
-                        SoPhieu = txtSoPhieuCT,
-                        MaVT = selectedMaVT,
-                        SLSoSach = txtSLSoSach,
-                        SLThucTe = txtSLThucTe,
-                        DonGia = txtDonGia,
-                        ThanhTien = txtThanhTien,
-                    };
-                    if (CRUD.InsertData("CT_PhieuNhap", ctpn))
-                    {
-                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                        GetListCT(txtSoPhieuCT);
-                        ClearTextboxValueCT();
-                        RemoveExistedVatTu();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else
-                {
-                    CT_PhieuNhap ctpn = new CT_PhieuNhap
-                    {
-                        MaSo = MaSo,
-                        SoPhieu = txtSoPhieuCT,
-                        MaVT = selectedMaVT,
-                        SLSoSach = txtSLSoSach,
-                        SLThucTe = txtSLThucTe,
-                        DonGia = txtDonGia,
-                        ThanhTien = txtThanhTien,
-                    };
-                    if (CRUD.UpdateData("CT_PhieuNhap", ctpn))
-                    {
-                        MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                        GetListCT(txtSoPhieuCT);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    ((System.Windows.Window)p).Close();
-                }
-                UpdateTongTienPN();
+                    SoPhieu = txtSoPhieu,
+                    MaVT = selectedVT.MaVT,
+                    TenVT = selectedVT.TenVT,
+                    TenDVT = selectedVT.TenDVT,
+                    MaTK = selectedVT.MaTK,
+                };
+                ListDataCT.Add(ct);
+                OnPropertyChanged("ListVTSelect");
             });
+
             DeleteItemCommandCT = new RelayCommand<object>((p) => true, (p) =>
             {
-                var itemData = p as CT_PhieuNhapDetail;
-                if (CRUD.DeleteData("CT_PhieuNhap", itemData.MaSo.ToString()))
-                {
-                    MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                    GetListCT(selectedPhieuNhap.SoPhieu);
-                }
-                else
-                {
-                    MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                UpdateTongTienPN();
-
+                ListDataCT.Remove(p as CT_PhieuNhapDetail);
             });
         }
-        #endregion
-        public PhieuNhapViewModel()
+
+        public override void InitFilter()
         {
-            InitPhieuNhapCommand();
-            InitCTPhieuNhapCommand();
-            GetListNguoiGiao();
-            GetListKho();
-            GetListVatTu();
-            GetListTaiKhoan();
-            LoadTableData();
+            Search = "";
         }
-        public void LoadTableData()
+
+        public override void ClearTextboxValue()
         {
-            string JsonData = CRUD.GetJoinTableData("PhieuNhap");
-            ListData = JsonConvert.DeserializeObject<ObservableCollection<PhieuNhapDetail>>(JsonData);
+            ListDataCT.Clear();
+            selectedMaNguoiGiao = string.Empty;
+            selectedMaKho = string.Empty;
+            selectedMaNCC = string.Empty;
+            selectedNgayNhap = DateTime.Now;
+            txtTenNCC = string.Empty;
+            txtChungTuLQ = string.Empty;
+            txtLyDo = string.Empty;
+            selectedTKCo = string.Empty;
+            txtTongTien = 0;
         }
         public void GetListNguoiGiao()
         {
@@ -556,32 +450,18 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             string data = CRUD.GetJoinTableData("VatTu");
             ListVT = JsonConvert.DeserializeObject<ObservableCollection<VatTuDetail>>(data);
-            foreach (var item in ListVT)
-                item.TenVT = item.MaVT + " - " + item.TenVT;
         }
-        public void RemoveExistedVatTu()
-        {
-            foreach (var item in ListVT.ToList())
-                foreach (var ctpn in ListDataCT.ToList())
-                    if (item.MaVT == ctpn.MaVT)
-                        ListVT.Remove(item);
-        }
-        public void UpdateTongTienPN()
+        public void UpdateTongTienPN(PhieuNhap selectedPhieuNhap)
         {
             decimal Tong = 0;
-            foreach(var item in ListDataCT)
+            foreach (var item in ListDataCT)
             {
                 Tong += item.ThanhTien;
             }
             selectedPhieuNhap.TongTien = Tong;
             CRUD.UpdateTongTien("phieunhap", selectedPhieuNhap.SoPhieu, selectedPhieuNhap);
-            var SoPhieu = selectedPhieuNhap.SoPhieu;
-            LoadTableData();
-            foreach (var item in ListData)
-                if (item.SoPhieu == SoPhieu)
-                    selectedPhieuNhap = item;
         }
-        public void ExportPhieuNhap()
+        public void ExportPhieuNhap(PhieuNhapDetail selectedPhieuNhap)
         {
             string Ngay = selectedPhieuNhap.NgayNhap.Day.ToString();
             string Thang = selectedPhieuNhap.NgayNhap.Month.ToString();
@@ -659,10 +539,10 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     Paragraph Date = document.Content.Paragraphs.Add(ref missing);
                     Date.Range.Font.Size = 11;
                     Date.Range.Font.Bold = 0;
-                    Date.Range.Text = "\t- Họ và tên người giao: " + selectedPhieuNhap.TenNguoiGiao + 
+                    Date.Range.Text = "\t- Họ và tên người giao: " + selectedPhieuNhap.TenNguoiGiao +
                         "\v\t- Theo biên bản bàn giao hàng hóa số " + selectedPhieuNhap.SoPhieu.Substring(2) + "/BBBG ngày " + Ngay + "/" + Thang + "/" + Nam +
-                        " của " + selectedPhieuNhap.TenNCC + 
-                        "\v\t- Nhập tại kho: " + selectedPhieuNhap.TenKho +  "\t\tđịa điểm: " + selectedPhieuNhap.DiaChi;
+                        " của " + selectedPhieuNhap.TenNCC +
+                        "\v\t- Nhập tại kho: " + selectedPhieuNhap.TenKho + "\t\tđịa điểm: " + selectedPhieuNhap.DiaChi;
                     Date.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
                     Date.Range.ParagraphFormat.SpaceAfter = 6;
                     Date.Range.InsertParagraphAfter();
@@ -790,7 +670,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     TextMoney.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
                     TextMoney.Range.Font.Bold = 0;
                     TextMoney.Range.Font.Size = 11;
-                    TextMoney.Range.Text = "\n\t- Tổng số tiền (viết bằng chữ): " + money; 
+                    TextMoney.Range.Text = "\n\t- Tổng số tiền (viết bằng chữ): " + money;
                     TextMoney.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
                     TextMoney.SpaceBefore = 6.0f;
 

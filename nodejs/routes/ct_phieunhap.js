@@ -65,10 +65,10 @@ Router.get('/', (req, res) => {
   })
 })
 
-Router.delete('/:MaSo', (req, res) => {
-  connection.query("DELETE FROM ct_phieunhap WHERE MaSo = ?", [req.params.MaSo], (err, rows) => {
+Router.delete('/:SoPhieu', (req, res) => {
+  connection.query("DELETE FROM ct_phieunhap WHERE SoPhieu = ?", [req.params.SoPhieu], (err, rows) => {
     if (!err) {
-      res.send(`ct_phieunhap with MaSo: ${[req.params.MaSo]} has been removed`)
+      res.send(`ct_phieunhap with MaSo: ${[req.params.SoPhieu]} has been removed`)
     } else {
       console.log(err); res.status(400).send({ message: err })
     }
