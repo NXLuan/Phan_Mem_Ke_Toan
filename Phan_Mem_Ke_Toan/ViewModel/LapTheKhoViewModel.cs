@@ -112,7 +112,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             string Nam = selectedNgayLap.ToString("yyyy");
             VatTuDetail detailVT = GetDetailVT();
             var TonKho = GetTonKho(detailVT.MaVT, selectedMaKho, selectedNgayLap);
-            var ListNX = GetListNhapXuat(detailVT.MaVT, selectedMaKho, TonKho.Ngay, selectedNgayLap);
+            DateTime NgayBD = TonKho == null ? DateTime.Parse("01/01/0001") : TonKho.Ngay;
+            var ListNX = GetListNhapXuat(detailVT.MaVT, selectedMaKho, NgayBD, selectedNgayLap);
             using (SaveFileDialog sfd = new SaveFileDialog() { FileName = "Thẻ kho", Filter = "Word Document | *.docx", ValidateNames = true })
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -182,35 +183,35 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
                     MainTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
                     //STT
-                    MainTable.Columns[1].Width = app.CentimetersToPoints(1.5f);
+                    MainTable.Columns[1].Width = 0.055f * PageWidth;
                     MainTable.Cell(1, 1).Range.Text = "STT";
                     //Ngày tháng
-                    MainTable.Columns[2].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[2].Width = 0.109f * PageWidth;
                     MainTable.Cell(1, 2).Range.Text = "Ngày, tháng";
 
                     MainTable.Cell(1, 3).Range.Text = "Số hiệu chứng từ";
                     //Nhập
-                    MainTable.Columns[3].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[3].Width = 0.073f * PageWidth;
                     MainTable.Cell(2, 3).Range.Text = "Nhập";
                     //Xuất
-                    MainTable.Columns[4].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[4].Width = 0.073f * PageWidth;
                     MainTable.Cell(2, 4).Range.Text = "Xuất";
                     //Diễn giải
-                    MainTable.Columns[5].Width = app.CentimetersToPoints(5);
+                    MainTable.Columns[5].Width = 0.182f * PageWidth;
                     MainTable.Cell(1, 5).Range.Text = "Diễn giải";
                     //Ngày nhập, xuất
-                    MainTable.Columns[6].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[6].Width = 0.109f * PageWidth;
                     MainTable.Cell(1, 6).Range.Text = "Ngày nhập, xuất";
                     //Nhập - xuất - tồn
-                    MainTable.Columns[7].Width = app.CentimetersToPoints(2);
-                    MainTable.Columns[8].Width = app.CentimetersToPoints(2);
-                    MainTable.Columns[9].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[7].Width = 0.073f * PageWidth;
+                    MainTable.Columns[8].Width = 0.073f * PageWidth;
+                    MainTable.Columns[9].Width = 0.073f * PageWidth;
                     MainTable.Cell(1, 7).Range.Text = "Số lượng";
                     MainTable.Cell(2, 7).Range.Text = "Nhập";
                     MainTable.Cell(2, 8).Range.Text = "Xuất";
                     MainTable.Cell(2, 9).Range.Text = "Tồn";
                     //Ký xác nhận
-                    MainTable.Columns[10].Width = PageWidth - app.CentimetersToPoints(22.5f);
+                    MainTable.Columns[10].Width = 0.18f * PageWidth;
                     MainTable.Cell(1, 10).Range.Text = "Ký xác nhận của kế toán";
 
                     MainTable.Cell(1, 1).Merge(MainTable.Cell(2, 1));
@@ -251,12 +252,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
                     MainTable.Cell(5, 5).Range.Text = "Số dư đầu kỳ";
                     MainTable.Cell(5, 5).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
-                    MainTable.Cell(5, 9).Range.Text = TonKho.SoLuong.ToString();
+                    MainTable.Cell(5, 9).Range.Text = TonKho != null ? TonKho.SoLuong.ToString() : 0.ToString();
 
 
                     double NhapCK = 0;
                     double XuatCK = 0;
-                    double ton = TonKho.SoLuong;
+                    double ton = TonKho != null ? TonKho.SoLuong : 0;
                     for (int i = 0; i < ListNX.Count; i++)
                     {
                         for (int j = 1; j <= 10; j++)

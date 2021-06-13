@@ -125,7 +125,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             VatTuDetail detailVT = GetDetailVT();
             var TonKho = GetTonKho(detailVT.MaVT, selectedMaKho, selectedMonth, selectedYear);
-            var ListNX = GetListNhapXuat(detailVT.MaVT, selectedMaKho, TonKho.Ngay, selectedMonth, selectedYear);
+            DateTime NgayBD = TonKho == null ? DateTime.Parse("01/01/0001") : TonKho.Ngay;
+            var ListNX = GetListNhapXuat(detailVT.MaVT, selectedMaKho, NgayBD, selectedMonth, selectedYear);
             using (SaveFileDialog sfd = new SaveFileDialog() { FileName = "Sổ chi tiết vật tư", Filter = "Word Document | *.docx", ValidateNames = true })
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -213,44 +214,44 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     MainTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
                     MainTable.Cell(1, 1).Range.Text = "Chứng từ";
                     //Số hiệu
-                    MainTable.Columns[1].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[1].Width = 0.07f * PageWidth;
                     MainTable.Cell(2, 1).Range.Text = "Số hiệu";
                     //Ngày tháng
-                    MainTable.Columns[2].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[2].Width = 0.09f * PageWidth;
                     MainTable.Cell(2, 2).Range.Text = "Ngày, tháng";
                     //Diễn giải
-                    MainTable.Columns[3].Width = app.CentimetersToPoints(3.5f);
+                    MainTable.Columns[3].Width = 0.13f * PageWidth;
                     MainTable.Cell(1, 3).Range.Text = "Diễn giải";
                     //TK đối ứng
-                    MainTable.Columns[4].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[4].Width =  0.075f * PageWidth;
                     MainTable.Cell(1, 4).Range.Text = "Tài khoản đối ứng";
                     //Đơn giá
-                    MainTable.Columns[5].Width = app.CentimetersToPoints(2f);
+                    MainTable.Columns[5].Width = 0.07f * PageWidth;
                     MainTable.Cell(1, 5).Range.Text = "Đơn giá";
 
                     //Nhập
                     MainTable.Cell(1, 6).Range.Text = "Nhập";
-                    MainTable.Columns[6].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[6].Width = 0.07f * PageWidth;
                     MainTable.Cell(2, 6).Range.Text = "Số lượng";
-                    MainTable.Columns[7].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[7].Width = 0.095f * PageWidth;
                     MainTable.Cell(2, 7).Range.Text = "Thành tiền";
 
                     //Xuất
                     MainTable.Cell(1, 8).Range.Text = "Xuất";
-                    MainTable.Columns[8].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[8].Width = 0.07f * PageWidth;
                     MainTable.Cell(2, 8).Range.Text = "Số lượng";
-                    MainTable.Columns[9].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[9].Width = 0.095f * PageWidth;
                     MainTable.Cell(2, 9).Range.Text = "Thành tiền";
 
                     //Tồn
                     MainTable.Cell(1, 10).Range.Text = "Tồn";
-                    MainTable.Columns[10].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[10].Width = 0.07f * PageWidth;
                     MainTable.Cell(2, 10).Range.Text = "Số lượng";
-                    MainTable.Columns[11].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[11].Width = 0.095f * PageWidth;
                     MainTable.Cell(2, 11).Range.Text = "Thành tiền";
 
                     //Ghi chú
-                    MainTable.Columns[12].Width = PageWidth - app.CentimetersToPoints(25.5f);
+                    MainTable.Columns[12].Width = 0.07f * PageWidth;
                     MainTable.Cell(1, 12).Range.Text = "Ghi chú";
 
                     MainTable.Cell(1, 3).Merge(MainTable.Cell(2, 3));
@@ -294,19 +295,19 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     nfi.CurrencyGroupSeparator = ".";
                     nfi.CurrencySymbol = "";
 
-                    MainTable.Cell(4, 5).Range.Text = TonKho.DonGia.ToString("C0", nfi);
+                    MainTable.Cell(4, 5).Range.Text = TonKho != null ? TonKho.DonGia.ToString("C0", nfi) : 0.ToString();
                     MainTable.Cell(4, 5).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
 
-                    MainTable.Cell(4, 10).Range.Text = TonKho.SoLuong.ToString();
+                    MainTable.Cell(4, 10).Range.Text = TonKho != null ? TonKho.SoLuong.ToString() : 0.ToString();
 
-                    MainTable.Cell(4, 11).Range.Text = TonKho.ThanhTien.ToString("C0", nfi);
+                    MainTable.Cell(4, 11).Range.Text = TonKho != null ? TonKho.ThanhTien.ToString("C0", nfi) : 0.ToString();
                     MainTable.Cell(4, 11).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
 
                     double SLNhapCK = 0;
                     decimal TongTienNhapCK = 0;
                     double SLXuatCK = 0;
                     decimal TongTienXuatCK = 0;
-                    double SLTon = TonKho.SoLuong;
+                    double SLTon = TonKho != null ? TonKho.SoLuong : 0;
                     for (int i = 0; i < ListNX.Count; i++)
                     {
                         for (int j = 1; j <= 11; j++)
@@ -378,7 +379,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
                     MainTable.Cell(n, 10).Range.Text = SLTon.ToString();
 
-                    MainTable.Cell(n, 11).Range.Text = ((decimal)SLTon * ListNX[ListNX.Count - 1].DonGia).ToString("C0", nfi);
+                    MainTable.Cell(n, 11).Range.Text = ListNX.Count > 0 ? ((decimal)SLTon * ListNX[ListNX.Count - 1].DonGia).ToString("C0", nfi) : 0.ToString();
                     MainTable.Cell(n, 11).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
 
 

@@ -49,7 +49,7 @@ namespace Phan_Mem_Ke_Toan.API
                         return "[]";
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     return "[]";
                 }
@@ -74,7 +74,7 @@ namespace Phan_Mem_Ke_Toan.API
                         return "[]";
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     return "[]";
                 }

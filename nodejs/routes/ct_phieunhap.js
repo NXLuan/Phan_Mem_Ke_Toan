@@ -1,7 +1,20 @@
 const express = require('express')
 const Router = express.Router()
 const connection = require("../connection")
-
+Router.get('/allctpnthang', (req, res) => {
+  const { MaKho, Thang, Nam } = req.query;
+  let sql = `SELECT MaVT, SUM(SLThucTe) AS TongSL, SUM(ThanhTien) AS TongTT ` +
+    `FROM ct_phieunhap LEFT JOIN phieunhap ON ct_phieunhap.SoPhieu = phieunhap.SoPhieu ` +
+    `WHERE MaKho = ? AND MONTH(NgayNhap) = ? AND YEAR(NgayNhap) = ? ` +
+    `GROUP BY MaVT`
+  connection.query(sql, [MaKho, Thang, Nam], (err, rows) => {
+    if (!err) {
+      res.send(rows)
+    } else {
+      console.log(err); res.status(400).send({ message: err })
+    }
+  })
+})
 Router.get('/ctpnthang', (req, res) => {
   const { MaVT, MaKho, NgayBD, Thang, Nam } = req.query;
   let sql = `SELECT NgayNhap as Ngay, ct_phieunhap.SoPhieu, SLThucTe, DonGia, ThanhTien, LyDo, TKCo as MaTK ` +

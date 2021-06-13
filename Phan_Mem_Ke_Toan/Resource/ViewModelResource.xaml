@@ -20,4 +20,6 @@
     <viewmodel:BienBanViewModel x:Key="BienBanVM" />
     <viewmodel:LapTheKhoViewModel x:Key="LapTheKhoVM" />
     <viewmodel:LapSoChiTietViewModel x:Key="LapSoChiTietVM" />
+    <viewmodel:LapBaoCaoNXTViewModel x:Key="NXTVM" />
+    <viewmodel:BangDieuKhienViewModel x:Key="BDKVM" />
 </ResourceDictionary>

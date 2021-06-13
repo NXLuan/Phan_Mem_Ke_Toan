@@ -79,19 +79,6 @@
                     </DockPanel>
 
                     <DockPanel HorizontalAlignment="Right">
-                        <Grid Width="160">
-                            <Button Command="{Binding CalculateCommand}"
-                                    Content="Tính giá xuất kho"
-                                    Padding="10 0 00 0"
-                                    Background="{DynamicResource Blue}"
-                                    BorderThickness="0" />
-                            <materialDesign:PackIcon Kind="Calculator"
-                                                     Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                                     VerticalAlignment="Center"
-                                                     Width="30"
-                                                     Height="20" />
-                        </Grid>
-
                         <Grid Margin="20,0,0,0"
                               Width="120">
                             <Button Command="{Binding AddCommand}"

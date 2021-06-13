@@ -108,6 +108,7 @@
     <Compile Include="Model\NhaCungCap.cs" />
     <Compile Include="Model\NhanVien.cs" />
     <Compile Include="Model\NhanVienDetail.cs" />
+    <Compile Include="Model\NhapXuatTon.cs" />
     <Compile Include="Model\PhieuNhap.cs" />
     <Compile Include="Model\PhieuNhapDetail.cs" />
     <Compile Include="Model\PhieuXuat.cs" />
@@ -125,12 +126,15 @@
     <Compile Include="ValidRule\NotEmptyRule.cs" />
     <Compile Include="ValidRule\PhoneNumber.cs" />
     <Compile Include="ValidRule\Valid.cs" />
+    <Compile Include="ViewModel\BangDieuKhienViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BienBanViewModel.cs" />
     <Compile Include="ViewModel\BoPhanViewModel.cs" />
     <Compile Include="ViewModel\CongTrinhViewModel.cs" />
+    <Compile Include="Model\DataNXT.cs" />
     <Compile Include="ViewModel\DonViTinhViewModel.cs" />
     <Compile Include="ViewModel\KhoViewModel.cs" />
+    <Compile Include="ViewModel\LapBaoCaoNXTViewModel.cs" />
     <Compile Include="ViewModel\LapSoChiTietViewModel.cs" />
     <Compile Include="ViewModel\LapTheKhoViewModel.cs" />
     <Compile Include="ViewModel\LoaiVatTuViewModel.cs" />
@@ -194,6 +198,9 @@
     </Compile>
     <Compile Include="View\KhoUC.xaml.cs">
       <DependentUpon>KhoUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LapBaoCaoNXTUC.xaml.cs">
+      <DependentUpon>LapBaoCaoNXTUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LapSoChiTietUC.xaml.cs">
       <DependentUpon>LapSoChiTietUC.xaml</DependentUpon>
@@ -365,6 +372,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\KhoUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LapBaoCaoNXTUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

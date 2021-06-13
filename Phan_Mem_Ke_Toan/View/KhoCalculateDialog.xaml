@@ -11,7 +11,7 @@
         xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource WindowStyle}"
-        DataContext="{StaticResource KhoVM}"
+        DataContext="{StaticResource BDKVM}"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         MinHeight="250"

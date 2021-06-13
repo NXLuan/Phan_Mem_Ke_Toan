@@ -162,7 +162,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public ObservableCollection<VatTuDetail> ListVT
         {
             get => _listVT;
-            set => SetProperty(ref _listVT, value);
+            set
+            {
+                SetProperty(ref _listVT, value);
+                OnPropertyChanged("ListVTSelect");
+            }
         }
 
         private decimal _txtThanhTien;
@@ -222,12 +226,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
             LoadedCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                LoadTableData();
-                GetListNguoiGiao();
-                GetListKho();
-                GetListVatTu();
-                GetListTaiKhoan();
-                notify.init();
+                LoadNewData();
             });
 
             ShowDetailCommand = new RelayCommand<object>((p) => true, (p) =>
@@ -242,8 +241,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
             AddCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                PhieuNhapDialog dialog = new PhieuNhapDialog();
+                LoadNewData();
                 GetListVatTu();
+                PhieuNhapDialog dialog = new PhieuNhapDialog();
                 txtSoPhieu = ListData.Count() == 0 ? "PN001" : CRUD.GeneratePrimaryKey(ListData[ListData.Count() - 1].SoPhieu);
                 TitleDialog = "Thêm phiếu nhập";
                 BtnContent = "Thêm";
@@ -254,7 +254,6 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             EditCommand = new RelayCommand<object>((p) => true, (p) =>
             {
                 PhieuNhapDialog dialog = new PhieuNhapDialog();
-                GetListVatTu();
                 TitleDialog = "Cập nhật phiếu nhập";
                 BtnContent = "Lưu";
                 var itemData = p as PhieuNhapDetail;
@@ -267,7 +266,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 selectedTKCo = itemData.TKCo;
                 txtTongTien = itemData.TongTien;
                 GetListCT(itemData.SoPhieu);
-                OnPropertyChanged("ListVTSelect");
+                GetListVatTu();
                 dialog.ShowDialog();
             });
             BtnCommand = new RelayCommand<object>((p) =>
@@ -396,6 +395,14 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             });
         }
 
+        public void LoadNewData()
+        {
+            LoadTableData();
+            GetListNguoiGiao();
+            GetListKho();
+            GetListTaiKhoan();
+            notify.init();
+        }
         public override void InitFilter()
         {
             Search = "";
@@ -560,29 +567,29 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     MainTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
 
                     //STT
-                    MainTable.Columns[1].Width = app.CentimetersToPoints(2);
+                    MainTable.Columns[1].Width = 0.073f * PageWidth;
                     MainTable.Cell(1, 1).Range.Text = "STT";
                     //Tên
-                    MainTable.Columns[2].Width = app.CentimetersToPoints(7.5f);
+                    MainTable.Columns[2].Width = 0.273f * PageWidth;
                     MainTable.Cell(1, 2).Range.Text = "Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ sản phẩm, hàng hoá";
                     //Mã số
-                    MainTable.Columns[3].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[3].Width = 0.091f * PageWidth;
                     MainTable.Cell(1, 3).Range.Text = "Mã số";
                     //Đơn vị tính
-                    MainTable.Columns[4].Width = app.CentimetersToPoints(2.5f);
+                    MainTable.Columns[4].Width = 0.091f * PageWidth;
                     MainTable.Cell(1, 4).Range.Text = "Đơn vị tính";
                     //Số lượng
-                    MainTable.Columns[5].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[5].Width = 0.109f * PageWidth;
                     MainTable.Cell(1, 5).Range.Text = "Số lượng";
                     MainTable.Cell(2, 5).Range.Text = "Theo chứng từ";
-                    MainTable.Columns[6].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[6].Width = 0.109f * PageWidth;
                     MainTable.Cell(2, 6).Range.Text = "Thực nhập";
 
-                    MainTable.Columns[7].Width = app.CentimetersToPoints(3);
+                    MainTable.Columns[7].Width = 0.109f * PageWidth;
                     MainTable.Cell(1, 7).Range.Text = "Đơn giá";
 
                     //Ghi chú
-                    MainTable.Columns[8].Width = PageWidth - app.CentimetersToPoints(23.5f);
+                    MainTable.Columns[8].Width = 0.143f * PageWidth;
                     MainTable.Cell(1, 8).Range.Text = "Thành tiền";
 
                     MainTable.Cell(1, 1).Merge(MainTable.Cell(2, 1));
