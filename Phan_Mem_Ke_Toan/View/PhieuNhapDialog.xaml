@@ -22,60 +22,10 @@
         <converter:MoneyVNConvert x:Key="moneyConverter" />
         <converter:DisplayComboboxConvert x:Key="diplayCbCovert" />
     </Window.Resources>
-    <!--<DockPanel Name="dialog"
-               Background="White">
-        <DockPanel DockPanel.Dock="Top"
-                   LastChildFill="False">
-            <TextBlock Text="{Binding TitleDialog}"
-                       FontSize="18"
-                       Padding="10" />
-            <Button DockPanel.Dock="Right"
-                    VerticalAlignment="Center"
-                    Margin="15 0"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Padding="5"
-                    IsCancel="True">
-                <materialDesign:PackIcon Kind="Close"
-                                         Foreground="DimGray" />
-            </Button>
-        </DockPanel>
-        <Separator Background="Silver" />
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                
-            </StackPanel>
-            <StackPanel Grid.Column="1"
-                        Margin="30 0 15 0">
-    
-            </StackPanel>
-        </Grid>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <TextBlock Margin="15 0 0 5">Nhập vào kho</TextBlock>
-             
-            </StackPanel>
-            <StackPanel Grid.Column="1"
-                        Margin="0 0 15 0">
-                <TextBlock Margin="0 0 0 5">Tài khoản có</TextBlock>
-             
-            </StackPanel>
-
-        </Grid>
-    </DockPanel>-->
     <DockPanel Background="White">
         <DockPanel DockPanel.Dock="Top"
                    LastChildFill="False">
-            <TextBlock Text="{Binding TitleDialog}"
+            <TextBlock Text="Phiếu nhập"
                        FontSize="18"
                        Padding="20,10,10,10" />
             <Button DockPanel.Dock="Right"

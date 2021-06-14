@@ -60,10 +60,10 @@
                 </TextBlock>
             </Grid>
         </StackPanel>
-        <materialDesign:Card  Margin="100,100,100,60">
+        <materialDesign:Card  Margin="50,100,50,60">
             <Grid Margin="50,50">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.6*" />
+                    <ColumnDefinition Width="0.5*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="0.6*" />
                 </Grid.ColumnDefinitions>
@@ -187,7 +187,8 @@
                                             Height="110"
                                             BorderThickness="0"
                                             Background="#FF4500"
-                                            Padding="0,0,0,15" />
+                                            Padding="0,0,0,15"
+                                            Command="{Binding Source={StaticResource BienBanVM}, Path=AddCommand}"/>
                                     <TextBlock Text="Kiểm kê"
                                                VerticalAlignment="Bottom"
                                                Foreground="White"

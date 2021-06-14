@@ -59,6 +59,11 @@
                 <Setter Property="Background"
                         Value="#F1F1F1" />
             </Trigger>
+            <Trigger Property="Validation.HasError"
+                     Value="True">
+                <Setter Property="BorderBrush"
+                        Value="Red" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 

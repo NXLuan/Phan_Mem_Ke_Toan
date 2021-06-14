@@ -25,10 +25,10 @@ Router.get('/', (req, res) => {
   })
 })
 
-Router.delete('/:MaSo', (req, res) => {
-  connection.query("DELETE FROM ct_bbkiemke WHERE MaSo = ?", [req.params.MaSo], (err, rows) => {
+Router.delete('/:SoBienBan', (req, res) => {
+  connection.query("DELETE FROM ct_bbkiemke WHERE SoBienBan = ?", [req.params.SoBienBan], (err, rows) => {
     if (!err) {
-      res.send(`ct_bbkiemke with MaSo: ${[req.params.MaSo]} has been removed`)
+      res.send(`ct_bbkiemke with SoBienBan: ${[req.params.SoBienBan]} has been removed`)
     } else {
       console.log(err); res.status(400).send({ message: err })
     }

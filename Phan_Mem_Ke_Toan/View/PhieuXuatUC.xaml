@@ -13,13 +13,15 @@
              DataContext="{StaticResource PhieuXuatVM}">
     <UserControl.Resources>
         <converter:MoneyVNConvert x:Key="moneyConverter" />
+        <converter:Booleaninverter x:Key="booleaninverter" />
     </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid Background="White">
+    <Grid Background="White"
+          IsEnabled="{Binding notify.IsProcessing, Converter={StaticResource booleaninverter}}">
         <DockPanel Margin="40,10,40,30">
             <StackPanel DockPanel.Dock="Top">
                 <DockPanel>

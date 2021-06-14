@@ -12,6 +12,7 @@
         xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
+        xmlns:util ="clr-namespace:Phan_Mem_Ke_Toan.Utils"
         Style="{DynamicResource WindowStyle}"
         DataContext="{StaticResource PhieuXuatVM}"
         WindowStartupLocation="CenterScreen"
@@ -24,7 +25,7 @@
     <DockPanel Background="White">
         <DockPanel DockPanel.Dock="Top"
                    LastChildFill="False">
-            <TextBlock Text="{Binding TitleDialog}"
+            <TextBlock Text="Phiếu xuất"
                        FontSize="18"
                        Padding="20,10,10,10" />
             <Button DockPanel.Dock="Right"
@@ -102,7 +103,7 @@
                     </DatePicker>
                     <ComboBox materialDesign:HintAssist.Hint="Công trình"
                               IsEnabled="False"
-                              materialDesign:HintAssist.IsFloating="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                               DisplayMemberPath="TenCongTrinh"
                               SelectedValuePath="MaCongTrinh"
                               ItemsSource="{Binding ListCongTrinh}"

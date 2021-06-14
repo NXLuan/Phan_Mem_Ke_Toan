@@ -232,7 +232,7 @@
                                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                          util:PasswordBoxAssistant.BindPassword="True">
                                 <PasswordBox.Resources>
-                                    <valid:BindingProxy x:Key="TargetProxy"
+                                    <util:BindingProxy x:Key="TargetProxy"
                                                         Data="{Binding accountSignUp.MatKhau, Mode=TwoWay}" />
                                 </PasswordBox.Resources>
                                 <util:PasswordBoxAssistant.BoundPassword>

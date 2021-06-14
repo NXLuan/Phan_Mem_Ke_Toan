@@ -82,6 +82,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Converter\Booleaninverter.cs" />
     <Compile Include="Converter\DisplayComboboxConvert.cs" />
     <Compile Include="Model\AccountSystem.cs" />
     <Compile Include="Converter\MoneyVNConvert.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Model\TaiKhoan.cs" />
     <Compile Include="Model\VatTu.cs" />
     <Compile Include="Model\VatTuDetail.cs" />
+    <Compile Include="Utils\BindingProxy.cs" />
     <Compile Include="Utils\FilterSupport.cs" />
     <Compile Include="Utils\PasswordBoxAssistant.cs" />
     <Compile Include="ValidRule\MatchPassword.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="ValidRule\MoneyValidRule.cs" />
     <Compile Include="ValidRule\NotEmptyRule.cs" />
     <Compile Include="ValidRule\PhoneNumber.cs" />
+    <Compile Include="ValidRule\SLPhamChatValid.cs" />
     <Compile Include="ValidRule\Valid.cs" />
     <Compile Include="ViewModel\BangDieuKhienViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />

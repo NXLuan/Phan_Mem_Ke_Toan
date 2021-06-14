@@ -16,6 +16,13 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             set => SetProperty(ref _isError, value);
         }
 
+        private bool _isProcessing;
+        public bool IsProcessing
+        {
+            get => _isProcessing;
+            set => SetProperty(ref _isProcessing, value);
+        }
+
         private string _contentNotify;
         public string ContentNotify
         {

@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
         mc:Ignorable="d"
         Title="PhieuNhapDialog"
-        Height="350"
+        Height="700"
         Width="900"
+        xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
-        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource WindowStyle}"
         DataContext="{StaticResource BienBanVM}"
@@ -19,125 +19,278 @@
         MinWidth="900">
     <Window.Resources>
         <converter:MoneyVNConvert x:Key="moneyConverter" />
+        <converter:DisplayComboboxConvert x:Key="diplayCbCovert" />
     </Window.Resources>
-    <DockPanel Name="dialog"
-               Background="White">
+    <DockPanel Background="White">
         <DockPanel DockPanel.Dock="Top"
                    LastChildFill="False">
-            <TextBlock Text="{Binding TitleDialog}"
+            <TextBlock Text="Biên bản"
                        FontSize="18"
-                       Padding="10" />
+                       Padding="20,10,10,10" />
             <Button DockPanel.Dock="Right"
                     VerticalAlignment="Center"
-                    Margin="15 0"
                     Background="Transparent"
                     BorderThickness="0"
-                    Padding="5"
+                    Margin="0,0,5,0"
                     IsCancel="True">
                 <materialDesign:PackIcon Kind="Close"
                                          Foreground="DimGray" />
             </Button>
         </DockPanel>
-        <Separator Background="Silver" />
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
-                <TextBox materialDesign:HintAssist.Hint="Số biên bản"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         VerticalAlignment="Center"
-                         Margin="15 10"
-                         IsEnabled="False">
-                    <TextBox.Text>
-                        <Binding Path="txtSoPhieu"
-                                 UpdateSourceTrigger="PropertyChanged">
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <StackPanel DockPanel.Dock="Top"
-                            Margin="0 20 0 0">
-                    <TextBlock Margin="15 0 0 5">Mã kho</TextBlock>
-                    <ComboBox ItemsSource="{Binding ListKho}"
-                              SelectedValue="{Binding selectedMaKho}"
-                              SelectedValuePath="MaKho"
-                              DisplayMemberPath="TenKho"
-                              HorizontalContentAlignment="Left"
-                              Margin="15 0"
-                              IsEditable="True"/>
-                </StackPanel>
-                <StackPanel DockPanel.Dock="Top"
-                            Margin="0 20 0 0">
-                    <TextBlock Margin="15 0 0 5">Ủy viên 1</TextBlock>
+        <DockPanel Name="dialog"
+                   LastChildFill="False"
+                   Margin="20,0,20,20">
+            <Separator Background="{DynamicResource DividerBrush}"
+                       DockPanel.Dock="Top" />
+            <Grid DockPanel.Dock="Top"
+                  Margin="20,10,20,40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0"
+                            Margin="0,0,80,0">
+                    <TextBox materialDesign:HintAssist.Hint="Số biên bản"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             IsEnabled="False"
+                             Margin="0,0,0,15">
+                        <TextBox.Text>
+                            <Binding Path="txtSoBienBan"
+                                     UpdateSourceTrigger="PropertyChanged">
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
                     <ComboBox ItemsSource="{Binding ListUyVien1}"
                               SelectedValue="{Binding selectedUyVien1}"
                               SelectedValuePath="MaNV"
                               DisplayMemberPath="TenNV"
-                              HorizontalContentAlignment="Left"
-                              Margin="15 0"
-                              IsEditable="True"/>
+                              IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:HintAssist.Hint="Uỷ viên 1" />
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Grid.Column="1"
-                        Margin="30 0 15 0">
-                <DatePicker HorizontalAlignment="Left"
-                            Width="200"
-                            Margin="15 9"
-                            materialDesign:HintAssist.Hint="Ngày lập"
-                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}">
-                    <DatePicker.SelectedDate>
-                        <Binding Path="selectedNgayLap"
-                                 UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <rule:DateValidRule ValidatesOnTargetUpdated="True" />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </DatePicker.SelectedDate>
-                </DatePicker>
-                <StackPanel DockPanel.Dock="Top"
-                            Margin="0 20 0 0">
-                    <TextBlock Margin="15 0 0 5">Trưởng ban</TextBlock>
+                <StackPanel Grid.Column="1"
+                            Margin="40 0 0 0">
                     <ComboBox ItemsSource="{Binding ListTruongBan}"
                               SelectedValue="{Binding selectedTruongBan}"
                               SelectedValuePath="MaNV"
                               DisplayMemberPath="TenNV"
-                              HorizontalContentAlignment="Left"
-                              Margin="15 0"
-                              IsEditable="True"/>
-                </StackPanel>
-                <StackPanel DockPanel.Dock="Top"
-                            Margin="0 20 0 0">
-                    <TextBlock Margin="15 0 0 5">Ủy viên 2</TextBlock>
+                              IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:HintAssist.Hint="Trưởng ban"
+                              Margin="0,0,0,15" />
                     <ComboBox ItemsSource="{Binding ListUyVien2}"
                               SelectedValue="{Binding selectedUyVien2}"
                               SelectedValuePath="MaNV"
                               DisplayMemberPath="TenNV"
-                              HorizontalContentAlignment="Left"
-                              Margin="15 0"
-                              IsEditable="True"/>
+                              IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:HintAssist.Hint="Uỷ viên 2" />
                 </StackPanel>
-            </StackPanel>
-        </Grid>
-        <DockPanel DockPanel.Dock="Bottom"
-                   LastChildFill="False"
-                   Margin="15 20">
-            <Button Command="{Binding BtnCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="{Binding BtnContent}"
-                    Width="100"
-                    DockPanel.Dock="Right"
-                    Margin="10 0 0 0"
-                    Background="{DynamicResource Blue}">
+            </Grid>
+            <Separator Background="{DynamicResource DividerBrush}"
+                       DockPanel.Dock="Top" />
+            <DockPanel DockPanel.Dock="Top">
+                <TextBlock Text="Chi tiết biên bản"
+                           VerticalAlignment="Bottom"
+                           FontWeight="Medium"
+                           Margin="0,0,0,10" />
 
-            </Button>
-            <Button Content="Huỷ"
-                    Width="100"
-                    DockPanel.Dock="Right"
-                    Background="Transparent"
-                    Foreground="{DynamicResource TitleDarkBrush}"
-                    BorderThickness="0"
-                    IsCancel="True" />
+                <DockPanel HorizontalAlignment="Right">
+                    <ComboBox ItemsSource="{Binding ListKho}"
+                              SelectedValue="{Binding selectedMaKho}"
+                              SelectedValuePath="MaKho"
+                              DisplayMemberPath="TenKho"
+                              IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                              materialDesign:HintAssist.Hint="Kho"
+                              Margin="0,0,20,10"
+                              Width="150" />
+                    <DatePicker materialDesign:HintAssist.Hint="Ngày lập"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                Margin="0,0,20,10"
+                                Width="100">
+                        <DatePicker.SelectedDate>
+                            <Binding Path="selectedNgayLap"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <valid:DateValidRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </DatePicker.SelectedDate>
+                    </DatePicker>
+                    <materialDesign:TimePicker Width="100"
+                                               Margin="0,0,20,10"
+                                               Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                               materialDesign:HintAssist.Hint="Thời gian">
+                        <materialDesign:TimePicker.SelectedTime>
+                            <Binding Path="selectedNgayLap"
+                                     UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <valid:DateValidRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </materialDesign:TimePicker.SelectedTime>
+                    </materialDesign:TimePicker>
+                    <Button Content="Lấy dữ liệu vật tư"
+                            Background="{DynamicResource Green}"
+                            Command="{Binding AddCommandCT}" />
+                </DockPanel>
+            </DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <DataGrid Name="listview"
+                          ItemsSource="{Binding ListDataCT}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CellStyle="{StaticResource CellStyle}"
+                          BorderThickness="1"
+                          RowStyle="{StaticResource RowStyle}"
+                          AlternationCount="2">
+                    <DataGrid.Resources>
+                        <Style x:Key="errorStyle"
+                               TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource
+            FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.HasError)}"
+                                             Value="True">
+                                    <Setter Property="Foreground"
+                                            Value="Red" />
+                                    <Setter Property="ToolTip"
+                                            Value="Tổng SL phẩm chất phải bằng SL thực tế" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.RowValidationRules>
+                        <valid:SLPhamChatValid ValidatesOnTargetUpdated="False"
+                                               ValidationStep="UpdatedValue" />
+                    </DataGrid.RowValidationRules>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding MaVT}"
+                                            IsReadOnly="True"
+                                            Header="Mã vật tư"
+                                            Width="*"
+                                            ElementStyle="{StaticResource textColumn}" />
+                        <DataGridTextColumn Binding="{Binding TenVT}"
+                                            IsReadOnly="True"
+                                            Header="Tên vật tư"
+                                            Width="*"
+                                            ElementStyle="{StaticResource textColumn}" />
+                        <DataGridTextColumn Binding="{Binding TenDVT}"
+                                            IsReadOnly="True"
+                                            Header="Đơn vị tính"
+                                            Width="*"
+                                            ElementStyle="{StaticResource textColumn}"
+                                            HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                        <DataGridTextColumn Binding="{Binding SLSoSach}"
+                                            IsReadOnly="True"
+                                            Header="SL sổ sách"
+                                            Width="*"
+                                            ElementStyle="{StaticResource textColumn}"
+                                            HeaderStyle="{StaticResource HeaderDataGridWrap}" />
+                        <DataGridTextColumn Header="SL thực tế"
+                                            Width="*"
+                                            ElementStyle="{StaticResource textColumn}"
+                                            HeaderStyle="{StaticResource HeaderDataGridWrap}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+                            <DataGridTextColumn.Binding>
+                                <Binding Path="SLThucTe"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:FloatNumber ValidatesOnTargetUpdated="False" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="SL phẩm chất tốt"
+                                            Width="*"
+                                            ElementStyle="{StaticResource errorStyle}"
+                                            HeaderStyle="{StaticResource HeaderDataGridWrap}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+                            <DataGridTextColumn.Binding>
+                                <Binding Path="SLPhamChatTot"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:FloatNumber ValidatesOnTargetUpdated="False" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="SL phẩm chất kém"
+                                            Width="*"
+                                            ElementStyle="{StaticResource errorStyle}"
+                                            HeaderStyle="{StaticResource HeaderDataGridWrap}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+                            <DataGridTextColumn.Binding>
+                                <Binding Path="SLPhamChatKem"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:FloatNumber ValidatesOnTargetUpdated="False" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="SL mất phẩm chất"
+                                            Width="*"
+                                            ElementStyle="{StaticResource errorStyle}"
+                                            HeaderStyle="{StaticResource HeaderDataGridWrap}"
+                                            EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}">
+                            <DataGridTextColumn.Binding>
+                                <Binding Path="SLMatPhamChat"
+                                         UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <valid:FloatNumber ValidatesOnTargetUpdated="False" />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="Tuỳ chỉnh">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Button  Style="{StaticResource MaterialDesignIconButton}"
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}},
+                            Path=DataContext.DeleteItemCommandCT}"
+                                                 CommandParameter="{Binding}"
+                                                 Width="16"
+                                                 Height="16"
+                                                 ToolTip="Xoá">
+                                            <materialDesign:PackIcon Kind="Delete"
+                                                                     Foreground="{DynamicResource Red}"
+                                                                     Width="14"
+                                                                     VerticalAlignment="Center" />
+
+                                        </Button>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DockPanel Grid.Row="1"
+                           LastChildFill="False"
+                           Margin="0,20,0,0">
+                    <Button Command="{Binding BtnCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                            Content="{Binding BtnContent}"
+                            Width="100"
+                            DockPanel.Dock="Right"
+                            Margin="10 0 0 0"
+                            Background="{DynamicResource Blue}">
+
+                    </Button>
+                    <Button Content="Huỷ"
+                            Width="100"
+                            DockPanel.Dock="Right"
+                            Background="Transparent"
+                            Foreground="{DynamicResource TitleDarkBrush}"
+                            BorderThickness="0"
+                            IsCancel="True" />
+                </DockPanel>
+            </Grid>
         </DockPanel>
     </DockPanel>
 </Window>
