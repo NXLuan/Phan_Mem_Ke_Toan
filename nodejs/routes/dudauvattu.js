@@ -40,6 +40,17 @@ Router.get('/tonkho', (req, res) => {
   })
 })
 
+Router.get('/kiemtradudauky', (req, res) => {
+  const {MaVT, MaKho, Nam} = req.query
+  let sql = `SELECT * FROM dudauvattu WHERE MaVT = ? AND MaKho = ? AND YEAR(Ngay) = ? `
+  connection.query(sql, [MaVT, MaKho, Nam], (err, rows) => {
+    if (!err) {
+      res.send(rows[0])
+    } else {
+      console.log(err); res.status(400).send({ message: err })
+    }
+  })
+})
 
 Router.get('/', (req, res) => {
   connection.query("SELECT * FROM dudauvattu", (err, rows) => {

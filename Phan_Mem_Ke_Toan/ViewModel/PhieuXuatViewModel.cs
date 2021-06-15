@@ -143,9 +143,43 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             }
         }
 
+        private DateTime? _beginDate;
+        public DateTime? BeginDate
+        {
+            get => _beginDate;
+            set
+            {
+                SetProperty(ref _beginDate, value);
+                FilterDate();
+            }
+        }
+
+        private DateTime? _endDate;
+        public DateTime? EndDate
+        {
+            get => _endDate;
+            set
+            {
+                SetProperty(ref _endDate, value);
+                FilterDate();
+            }
+        }
+
+        public void FilterDate()
+        {
+            if (_endDate == null || _beginDate == null) return;
+            filter.AddFilter("date", element =>
+            {
+                PhieuXuatDetail item = element as PhieuXuatDetail;
+                return item.NgayXuat >= BeginDate && item.NgayXuat <= EndDate;
+            });
+        }
+
         public override void InitFilter()
         {
             Search = "";
+            BeginDate = null;
+            EndDate = null;
         }
 
         public override void ClearTextboxValue()

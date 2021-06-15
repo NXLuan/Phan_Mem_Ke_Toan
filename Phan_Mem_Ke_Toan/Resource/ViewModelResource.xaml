@@ -22,4 +22,5 @@
     <viewmodel:LapSoChiTietViewModel x:Key="LapSoChiTietVM" />
     <viewmodel:LapBaoCaoNXTViewModel x:Key="NXTVM" />
     <viewmodel:BangDieuKhienViewModel x:Key="BDKVM" />
+    <viewmodel:DuDauVatTuViewModel x:Key="DuDauVTVM" />
 </ResourceDictionary>

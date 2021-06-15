@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -136,6 +137,7 @@
     <Compile Include="ViewModel\CongTrinhViewModel.cs" />
     <Compile Include="Model\DataNXT.cs" />
     <Compile Include="ViewModel\DonViTinhViewModel.cs" />
+    <Compile Include="ViewModel\DuDauVatTuViewModel.cs" />
     <Compile Include="ViewModel\KhoViewModel.cs" />
     <Compile Include="ViewModel\LapBaoCaoNXTViewModel.cs" />
     <Compile Include="ViewModel\LapSoChiTietViewModel.cs" />
@@ -192,6 +194,12 @@
     </Compile>
     <Compile Include="View\DonViTinhUC.xaml.cs">
       <DependentUpon>DonViTinhUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DuDauVatTuDialog.xaml.cs">
+      <DependentUpon>DuDauVatTuDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DuDauVatTuUC.xaml.cs">
+      <DependentUpon>DuDauVatTuUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\KhoCalculateDialog.xaml.cs">
       <DependentUpon>KhoCalculateDialog.xaml</DependentUpon>
@@ -363,6 +371,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DonViTinhUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DuDauVatTuDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DuDauVatTuUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

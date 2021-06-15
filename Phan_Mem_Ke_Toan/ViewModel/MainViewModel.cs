@@ -98,7 +98,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         new ChucNangViewModel() { text="Người nhận", icon="AccountHardHat", iconColor="#DD4C35", page= new NguoiNhanUC() },
                     }},
                     new NhomChucNangViewModel() { Title="Kho - Vật tư", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Kho vật tư", icon="Warehouse", iconColor="#06CC14", page = new KhoUC() },
+                        new ChucNangViewModel() { text="Kho vật tư", icon="GarageVariant", iconColor="#06CC14", page = new KhoUC() },
                         new ChucNangViewModel() { text="Loại vật tư", icon="Cube", iconColor="#B17CFF", page = new LoaiVatTuUC() },
                         new ChucNangViewModel() { text="Vật tư", icon="Wall", iconColor="#FB7604", page = new VatTuUC() },
                     }},
@@ -112,7 +112,10 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         new ChucNangViewModel() { text="Phiếu xuất kho", icon="FileExport", iconColor="#5099B8", page = new PhieuXuatUC() },
                     }},
                        new NhomChucNangViewModel() { Title="Kiểm kê", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Biên bản kiểm kê", icon="ClipboardCheck", iconColor="#FF4500", page = new BienBanUC() },
+                        new ChucNangViewModel() { text="Biên bản kiểm kê", icon="ClipboardCheckOutline", iconColor="#FF4500", page = new BienBanUC() },
+                    }},
+                       new NhomChucNangViewModel() { Title="Đầu kỳ", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
+                        new ChucNangViewModel() { text="Dư đầu vật tư", icon="Warehouse", iconColor="#3773E1", page = new DuDauVatTuUC() },
                     }},
                 }},
                 new MenuViewModel(){ icon="Finance", text="Báo cáo", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>() {

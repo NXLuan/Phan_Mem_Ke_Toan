@@ -10,7 +10,6 @@
         Width="900"
         xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
-        xmlns:rule="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource WindowStyle}"
         DataContext="{StaticResource PhieuNhapVM}"
@@ -95,7 +94,7 @@
                             <Binding Path="selectedNgayNhap"
                                      UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <rule:DateValidRule ValidatesOnTargetUpdated="True" />
+                                    <valid:DateValidRule ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </DatePicker.SelectedDate>

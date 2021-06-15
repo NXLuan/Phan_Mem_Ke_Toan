@@ -15,5 +15,17 @@ namespace Phan_Mem_Ke_Toan.Model
         public double SoLuong { get; set; }
         public decimal DonGia { get; set; }
         public decimal ThanhTien { get; set; }
+
+        public DuDauVatTu() { }
+        public DuDauVatTu(DuDauVatTu data)
+        {
+            MaSo = data.MaSo;
+            MaVT = data.MaVT;
+            MaKho = data.MaKho;
+            Ngay = data.Ngay;
+            SoLuong = data.SoLuong;
+            DonGia = data.DonGia;
+            ThanhTien = data.ThanhTien;
+        }
     }
 }

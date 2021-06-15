@@ -159,7 +159,7 @@
                                              CommandParameter="{Binding}"
                                              Width="24"
                                              Height="24"
-                                             ToolTip="Chỉnh sửa người dùng">
+                                             ToolTip="Chỉnh sửa">
                                         <materialDesign:PackIcon Kind="Pencil"
                                                                  Foreground="#ffc720"
                                                                  Width="16" />
@@ -170,7 +170,7 @@
                                              CommandParameter="{Binding}"
                                              Width="24"
                                              Height="24"
-                                             ToolTip="Xoá người dùng">
+                                             ToolTip="Xoá">
                                         <materialDesign:PackIcon Kind="Delete"
                                                                  Foreground="{DynamicResource Red}"
                                                                  Width="16" />

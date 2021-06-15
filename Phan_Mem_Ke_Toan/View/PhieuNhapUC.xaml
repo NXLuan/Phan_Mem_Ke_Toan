@@ -9,6 +9,7 @@
              d:DesignWidth="800"
              xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:valid="clr-namespace:Phan_Mem_Ke_Toan.ValidRule"
              Style="{DynamicResource WindowStyle}"
              DataContext="{StaticResource PhieuNhapVM}">
     <UserControl.Resources>
@@ -59,6 +60,27 @@
                                      Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
                         </DockPanel>
                     </Border>
+
+                    <DockPanel HorizontalAlignment="Left"
+                               Margin="20,0,0,0">
+                        <materialDesign:PackIcon Kind="Filter"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock Text="Lọc:"
+                                   FontWeight="Medium"
+                                   VerticalAlignment="Center"
+                                   Margin="4,0,10,0" />
+                        <DatePicker Width="100"
+                                    materialDesign:HintAssist.Hint="Từ ngày"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    SelectedDate="{Binding BeginDate, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <DatePicker Width="100"
+                                    Margin="20,0,0,0"
+                                    materialDesign:HintAssist.Hint="Đến ngày"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}" />
+
+                    </DockPanel>
 
                     <DockPanel  HorizontalAlignment="Right">
                         <Grid Width="120">

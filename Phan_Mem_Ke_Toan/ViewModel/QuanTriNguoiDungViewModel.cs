@@ -112,11 +112,11 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
             EditCommand = new RelayCommand<object>((p) => true, (p) =>
             {
-                NguoiDungDialog dialog = new NguoiDungDialog();
-                dialog.Title = "Chỉnh sửa người dùng";
                 BtnContent = "Lưu";
                 accountSignUp = new AccountSystem(p as AccountSystem);
                 PasswordConfirm = accountSignUp.MatKhau;
+                NguoiDungDialog dialog = new NguoiDungDialog();
+                dialog.Title = "Chỉnh sửa người dùng";
                 dialog.ShowDialog();
             });
             BtnCommand = new RelayCommand<object>((p) => { return Valid.IsValid(p as DependencyObject); }, (p) =>

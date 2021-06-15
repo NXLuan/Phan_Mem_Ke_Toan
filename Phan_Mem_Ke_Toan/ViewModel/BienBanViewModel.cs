@@ -165,6 +165,37 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 });
             }
         }
+        private DateTime? _beginDate;
+        public DateTime? BeginDate
+        {
+            get => _beginDate;
+            set
+            {
+                SetProperty(ref _beginDate, value);
+                FilterDate();
+            }
+        }
+
+        private DateTime? _endDate;
+        public DateTime? EndDate
+        {
+            get => _endDate;
+            set
+            {
+                SetProperty(ref _endDate, value);
+                FilterDate();
+            }
+        }
+
+        public void FilterDate()
+        {
+            if (_endDate == null || _beginDate == null) return;
+            filter.AddFilter("date", element =>
+            {
+                BienBanDetail item = element as BienBanDetail;
+                return item.NgayLap >= BeginDate && item.NgayLap <= EndDate;
+            });
+        }
         private ObservableCollection<CT_BienBanDetail> _listDataCT;
         public ObservableCollection<CT_BienBanDetail> ListDataCT
         {
@@ -363,6 +394,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public override void InitFilter()
         {
             Search = "";
+            BeginDate = null;
+            EndDate = null;
         }
 
         public override void ClearTextboxValue()

@@ -1,33 +1,38 @@
-﻿<UserControl x:Class="Phan_Mem_Ke_Toan.View.KhoUC"
+﻿<UserControl x:Class="Phan_Mem_Ke_Toan.View.DuDauVatTuUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converter="clr-namespace:Phan_Mem_Ke_Toan.Converter"
              Style="{DynamicResource WindowStyle}"
-             DataContext="{StaticResource KhoVM}">
+             DataContext="{StaticResource DuDauVTVM}">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <converter:MoneyVNConvert x:Key="moneyConverter" />
+        <converter:DisplayComboboxConvert x:Key="diplayCbCovert" />
+    </UserControl.Resources>
     <Grid Background="White">
         <DockPanel Margin="40,10,40,30">
             <StackPanel DockPanel.Dock="Top">
                 <DockPanel>
-                    <TextBlock Text="Danh mục"
+                    <TextBlock Text="Chứng từ"
                                FontWeight="Medium"
                                VerticalAlignment="Center"
                                Padding="0,10,4,10" />
                     <materialDesign:PackIcon Kind="ChevronRight"
                                              VerticalAlignment="Center"
                                              Foreground="{DynamicResource PrimaryHueMidBrush}" />
-                    <TextBlock Text="Kho"
+                    <TextBlock Text="Dư đầu vật tư"
                                FontWeight="Medium"
                                VerticalAlignment="Center"
                                Padding="4,10,0,10"
@@ -35,28 +40,7 @@
                 </DockPanel>
                 <Separator Background="{DynamicResource DividerBrush}" />
                 <DockPanel Margin="0,15,0,15">
-                    <Border CornerRadius="4"
-                            Width="200"
-                            Background="{DynamicResource SearchBrush}"
-                            HorizontalAlignment="Left"
-                            Padding="8,0,0,0">
-                        <DockPanel>
-                            <materialDesign:PackIcon Kind="Search"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="{DynamicResource SearchForegroundBrush}" />
-                            <TextBox materialDesign:HintAssist.Hint="Tìm kiếm"
-                                     Height="30"
-                                     Padding="8"
-                                     FontSize="13"
-                                     Background="Transparent"
-                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                     BorderThickness="0"
-                                     Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
-                        </DockPanel>
-                    </Border>
-
-                    <DockPanel HorizontalAlignment="Left"
-                               Margin="20,0,0,0">
+                    <DockPanel HorizontalAlignment="Left">
                         <materialDesign:PackIcon Kind="Filter"
                                                  VerticalAlignment="Center" />
                         <TextBlock Text="Lọc:"
@@ -68,13 +52,37 @@
                                 Background="{DynamicResource SearchBrush}"
                                 Margin="0,0,20,0"
                                 Padding="10,0,10,0">
-                            <ComboBox materialDesign:HintAssist.Hint="Tên thủ kho"
+                            <ComboBox materialDesign:HintAssist.Hint="Kho"
                                       materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                       BorderThickness="0"
-                                      ItemsSource="{Binding ListThuKho}"
-                                      DisplayMemberPath="TenNV"
-                                      SelectedValuePath="MaNV"
-                                      SelectedValue="{Binding FilterThuKho, UpdateSourceTrigger=PropertyChanged}" />
+                                      ItemsSource="{Binding ListKho}"
+                                      SelectedValuePath="MaKho"
+                                      SelectedValue="{Binding FilterKho, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource diplayCbCovert}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Border>
+
+                        <Border CornerRadius="4"
+                                Width="150"
+                                Background="{DynamicResource SearchBrush}"
+                                Margin="0,0,20,0"
+                                Padding="10,0,10,0">
+                            <ComboBox materialDesign:HintAssist.Hint="Vật tư"
+                                      materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                      BorderThickness="0"
+                                      ItemsSource="{Binding ListVT}"
+                                      SelectedValuePath="MaVT"
+                                      SelectedValue="{Binding FilterVaTu, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource diplayCbCovert}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </Border>
                     </DockPanel>
 
@@ -95,7 +103,7 @@
                     </DockPanel>
                 </DockPanel>
                 <Grid>
-                    <TextBlock Text="Danh sách kho"
+                    <TextBlock Text="Danh sách dư đầu kỳ"
                                VerticalAlignment="Center"
                                FontWeight="Medium" />
                     <TextBlock Text="{Binding notify.ContentNotify}"
@@ -133,35 +141,6 @@
                       AlternationCount="2"
                       DockPanel.Dock="Top">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding MaKho}"
-                                        IsReadOnly="True"
-                                        Header="Mã kho"
-                                        Width="*"
-                                        ElementStyle="{StaticResource textColumn}" />
-                    <DataGridTextColumn Binding="{Binding TenKho}"
-                                        IsReadOnly="True"
-                                        Header="Tên kho"
-                                        Width="*"
-                                        ElementStyle="{StaticResource textColumn}" />
-                    <DataGridTextColumn Binding="{Binding DiaChi}"
-                                        IsReadOnly="True"
-                                        Header="Địa chỉ"
-                                        Width="*"
-                                        ElementStyle="{StaticResource textColumn}" />
-                    <DataGridTextColumn Binding="{Binding SDT}"
-                                        IsReadOnly="True"
-                                        Header="Số điện thoại"
-                                        Width="*"
-                                        ElementStyle="{StaticResource textColumn}" />
-                    <DataGridComboBoxColumn ItemsSource="{Binding ListThuKho, Source={StaticResource KhoVM}}"
-                                            SelectedValuePath="MaNV"
-                                            DisplayMemberPath="TenNV"
-                                            SelectedValueBinding="{Binding MaThuKho}"
-                                            IsReadOnly="True"
-                                            Header="Tên thủ kho"
-                                            Width="*"
-                                            ElementStyle="{StaticResource comboboxColumn}" />
-
                     <DataGridTemplateColumn Header="Tuỳ chỉnh">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -193,6 +172,68 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding Ngay, StringFormat=dd/MM/yyyy}"
+                                        IsReadOnly="True"
+                                        Header="Ngày"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding MaKho}"
+                                        IsReadOnly="True"
+                                        Header="Mã kho"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridComboBoxColumn ItemsSource="{Binding ListKho, Source={StaticResource DuDauVTVM}}"
+                                            SelectedValuePath="MaKho"
+                                            DisplayMemberPath="TenKho"
+                                            SelectedValueBinding="{Binding MaKho}"
+                                            IsReadOnly="True"
+                                            Header="Tên kho"
+                                            Width="auto"
+                                            ElementStyle="{StaticResource comboboxColumn}" />
+                    <DataGridTextColumn Binding="{Binding MaVT}"
+                                        IsReadOnly="True"
+                                        Header="Mã vật tư"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridComboBoxColumn ItemsSource="{Binding ListVT, Source={StaticResource DuDauVTVM}}"
+                                            SelectedValuePath="MaVT"
+                                            DisplayMemberPath="TenVT"
+                                            SelectedValueBinding="{Binding MaVT}"
+                                            IsReadOnly="True"
+                                            Header="Tên vật tư"
+                                            Width="auto"
+                                            ElementStyle="{StaticResource comboboxColumn}" />
+                    <DataGridComboBoxColumn ItemsSource="{Binding ListVT, Source={StaticResource DuDauVTVM}}"
+                                            SelectedValuePath="MaVT"
+                                            DisplayMemberPath="TenDVT"
+                                            SelectedValueBinding="{Binding MaVT}"
+                                            IsReadOnly="True"
+                                            Header="Đơn vị tính"
+                                            Width="auto"
+                                            ElementStyle="{StaticResource comboboxColumn}" />
+                    <DataGridComboBoxColumn ItemsSource="{Binding ListVT, Source={StaticResource DuDauVTVM}}"
+                                            SelectedValuePath="MaVT"
+                                            DisplayMemberPath="MaTK"
+                                            SelectedValueBinding="{Binding MaVT}"
+                                            IsReadOnly="True"
+                                            Header="Tài khoản"
+                                            Width="auto"
+                                            ElementStyle="{StaticResource comboboxColumn}" />
+                    <DataGridTextColumn Binding="{Binding SoLuong}"
+                                        IsReadOnly="True"
+                                        Header="Số lượng"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding DonGia, Converter={StaticResource moneyConverter}}"
+                                        IsReadOnly="True"
+                                        Header="Đơn giá"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
+                    <DataGridTextColumn Binding="{Binding ThanhTien, Converter={StaticResource moneyConverter}}"
+                                        IsReadOnly="True"
+                                        Header="Thành tiền"
+                                        Width="auto"
+                                        ElementStyle="{StaticResource textColumn}" />
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>
