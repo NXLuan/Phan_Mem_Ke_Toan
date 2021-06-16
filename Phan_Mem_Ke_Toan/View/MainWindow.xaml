@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Phan_Mem_Ke_Toan.View"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:dvc="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=DotNetProjects.DataVisualization.Toolkit"
         mc:Ignorable="d"
         Title="MainWindow"
         MinWidth="1400"
@@ -276,7 +277,73 @@
             <!--chart-->
             <StackPanel Grid.Column="1"
                         Background="{DynamicResource MainLowBrush}"
-                        HorizontalAlignment="Stretch">
+                        HorizontalAlignment="Stretch"
+                        Margin="0 0 25 30">
+                <dvc:Chart BorderThickness="0"
+                           Title="{Binding TitleNhap}"
+                           Height="300">
+                    <dvc:Chart.Axes>
+                        <dvc:CategoryAxis Orientation="X"/>
+                        <dvc:CategoryAxis Orientation="Y"
+                                          Title="triệu đồng"/>
+                    </dvc:Chart.Axes>
+                    <dvc:Chart.LegendStyle>
+                        <Style TargetType="Control">
+                            <Setter Property="Width"
+                                    Value="0" />
+                            <Setter Property="Height"
+                                    Value="0" />
+                        </Style>
+                    </dvc:Chart.LegendStyle>
+                    <dvc:Chart.Series>
+                        <dvc:ColumnSeries ItemsSource="{Binding ListNhap}"
+                                          DependentValuePath="TongTT"
+                                          IndependentValuePath="TenVT">
+                            <dvc:ColumnSeries.DataPointStyle>
+                                <Style TargetType="dvc:ColumnDataPoint">
+                                    <Setter Property="Background"
+                                            Value="#5b9bd5" />
+                                    <Setter Property="BorderBrush"
+                                            Value="#5b9bd5" />
+                                    <Setter Property="BorderThickness"
+                                            Value="100" />
+                                </Style>
+                            </dvc:ColumnSeries.DataPointStyle>
+                        </dvc:ColumnSeries>
+                    </dvc:Chart.Series>
+                </dvc:Chart>
+                <dvc:Chart BorderThickness="0"
+                           Title="{Binding TitleXuat}"
+                           Height="300">
+                    <dvc:Chart.Axes>
+                        <dvc:CategoryAxis Orientation="X" />
+                        <dvc:CategoryAxis Orientation="Y"
+                                          Title="triệu đồng" />
+                    </dvc:Chart.Axes>
+                    <dvc:Chart.LegendStyle>
+                        <Style TargetType="Control">
+                            <Setter Property="Width"
+                                    Value="0" />
+                            <Setter Property="Height"
+                                    Value="0" />
+                        </Style>
+                    </dvc:Chart.LegendStyle>
+                    <dvc:Chart.Series>
+                        <dvc:ColumnSeries ItemsSource="{Binding ListXuat}"
+                                          DependentValuePath="TongTT"
+                                          IndependentValuePath="TenVT">
+                            <dvc:ColumnSeries.DataPointStyle>
+                                <Style TargetType="dvc:ColumnDataPoint">
+                                    <Setter Property="BorderBrush"
+                                            Value="{StaticResource Red}" />
+                                    <Setter Property="BorderThickness"
+                                            Value="100" />
+                                </Style>
+                            </dvc:ColumnSeries.DataPointStyle>
+                        </dvc:ColumnSeries>
+                    </dvc:Chart.Series>
+                </dvc:Chart>
+
             </StackPanel>
         </Grid>
     </DockPanel>

@@ -13,6 +13,7 @@ namespace Phan_Mem_Ke_Toan.Model
         public string MaVT { get; set; }
         public string TenVT { get; set; }
         public string TenDVT { get; set; }
+        public decimal DonGia { get; set; }
         public double SLSoSach { get; set; }
         public double SLThucTe { get; set; }
         public double SLThua { get; set; }

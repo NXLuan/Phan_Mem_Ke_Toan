@@ -311,6 +311,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         LoadTableData();
                         ClearTextboxValue();
                         notify.updateDataSuccess("Thêm phiếu xuất thành công");
+                        if (px.NgayXuat.Month == DateTime.Now.Month && px.NgayXuat.Year == DateTime.Now.Year)
+                            MainViewModel.Instance.GetListXuat();
                     }
                     else notify.updateDataFail();
 
@@ -360,6 +362,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         UpdateTongTienPX(px);
                         LoadTableData();
                         notify.updateDataSuccess("Cập nhật phiếu xuất thành công");
+                        if (px.NgayXuat.Month == DateTime.Now.Month && px.NgayXuat.Year == DateTime.Now.Year)
+                            MainViewModel.Instance.GetListXuat();
                     }
                     else notify.updateDataFail();
                 }
@@ -369,6 +373,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             {
                 var itemData = p as PhieuXuatDetail;
                 DeleteData(itemData.SoPhieu);
+                if (itemData.NgayXuat.Month == DateTime.Now.Month && itemData.NgayXuat.Year == DateTime.Now.Year)
+                    MainViewModel.Instance.GetListXuat();
             });
 
             AddCommandCT = new RelayCommand<object>((p) => selectedVT != null, (p) =>

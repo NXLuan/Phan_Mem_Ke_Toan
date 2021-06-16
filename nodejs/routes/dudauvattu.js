@@ -2,6 +2,18 @@ const express = require('express')
 const Router = express.Router()
 const connection = require("../connection")
 
+Router.get('/alltonkhongay', (req, res) => {
+  const {MaKho, Ngay} = req.query
+  let sql = `SELECT * FROM dudauvattu WHERE MaKho = ? AND Ngay <= ? `
+  connection.query(sql, [MaKho, Ngay], (err, rows) => {
+    if (!err) {
+      res.send(rows)
+    } else {
+      console.log(err); res.status(400).send({ message: err })
+    }
+  })
+})
+
 Router.get('/alltonkhothang', (req, res) => {
   const {MaKho, Thang, Nam} = req.query
   let sql = `SELECT * FROM dudauvattu WHERE MaKho = ? AND MONTH(Ngay) = ? AND YEAR(Ngay) = ? `

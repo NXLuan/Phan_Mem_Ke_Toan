@@ -48,6 +48,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 {
                     MessageBox.Show("Thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
                     ((Window)p).Close();
+                    MainViewModel.Instance.GetListXuat();
                 }
                 else
                 {

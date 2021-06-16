@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetProjects.DataVisualization.Toolkit, Version=6.0.90.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetProjects.WpfToolkit.DataVisualization.6.0.90\lib\net40\DotNetProjects.DataVisualization.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.0.0\lib\net452\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -96,6 +99,7 @@
     <Compile Include="Model\CT_PhieuNhapDetail.cs" />
     <Compile Include="Model\CT_PhieuXuat.cs" />
     <Compile Include="Model\CT_PhieuXuatDetail.cs" />
+    <Compile Include="Model\DataChart.cs" />
     <Compile Include="Model\DataNhapXuat.cs" />
     <Compile Include="Model\DonViTinh.cs" />
     <Compile Include="Model\DuDauVatTu.cs" />

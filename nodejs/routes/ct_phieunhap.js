@@ -1,6 +1,35 @@
 const express = require('express')
 const Router = express.Router()
 const connection = require("../connection")
+Router.get('/chart', (req, res) => {
+  const { Thang, Nam } = req.query;
+  let sql = `SELECT TenVT, SUM(ThanhTien) AS TongTT ` +
+    `FROM ct_phieunhap LEFT JOIN phieunhap ON ct_phieunhap.SoPhieu = phieunhap.SoPhieu ` +
+    `LEFT JOIN vattu ON ct_phieunhap.MaVT = vattu.MaVT ` +
+    `WHERE MONTH(NgayNhap) = ? AND YEAR(NgayNhap) = ? ` +
+    `GROUP BY ct_phieunhap.MaVT`
+  connection.query(sql, [Thang, Nam], (err, rows) => {
+    if (!err) {
+      res.send(rows)
+    } else {
+      console.log(err); res.status(400).send({ message: err })
+    }
+  })
+})
+Router.get('/ctpnngay', (req, res) => {
+  const { MaKho, Ngay } = req.query;
+  let sql = `SELECT MaVT, SUM(SLThucTe) AS TongSL, SUM(ThanhTien) AS TongTT ` +
+    `FROM ct_phieunhap LEFT JOIN phieunhap ON ct_phieunhap.SoPhieu = phieunhap.SoPhieu ` +
+    `WHERE MaKho = ? AND NgayNhap <= ? ` +
+    `GROUP BY MaVT`
+  connection.query(sql, [MaKho, Ngay], (err, rows) => {
+    if (!err) {
+      res.send(rows)
+    } else {
+      console.log(err); res.status(400).send({ message: err })
+    }
+  })
+})
 Router.get('/allctpnthang', (req, res) => {
   const { MaKho, Thang, Nam } = req.query;
   let sql = `SELECT MaVT, SUM(SLThucTe) AS TongSL, SUM(ThanhTien) AS TongTT ` +

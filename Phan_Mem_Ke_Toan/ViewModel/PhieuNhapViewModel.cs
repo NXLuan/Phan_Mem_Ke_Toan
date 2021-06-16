@@ -298,6 +298,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         UpdateTongTienPN(pn);
                         LoadTableData();
                         notify.updateDataSuccess("Thêm phiếu nhập thành công");
+                        if (pn.NgayNhap.Month == DateTime.Now.Month && pn.NgayNhap.Year == DateTime.Now.Year)
+                            MainViewModel.Instance.GetListNhap();
                     }
                     else notify.updateDataFail();
                 }
@@ -346,6 +348,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         UpdateTongTienPN(pn);
                         LoadTableData();
                         notify.updateDataSuccess("Cập nhật phiếu nhập thành công");
+                        if (pn.NgayNhap.Month == DateTime.Now.Month && pn.NgayNhap.Year == DateTime.Now.Year)
+                            MainViewModel.Instance.GetListNhap();
                     }
                     else notify.updateDataFail();
                 }
@@ -355,6 +359,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             {
                 var itemData = p as PhieuNhapDetail;
                 DeleteData(itemData.SoPhieu);
+                if (itemData.NgayNhap.Month == DateTime.Now.Month && itemData.NgayNhap.Year == DateTime.Now.Year)
+                    MainViewModel.Instance.GetListNhap();
             });
 
             AddCommandCT = new RelayCommand<object>((p) => selectedVT != null, (p) =>
@@ -485,7 +491,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             Range wordRange = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
                             Table HeaderTable = document.Tables.Add(wordRange, 1, 2);
                             HeaderTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
-                            HeaderTable.Columns[1].Width = app.CentimetersToPoints(17);
+                            HeaderTable.Columns[1].Width = 0.62f * PageWidth;
                             HeaderTable.Columns[2].Width = PageWidth - HeaderTable.Columns[1].Width;
 
                             Range col1Range = HeaderTable.Cell(1, 1).Range;

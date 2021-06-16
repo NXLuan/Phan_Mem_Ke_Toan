@@ -264,6 +264,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             {
                                 SoBienBan = item.SoBienBan,
                                 MaVT = item.MaVT,
+                                DonGia = item.DonGia,
                                 SLSoSach = item.SLSoSach,
                                 SLThucTe = item.SLThucTe,
                                 SLThua = item.SLThucTe > item.SLSoSach ? item.SLThucTe - item.SLSoSach : 0,
@@ -307,6 +308,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                                 {
                                     SoBienBan = item.SoBienBan,
                                     MaVT = item.MaVT,
+                                    DonGia = item.DonGia,
                                     SLSoSach = item.SLSoSach,
                                     SLThucTe = item.SLThucTe,
                                     SLThua = item.SLThucTe > item.SLSoSach ? item.SLThucTe - item.SLSoSach : 0,
@@ -343,6 +345,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             AddCommandCT = new RelayCommand<object>((p) => selectedMaKho != "" && selectedNgayLap != null, (p) =>
              {
                  //ListDataCT = getlist
+                 GetListCTBienBan(selectedMaKho, selectedNgayLap);
              });
 
             DeleteItemCommandCT = new RelayCommand<object>((p) => true, (p) =>
@@ -403,8 +406,94 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             string data = CRUD.GetJoinTableData("VatTu");
             ListVT = JsonConvert.DeserializeObject<ObservableCollection<VatTuDetail>>(data);
+        }
+        public VatTuDetail GetDetailVT(string MaVT)
+        {
             foreach (var item in ListVT)
-                item.TenVT = item.MaVT + " - " + item.TenVT;
+            {
+                if (item.MaVT == MaVT)
+                    return item;
+            }
+            return null;
+        }
+        public List<DuDauVatTu> GetTonKho(string MaKho, DateTime Ngay)
+        {
+            string url = "dudauvattu/alltonkhongay?MaKho=" + MaKho + "&Ngay=" + Ngay.ToString("yyyy-MM-dd");
+            string data = CRUD.GetJsonData(url);
+            return JsonConvert.DeserializeObject<List<DuDauVatTu>>(data).OrderBy(item => item.Ngay).ToList();
+        }
+        public List<DataNXT> GetDataNhap(string MaKho, DateTime Ngay)
+        {
+            string url = "?MaKho=" + MaKho + "&Ngay=" + Ngay.ToString("yyyy-MM-dd");
+            string dataNhap = CRUD.GetJsonData("ct_phieunhap/ctpnngay" + url);
+            return JsonConvert.DeserializeObject<List<DataNXT>>(dataNhap);
+        }
+        public List<DataNXT> GetDataXuat(string MaKho, DateTime Ngay)
+        {
+            string url = "?MaKho=" + MaKho + "&Ngay=" + Ngay.ToString("yyyy-MM-dd");
+            string dataXuat = CRUD.GetJsonData("ct_phieuxuat/ctpxngay" + url);
+            return JsonConvert.DeserializeObject<List<DataNXT>>(dataXuat);
+        }
+        public void GetListCTBienBan(string MaKho, DateTime Ngay)
+        {
+            var listTonKho = GetTonKho(MaKho, Ngay);
+            var listNhap = GetDataNhap(MaKho, Ngay);
+            var listXuat = GetDataXuat(MaKho, Ngay);
+            //Lấy ra tất cả vật tư có trong tháng cần báo cáo
+            Dictionary<string, VatTuDetail> listNXT = new Dictionary<string, VatTuDetail>();
+            foreach (var item in listTonKho)
+                if (!listNXT.ContainsKey(item.MaVT))
+                    listNXT.Add(item.MaVT, GetDetailVT(item.MaVT));
+            foreach (var item in listNhap)
+                if (!listNXT.ContainsKey(item.MaVT))
+                    listNXT.Add(item.MaVT, GetDetailVT(item.MaVT));
+            foreach (var item in listXuat)
+                if (!listNXT.ContainsKey(item.MaVT))
+                    listNXT.Add(item.MaVT, GetDetailVT(item.MaVT));
+            ListDataCT = new ObservableCollection<CT_BienBanDetail>();
+            foreach (var item in listNXT)
+            {
+                var row = new CT_BienBanDetail();
+                row.SoBienBan = txtSoBienBan;
+                row.MaVT = item.Key;
+                row.TenVT = item.Value.TenVT;
+                row.TenDVT = item.Value.TenDVT;
+                //get tonkho
+                double TonKho = 0;
+                decimal TongTienTon = 0;
+                foreach (var tonkho in listTonKho)
+                {
+                    if (tonkho.MaVT == item.Key)
+                    {
+                        TonKho = tonkho.SoLuong;
+                        TongTienTon = tonkho.ThanhTien;
+                        break;
+                    }
+                }
+                double TongNhap = 0;
+                decimal TongTienNhap = 0;
+                foreach (var nhap in listNhap)
+                {
+                    if (nhap.MaVT == item.Key)
+                    {
+                        TongNhap = nhap.TongSL;
+                        TongTienNhap = nhap.TongTT;
+                        break;
+                    }
+                }
+                double TongXuat = 0;
+                foreach (var xuat in listXuat)
+                {
+                    if (xuat.MaVT == item.Key)
+                    {
+                        TongXuat = xuat.TongSL;
+                        break;
+                    }
+                }
+                row.DonGia = TonKho + TongNhap == 0 ? 0 : (TongTienTon + TongTienNhap) / (decimal)(TonKho + TongNhap);
+                row.SLSoSach = TonKho + TongNhap - TongXuat;
+                ListDataCT.Add(row);
+            }
         }
         public void ExportBienBanKiemKe(BienBanDetail selectedBienBan)
         {
@@ -439,7 +528,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             Range wordRange = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
                             Table HeaderTable = document.Tables.Add(wordRange, 1, 2);
                             HeaderTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
-                            HeaderTable.Columns[1].Width = app.CentimetersToPoints(17);
+                            HeaderTable.Columns[1].Width = 0.62f * PageWidth;
                             HeaderTable.Columns[2].Width = PageWidth - HeaderTable.Columns[1].Width;
 
                             Range col1Range = HeaderTable.Cell(1, 1).Range;
@@ -469,9 +558,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             Date.Range.Font.Bold = 0;
                             Date.Range.Text = "Thời điểm kiểm kê:.......giờ.......ngày " + Ngay + " tháng " + Thang + " năm " + Nam +
                                 "\vBan kiểm kê gồm:" +
-                                "\v- Ông/Bà: " + selectedBienBan.TenTruongBan + "\t chức vụ..............Đại diện..............Trưởng ban" +
-                                "\v- Ông/Bà: " + selectedBienBan.TenUyVien1 + "\t chức vụ..............Đại diện..............Ủy viên" +
-                                "\v- Ông/Bà: " + selectedBienBan.TenUyVien2 + "\t chức vụ..............Đại diện..............Ủy viên" +
+                                "\v- Ông/Bà: " + selectedBienBan.TenTruongBan + "\t chức vụ............................Đại diện\tTrưởng ban" +
+                                "\v- Ông/Bà: " + selectedBienBan.TenUyVien1 + "\t chức vụ............................Đại diện\tỦy viên 1" +
+                                "\v- Ông/Bà: " + selectedBienBan.TenUyVien2 + "\t chức vụ............................Đại diện\tỦy viên 2" +
                                 "\v\vĐã kiểm kê kho có những mặt hàng dưới đây:";
                             Date.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
                             Date.Range.ParagraphFormat.SpaceAfter = 6;
@@ -483,64 +572,63 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             MainTable.Range.ParagraphFormat.SpaceAfter = 0;
                             MainTable.Borders.Enable = 1;
                             MainTable.Range.Font.Bold = 0;
-                            MainTable.Range.Font.Size = 11;
-                            MainTable.Rows[ListDataCT.Count + 4].Range.Font.Bold = 1;
+                            MainTable.Range.Font.Size = 9;
 
                             MainTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
 
 
-                            MainTable.Columns[1].Width = app.CentimetersToPoints(1.2f);
+                            MainTable.Columns[1].Width = 0.044f * PageWidth;
                             MainTable.Cell(1, 1).Range.Text = "STT";
 
-                            MainTable.Columns[3].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[3].Width = 0.055f * PageWidth;
                             MainTable.Cell(1, 3).Range.Text = "Mã số";
 
-                            MainTable.Columns[4].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[4].Width = 0.055f * PageWidth;
                             MainTable.Cell(1, 4).Range.Text = "Đơn vị tính";
 
-                            MainTable.Columns[5].Width = app.CentimetersToPoints(2);
+                            MainTable.Columns[5].Width = 0.07f * PageWidth;
                             MainTable.Cell(1, 5).Range.Text = "Đơn giá";
 
-                            MainTable.Columns[6].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[6].Width = 0.055f * PageWidth;
                             MainTable.Cell(1, 6).Range.Text = "Theo sổ kế toán";
                             MainTable.Cell(3, 6).Range.Text = "Số lượng";
 
-                            MainTable.Columns[7].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[7].Width = 0.075f * PageWidth;
                             MainTable.Cell(3, 7).Range.Text = "Thành tiền";
 
-                            MainTable.Columns[8].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[8].Width = 0.055f * PageWidth;
                             MainTable.Cell(1, 8).Range.Text = "Theo kiểm kê";
                             MainTable.Cell(3, 8).Range.Text = "Số lượng";
 
-                            MainTable.Columns[9].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[9].Width = 0.075f * PageWidth;
                             MainTable.Cell(3, 9).Range.Text = "Thành tiền";
 
-                            MainTable.Columns[10].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[10].Width = 0.055f * PageWidth;
                             MainTable.Cell(1, 10).Range.Text = "Chênh lệch";
                             MainTable.Cell(2, 10).Range.Text = "Thừa";
                             MainTable.Cell(3, 10).Range.Text = "Số lượng";
 
-                            MainTable.Columns[11].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[11].Width = 0.075f * PageWidth;
                             MainTable.Cell(3, 11).Range.Text = "Thành tiền";
 
-                            MainTable.Columns[12].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[12].Width = 0.055f * PageWidth;
                             MainTable.Cell(2, 12).Range.Text = "Thiếu";
                             MainTable.Cell(3, 12).Range.Text = "Số lượng";
 
-                            MainTable.Columns[13].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[13].Width = 0.075f * PageWidth;
                             MainTable.Cell(3, 13).Range.Text = "Thành tiền";
 
-                            MainTable.Columns[14].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[14].Width = 0.055f * PageWidth;
                             MainTable.Cell(1, 14).Range.Text = "Phẩm chất";
                             MainTable.Cell(2, 14).Range.Text = "Còn tốt 100%";
 
-                            MainTable.Columns[15].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[15].Width = 0.055f * PageWidth;
                             MainTable.Cell(2, 15).Range.Text = "Kém phẩm chất";
 
-                            MainTable.Columns[16].Width = app.CentimetersToPoints(1.5f);
+                            MainTable.Columns[16].Width = 0.055f * PageWidth;
                             MainTable.Cell(2, 16).Range.Text = "Mất phẩm chất";
 
-                            MainTable.Columns[2].Width = PageWidth - app.CentimetersToPoints(22.7f);
+                            MainTable.Columns[2].Width = 0.092f * PageWidth;
                             MainTable.Cell(1, 2).Range.Text = "Tên, nhãn hiệu, quy cách, phẩm chất vật tư, dụng cụ sản phẩm, hàng hoá";
 
                             MainTable.Cell(1, 1).Merge(MainTable.Cell(2, 1));
@@ -606,6 +694,10 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             MainTable.Cell(2, 9).Merge(MainTable.Cell(2, 10));
                             MainTable.Cell(2, 9).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
+                            for (int col = 6; col <= 13; col++)
+                              MainTable.Cell(3, col).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+
 
                             MainTable.Cell(4, 1).Range.Text = "A";
                             MainTable.Cell(4, 2).Range.Text = "B";
@@ -618,73 +710,80 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                             nfi.CurrencyDecimalSeparator = ",";
                             nfi.CurrencyGroupSeparator = ".";
                             nfi.CurrencySymbol = "";
-                            //for (int i = 0; i < ListDataCT.Count; i++)
-                            //{
-                            //    //STT
-                            //    MainTable.Cell(i + 5, 1).Range.Text = (i + 1).ToString();
-                            //    MainTable.Cell(i + 5, 1).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    //Tên
-                            //    MainTable.Cell(i + 5, 2).Range.Text = ListDataCT[i].TenVT;
-                            //    MainTable.Cell(i + 5, 2).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    MainTable.Cell(i + 5, 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
-                            //    //MaVT
-                            //    MainTable.Cell(i + 5, 3).Range.Text = ListDataCT[i].MaVT;
-                            //    MainTable.Cell(i + 5, 3).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    //DVT
-                            //    MainTable.Cell(i + 5, 4).Range.Text = ListDataCT[i].TenDVT;
-                            //    MainTable.Cell(i + 5, 4).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    //SLSS
-                            //    MainTable.Cell(i + 4, 5).Range.Text = ListDataCT[i].SLSoSach.ToString();
-                            //    MainTable.Cell(i + 4, 5).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    //SLTT
-                            //    MainTable.Cell(i + 4, 6).Range.Text = ListDataCT[i].SLThucTe.ToString();
-                            //    MainTable.Cell(i + 4, 6).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    //DonGia
-                            //    MainTable.Cell(i + 4, 7).Range.Text = ListDataCT[i].DonGia.ToString("C0", nfi);
-                            //    MainTable.Cell(i + 4, 7).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    MainTable.Cell(i + 4, 7).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
-                            //    //ThanhTien
-                            //    MainTable.Cell(i + 4, 8).Range.Text = ListDataCT[i].ThanhTien.ToString("C0", nfi);
-                            //    MainTable.Cell(i + 4, 8).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //    MainTable.Cell(i + 4, 8).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
-                            //}
-                            //int n = ListDataCT.Count + 4;
-                            ////Cong
-                            //MainTable.Cell(n, 2).Range.Text = "Cộng";
-                            //MainTable.Cell(n, 2).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            ////x
-                            //for (int col = 3; col <= 7; col++)
-                            //{
-                            //    MainTable.Cell(n, col).Range.Text = "x";
-                            //    MainTable.Cell(n, col).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //}
-                            ////Tong tien
-                            //MainTable.Cell(n, 8).Range.Text = selectedBienBan.TongTien.ToString("C0", nfi);
-                            //MainTable.Cell(n, 8).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                            //MainTable.Cell(n, 8).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                            for (int i = 0; i < ListDataCT.Count; i++)
+                            {
+                                //STT
+                                MainTable.Cell(i + 5, 1).Range.Text = (i + 1).ToString();
+                                MainTable.Cell(i + 5, 1).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                //Tên
+                                MainTable.Cell(i + 5, 2).Range.Text = ListDataCT[i].TenVT;
+                                MainTable.Cell(i + 5, 2).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                MainTable.Cell(i + 5, 2).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
+                                //MaVT
+                                MainTable.Cell(i + 5, 3).Range.Text = ListDataCT[i].MaVT;
+                                MainTable.Cell(i + 5, 3).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                //DVT
+                                MainTable.Cell(i + 5, 4).Range.Text = ListDataCT[i].TenDVT;
+                                MainTable.Cell(i + 5, 4).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
-                            //string money = Utils.Utils.NumberToText(selectedBienBan.TongTien);
-                            //money = money[0].ToString().ToUpper() + money.Substring(1) + ".";
-                            //Paragraph TextMoney = document.Content.Paragraphs.Add(ref missing);
-                            //TextMoney.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
-                            //TextMoney.Range.Font.Bold = 0;
-                            //TextMoney.Range.Font.Size = 11;
-                            //TextMoney.Range.Text = "\n\t- Tổng số tiền (viết bằng chữ): " + money;
-                            //TextMoney.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
-                            //TextMoney.SpaceBefore = 6.0f;
+                                decimal dongia = ListDataCT[i].DonGia;
+                                double slss = ListDataCT[i].SLSoSach;
+                                double sltt = ListDataCT[i].SLThucTe;
+                                //Don gia
+                                MainTable.Cell(i + 5, 5).Range.Text = dongia.ToString("C0", nfi);
+                                MainTable.Cell(i + 5, 5).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                MainTable.Cell(i + 5, 5).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                                //SLSS
+                                MainTable.Cell(i + 5, 6).Range.Text = slss.ToString();
+                                MainTable.Cell(i + 5, 6).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
-                            //object start = TextMoney.Range.Start + TextMoney.Range.Text.IndexOf("chữ):") + 5;
-                            //object end = TextMoney.Range.Start + TextMoney.Range.Text.IndexOf("chữ):") + 5 + money.Length;
-                            //var rngItalic = document.Range(ref start, ref end);
-                            //rngItalic.Italic = 1;
-                            //TextMoney.Range.InsertParagraphAfter();
+                                MainTable.Cell(i + 5, 7).Range.Text = ((decimal)slss * dongia).ToString("C0", nfi);
+                                MainTable.Cell(i + 5, 7).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                MainTable.Cell(i + 5, 7).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                                //SLTT
+                                MainTable.Cell(i + 5, 8).Range.Text = sltt.ToString();
+                                MainTable.Cell(i + 5, 8).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
-                            //Paragraph Last = document.Content.Paragraphs.Add(ref missing);
-                            //Last.Range.Font.Bold = 0;
-                            //Last.Range.Font.Size = 11;
-                            //Last.SpaceBefore = 6.0f;
-                            //Last.Range.Text = "\t- Số chứng từ gốc kèm theo: " + selectedBienBan.ChungTuLQ;
-                            //Last.Range.InsertParagraphAfter();
+                                MainTable.Cell(i + 5, 9).Range.Text = ((decimal)sltt * dongia).ToString("C0", nfi);
+                                MainTable.Cell(i + 5, 9).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                MainTable.Cell(i + 5, 9).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                                //SLThua
+                                decimal slthua = (decimal)ListDataCT[i].SLThua;
+                                if (slthua > 0)
+                                {
+                                    MainTable.Cell(i + 5, 10).Range.Text = slthua.ToString();
+                                    MainTable.Cell(i + 5, 10).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                                    MainTable.Cell(i + 5, 11).Range.Text = (slthua * dongia).ToString("C0", nfi);
+                                    MainTable.Cell(i + 5, 11).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                    MainTable.Cell(i + 5, 11).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                                } 
+                                //SLThieu
+                                decimal slthieu = (decimal)ListDataCT[i].SLThieu;
+                                if (slthieu > 0)
+                                {
+                                    MainTable.Cell(i + 5, 12).Range.Text = slthieu.ToString();
+                                    MainTable.Cell(i + 5, 12).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                                    MainTable.Cell(i + 5, 13).Range.Text = (slthieu * dongia).ToString("C0", nfi);
+                                    MainTable.Cell(i + 5, 13).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                                    MainTable.Cell(i + 5, 13).Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                                }
+                                MainTable.Cell(i + 5, 14).Range.Text = ListDataCT[i].SLPhamChatTot.ToString();
+                                MainTable.Cell(i + 5, 14).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                                MainTable.Cell(i + 5, 15).Range.Text = ListDataCT[i].SLPhamChatKem.ToString();
+                                MainTable.Cell(i + 5, 15).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                                MainTable.Cell(i + 5, 16).Range.Text = ListDataCT[i].SLMatPhamChat.ToString();
+                                MainTable.Cell(i + 5, 16).VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                            }
+
+                            Paragraph Last = document.Content.Paragraphs.Add(ref missing);
+                            Last.Range.Font.Bold = 0;
+                            Last.Range.Font.Size = 11;
+                            Last.SpaceBefore = 6.0f;
+                            Last.Range.InsertParagraphAfter();
 
                             Range wordRange2 = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
 

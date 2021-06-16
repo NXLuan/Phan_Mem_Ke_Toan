@@ -1,4 +1,7 @@
-﻿using Phan_Mem_Ke_Toan.View;
+﻿using Newtonsoft.Json;
+using Phan_Mem_Ke_Toan.API;
+using Phan_Mem_Ke_Toan.Model;
+using Phan_Mem_Ke_Toan.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -127,6 +130,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
             PageWorkings = new ObservableCollection<ChucNangViewModel>();
             BangDieuKhien = new BangDieuKhien();
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+            TitleNhap = "Tổng nhập tháng " + month + "/" + year;
+            TitleXuat = "Tổng xuất tháng " + month + "/" + year;
+            GetListNhap();
+            GetListXuat();
             Event();
         }
 
@@ -172,6 +181,52 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 if (page.GetType().BaseType.Name == "Window") ((Window)page).Show();
                 else CurrentPage = page as UserControl;
             }
+        }
+        private ObservableCollection<DataChart> _ListNhap;
+        public ObservableCollection<DataChart> ListNhap
+        {
+            get => _ListNhap;
+            set => SetProperty(ref _ListNhap, value);
+        }
+        private ObservableCollection<DataChart> _ListXuat;
+        public ObservableCollection<DataChart> ListXuat
+        {
+            get => _ListXuat;
+            set => SetProperty(ref _ListXuat, value);
+        }
+        private string _TitleNhap;
+        public string TitleNhap
+        {
+            get => _TitleNhap;
+            set => SetProperty(ref _TitleNhap, value);
+        }
+        private string _TitleXuat;
+        public string TitleXuat
+        {
+            get => _TitleXuat;
+            set => SetProperty(ref _TitleXuat, value);
+        }
+        public void GetListNhap()
+        {
+            int Thang = DateTime.Now.Month;
+            int Nam = DateTime.Now.Year;
+            string url = "?Thang=" + Thang + "&Nam=" + Nam;
+            string dataNhap = CRUD.GetJsonData("ct_phieunhap/chart" + url);
+            var data = JsonConvert.DeserializeObject<ObservableCollection<DataChart>>(dataNhap);
+            foreach (var item in data)
+                item.TongTT /= 1000000;
+            ListNhap = data;
+        }
+        public void GetListXuat()
+        {
+            int Thang = DateTime.Now.Month;
+            int Nam = DateTime.Now.Year;
+            string url = "?Thang=" + Thang + "&Nam=" + Nam;
+            string dataXuat = CRUD.GetJsonData("ct_phieuxuat/chart" + url);
+            var data = JsonConvert.DeserializeObject<ObservableCollection<DataChart>>(dataXuat);
+            foreach (var item in data)
+                item.TongTT /= 1000000;
+            ListXuat = data;
         }
     }
 }

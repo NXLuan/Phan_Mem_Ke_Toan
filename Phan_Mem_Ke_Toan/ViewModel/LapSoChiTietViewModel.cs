@@ -150,7 +150,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                     Range wordRange = document.Bookmarks.get_Item(ref oEndOfDoc).Range;
                     Table HeaderTable = document.Tables.Add(wordRange, 1, 2);
                     HeaderTable.PreferredWidthType = WdPreferredWidthType.wdPreferredWidthPoints;
-                    HeaderTable.Columns[1].Width = app.CentimetersToPoints(17);
+                    HeaderTable.Columns[1].Width = 0.62f * PageWidth;
                     HeaderTable.Columns[2].Width = PageWidth - HeaderTable.Columns[1].Width;
 
                     Range col1Range = HeaderTable.Cell(1, 1).Range;
