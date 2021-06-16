@@ -123,9 +123,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 }},
                 new MenuViewModel(){ icon="Finance", text="Báo cáo", NhomChucNangVMs = new ObservableCollection<NhomChucNangViewModel>() {
                     new NhomChucNangViewModel() { Title="Kho", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
-                        new ChucNangViewModel() { text="Thẻ kho", icon="CardText", iconColor="#ffc400", page = new LapTheKhoUC()},
-                        new ChucNangViewModel() { text="Sổ chi tiết vật tư", icon="NotebookMultiple", iconColor="#4DCC89", page = new LapSoChiTietUC()},
-                        new ChucNangViewModel() { text="Báo cáo nhập xuất tồn", icon="BookOpen", iconColor="#275090", page = new LapBaoCaoNXTUC()},
+                        new ChucNangViewModel() { text="Thẻ kho", icon="CardText", iconColor="#ffc400", page = new LapTheKhoDialog()},
+                        new ChucNangViewModel() { text="Sổ chi tiết vật tư", icon="NotebookMultiple", iconColor="#4DCC89", page = new LapSoChiTietDialog()},
+                        new ChucNangViewModel() { text="Báo cáo nhập xuất tồn", icon="BookOpen", iconColor="#275090", page = new LapBaoCaoNXTDialog()},
                     }}
                 }},
                 new MenuViewModel(){ icon="HelpCircle", text="Trợ giúp" },

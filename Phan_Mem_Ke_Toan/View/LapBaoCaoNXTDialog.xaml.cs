@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Phan_Mem_Ke_Toan.View
 {
     /// <summary>
-    /// Interaction logic for LapTheKhoUC.xaml
+    /// Interaction logic for LapBaoCaoNXTDialog.xaml
     /// </summary>
-    public partial class LapTheKhoUC : Window
+    public partial class LapBaoCaoNXTDialog : Window
     {
-        public LapTheKhoUC()
+        public LapBaoCaoNXTDialog()
         {
             InitializeComponent();
         }
