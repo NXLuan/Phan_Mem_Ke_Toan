@@ -183,6 +183,38 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 });
             }
         }
+
+        private DateTime? _beginDate;
+        public DateTime? BeginDate
+        {
+            get => _beginDate;
+            set
+            {
+                SetProperty(ref _beginDate, value);
+                FilterDate();
+            }
+        }
+
+        private DateTime? _endDate;
+        public DateTime? EndDate
+        {
+            get => _endDate;
+            set
+            {
+                SetProperty(ref _endDate, value);
+                FilterDate();
+            }
+        }
+
+        public void FilterDate()
+        {
+            if (_endDate == null || _beginDate == null) return;
+            filter.AddFilter("date", element =>
+            {
+                PhieuNhapDetail item = element as PhieuNhapDetail;
+                return item.NgayNhap >= BeginDate && item.NgayNhap <= EndDate;
+            });
+        }
         public VatTuDetail selectedVT { get; set; }
         public PhieuNhapViewModel() : base("PhieuNhap")
         {
@@ -395,6 +427,8 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         public override void InitFilter()
         {
             Search = "";
+            EndDate = null;
+            BeginDate = null;
         }
 
         public override void ClearTextboxValue()

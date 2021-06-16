@@ -60,6 +60,27 @@
                         </DockPanel>
                     </Border>
 
+                    <DockPanel HorizontalAlignment="Left"
+                               Margin="20,0,0,0">
+                        <materialDesign:PackIcon Kind="Filter"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock Text="Lọc:"
+                                   FontWeight="Medium"
+                                   VerticalAlignment="Center"
+                                   Margin="4,0,10,0" />
+                        <DatePicker Width="100"
+                                    materialDesign:HintAssist.Hint="Từ ngày"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    SelectedDate="{Binding BeginDate, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <DatePicker Width="100"
+                                    Margin="20,0,0,0"
+                                    materialDesign:HintAssist.Hint="Đến ngày"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                    SelectedDate="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}" />
+
+                    </DockPanel>
+
                     <DockPanel  HorizontalAlignment="Right">
                         <Grid Width="120">
                             <Button Command="{Binding AddCommand}"

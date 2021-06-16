@@ -16,8 +16,13 @@ namespace Phan_Mem_Ke_Toan.Converter
             string type = value.GetType().Name;
             if (type.Equals("VatTuDetail"))
             {
-                VatTuDetail vatTuDetail = value as VatTuDetail;
-                return vatTuDetail.MaVT + " - " + vatTuDetail.TenVT;
+                VatTuDetail model = value as VatTuDetail;
+                return model.MaVT + " - " + model.TenVT;
+            }
+            if (type.Equals("Kho"))
+            {
+                Kho model = value as Kho;
+                return model.MaKho + " - " + model.TenKho;
             }
             return null;
         }
