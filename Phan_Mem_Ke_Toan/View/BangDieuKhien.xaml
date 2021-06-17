@@ -221,7 +221,8 @@
                                     Height="90"
                                     BorderThickness="0"
                                     Background="#ffc400"
-                                    Padding="0,0,0,15" />
+                                    Padding="0,0,0,15"
+                                    Command="{Binding ShowTheKhoCommand}"/>
                             <TextBlock Text="Thẻ kho"
                                        VerticalAlignment="Bottom"
                                        Foreground="White"
@@ -252,7 +253,8 @@
                                     Height="90"
                                     BorderThickness="0"
                                     Background="#4DCC89"
-                                    Padding="0,0,0,15" />
+                                    Padding="0,0,0,15"
+                                    Command="{Binding ShowBCVatTuCommand}"/>
                             <TextBlock Text="Báo cáo vật tư"
                                        VerticalAlignment="Bottom"
                                        Foreground="White"
@@ -278,7 +280,8 @@
                                     Height="90"
                                     BorderThickness="0"
                                     Background="#275090"
-                                    Padding="0,0,0,35" />
+                                    Padding="0,0,0,35"
+                                    Command="{Binding ShowBCNhapXuatTonCommand}"/>
                             <TextBlock Text="Báo cáo nhập xuất tồn"
                                        VerticalAlignment="Bottom"
                                        Foreground="White"

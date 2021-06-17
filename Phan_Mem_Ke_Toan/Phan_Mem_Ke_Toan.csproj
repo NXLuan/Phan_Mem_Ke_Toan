@@ -217,20 +217,11 @@
     <Compile Include="View\LapBaoCaoNXTDialog.xaml.cs">
       <DependentUpon>LapBaoCaoNXTDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LapBaoCaoNXTUC.xaml.cs">
-      <DependentUpon>LapBaoCaoNXTUC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\LapSoChiTietDialog.xaml.cs">
       <DependentUpon>LapSoChiTietDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LapSoChiTietUC.xaml.cs">
-      <DependentUpon>LapSoChiTietUC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\LapTheKhoDialog.xaml.cs">
       <DependentUpon>LapTheKhoDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\LapTheKhoUC.xaml.cs">
-      <DependentUpon>LapTheKhoUC.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LoaiVatTuDialog.xaml.cs">
       <DependentUpon>LoaiVatTuDialog.xaml</DependentUpon>
@@ -411,23 +402,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LapBaoCaoNXTUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\LapSoChiTietDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LapSoChiTietUC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\LapTheKhoDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\LapTheKhoUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

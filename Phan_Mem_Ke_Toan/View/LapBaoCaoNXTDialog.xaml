@@ -10,7 +10,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Style="{DynamicResource WindowStyle}"
         DataContext="{StaticResource NXTVM}"
-        WindowStyle="None">
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen">
     <DockPanel Name="dialog"
                Background="White">
         <DockPanel DockPanel.Dock="Top"

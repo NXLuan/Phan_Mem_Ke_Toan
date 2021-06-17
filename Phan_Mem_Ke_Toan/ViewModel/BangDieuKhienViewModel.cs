@@ -14,6 +14,9 @@ namespace Phan_Mem_Ke_Toan.ViewModel
     {
         public ICommand CalculateCommand { get; set; }
         public ICommand DialogCalculateCommand { get; set; }
+        public ICommand ShowTheKhoCommand { get; set; }
+        public ICommand ShowBCVatTuCommand { get; set; }
+        public ICommand ShowBCNhapXuatTonCommand { get; set; }
         private DateTime _selectedNgayBD;
         public DateTime selectedNgayBD
         {
@@ -54,6 +57,22 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 {
                     MessageBox.Show("Đã có lỗi xảy ra, vui lòng thử lại sau", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            });
+
+            ShowTheKhoCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LapTheKhoDialog dialog = new LapTheKhoDialog();
+                dialog.ShowDialog();
+            });
+            ShowBCVatTuCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LapSoChiTietDialog dialog = new LapSoChiTietDialog();
+                dialog.ShowDialog();
+            });
+            ShowBCNhapXuatTonCommand = new RelayCommand<object>((p) => true, (p) =>
+            {
+                LapBaoCaoNXTDialog dialog = new LapBaoCaoNXTDialog();
+                dialog.ShowDialog();
             });
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -34,6 +35,12 @@ namespace Phan_Mem_Ke_Toan.ViewModel
             SelectPageCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
                 if (isLogout) Logout();
+                else if (page.GetType().BaseType.Name.Equals("Window"))
+                {
+                    page = Activator.CreateInstance(page.GetType());
+                    var dialog = page as Window;
+                    dialog.ShowDialog();
+                }
                 else
                     InsertPageInWorkingList();
             });

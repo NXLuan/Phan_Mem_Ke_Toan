@@ -133,12 +133,6 @@ namespace Phan_Mem_Ke_Toan.ViewModel
 
             PageWorkings = new ObservableCollection<ChucNangViewModel>();
             BangDieuKhien = new BangDieuKhien();
-            int month = DateTime.Now.Month;
-            int year = DateTime.Now.Year;
-            TitleNhap = "Tổng nhập tháng " + month + "/" + year;
-            TitleXuat = "Tổng xuất tháng " + month + "/" + year;
-            GetListNhap();
-            GetListXuat();
             Event();
         }
 
@@ -146,21 +140,28 @@ namespace Phan_Mem_Ke_Toan.ViewModel
         {
             LoadedCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
             {
-                //isLogout = false;
-                //ChucNangViewModel CNVM = new ChucNangViewModel() { text = "Quản trị người dùng", icon = "AccountDetails", iconColor = "#3773E1", page = new QuanTriNguoiDung() };
-                //var CNVMList = Menu[1].NhomChucNangVMs[0].ChucNangVMs;
-                //bool isContain = Menu[1].NhomChucNangVMs[0].ChucNangVMs.Count == 2;
-                //if (LoginViewModel.currentUser.Quyen.Equals("admin") && !isContain)
-                //{
-                //    CNVMList.Add(CNVM);
-                //}
-                //else if (LoginViewModel.currentUser.Quyen.Equals("user") && isContain)
-                //{
-                //    CNVMList.Remove(CNVM);
-                //}
+                isLogout = false;
+                ChucNangViewModel CNVM = new ChucNangViewModel() { text = "Quản trị người dùng", icon = "AccountDetails", iconColor = "#3773E1", page = new QuanTriNguoiDung() };
+                var CNVMList = Menu[1].NhomChucNangVMs[0].ChucNangVMs;
+                bool isContain = Menu[1].NhomChucNangVMs[0].ChucNangVMs.Count == 2;
+                if (LoginViewModel.currentUser.Quyen.Equals("admin") && !isContain)
+                {
+                    CNVMList.Add(CNVM);
+                }
+                else if (LoginViewModel.currentUser.Quyen.Equals("user") && isContain)
+                {
+                    CNVMList.RemoveAt(1);
+                }
 
                 if (PageWorkings.Count != 0) PageWorkings.Clear();
                 SelectedIndexMenu = 0;
+
+                int month = DateTime.Now.Month;
+                int year = DateTime.Now.Year;
+                TitleNhap = "Tổng nhập tháng " + month + "/" + year;
+                TitleXuat = "Tổng xuất tháng " + month + "/" + year;
+                GetListNhap();
+                GetListXuat();
             });
 
             ClosedCommand = new RelayCommand<object>((p) => { return true; }, (p) =>
@@ -181,7 +182,6 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 if (SelectedIndexMenu == 0) SelectedIndexMenu = -1;
                 object page = PageWorkings[value].page;
                 if (page == null) return;
-                if (page.GetType().BaseType.Name == "Window") ((Window)page).Show();
                 else CurrentPage = page as UserControl;
             }
         }
@@ -231,5 +231,10 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                 item.TongTT /= 1000000;
             ListXuat = data;
         }
+
+        public double X { get; set; }
+        public double Y { get; set; }
+        public string Key { get; set; }
+        public string Value { get; set; }
     }
 }
