@@ -102,24 +102,51 @@
                                VerticalAlignment="Center"
                                FontWeight="Medium" />
 
-                    <TextBlock Text="{Binding notify.ContentNotify}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground"
-                                        Value="{DynamicResource Success}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding notify.IsError}"
-                                                 Value="true">
-                                        <Setter Property="Foreground"
-                                                Value="{DynamicResource DangerOrError}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <Grid HorizontalAlignment="Center">
+                        <DockPanel>
+                            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                         Value="0"
+                                         Margin="0,0,10,0"
+                                         Foreground="{DynamicResource PrimaryHueLightBrush}"
+                                         IsIndeterminate="True" />
+                            <TextBlock Text="Đang xử lý..."
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource PrimaryHueLightBrush}" />
+                            <DockPanel.Style>
+                                <Style TargetType="DockPanel">
+                                    <Setter Property="Visibility"
+                                            Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding notify.IsProcessing}"
+                                                     Value="true">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DockPanel.Style>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding notify.ContentNotify}"
+                                   TextAlignment="Center"
+                                   VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource Success}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding notify.IsError}"
+                                                     Value="true">
+                                            <Setter Property="Foreground"
+                                                    Value="{DynamicResource DangerOrError}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    
                     <Button Style="{StaticResource MaterialDesignFlatButton}"
                             Content="Hiển thị tất cả"
                             HorizontalAlignment="Right"
