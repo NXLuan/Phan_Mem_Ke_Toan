@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th6 06, 2021 lúc 12:49 PM
+-- Thời gian đã tạo: Th7 24, 2021 lúc 03:58 PM
 -- Phiên bản máy phục vụ: 10.3.16-MariaDB
 -- Phiên bản PHP: 7.3.6
 
@@ -42,9 +42,7 @@ CREATE TABLE `bbkiemke` (
 --
 
 INSERT INTO `bbkiemke` (`SoBienBan`, `NgayLap`, `MaKho`, `TruongBan`, `UyVien1`, `UyVien2`) VALUES
-('BB001', '2021-06-05', 'K001', 'NV008', 'NV006', 'NV008'),
-('BB002', '2021-06-06', NULL, 'NV006', NULL, NULL),
-('BB003', '2021-06-06', NULL, 'NV008', NULL, NULL);
+('BB001', '2021-07-07', 'K001', 'NV006', 'NV007', 'NV008');
 
 -- --------------------------------------------------------
 
@@ -88,7 +86,7 @@ CREATE TABLE `congtrinh` (
 --
 
 INSERT INTO `congtrinh` (`MaCongTrinh`, `TenCongTrinh`, `DiaChi`, `MoTa`) VALUES
-('CT001', 'Công trình 1', '', ''),
+('CT001', 'Công trình 1', '02 Trần Hưng Đạo', ''),
 ('CT002', 'Công trình 2', '01 Hồng Chương', 'xây trường học');
 
 -- --------------------------------------------------------
@@ -101,6 +99,7 @@ CREATE TABLE `ct_bbkiemke` (
   `MaSo` int(11) NOT NULL,
   `SoBienBan` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `MaVT` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `DonGia` decimal(19,0) NOT NULL,
   `SLSoSach` double NOT NULL,
   `SLThucTe` double NOT NULL,
   `SLThua` double NOT NULL,
@@ -114,10 +113,9 @@ CREATE TABLE `ct_bbkiemke` (
 -- Đang đổ dữ liệu cho bảng `ct_bbkiemke`
 --
 
-INSERT INTO `ct_bbkiemke` (`MaSo`, `SoBienBan`, `MaVT`, `SLSoSach`, `SLThucTe`, `SLThua`, `SLThieu`, `SLPhamChatTot`, `SLPhamChatKem`, `SLMatPhamChat`) VALUES
-(1, 'BB001', 'VT001', 12, 32, 32, 0, 43, 43, 44),
-(2, 'BB001', 'VT002', 0, 0, 0, 0, 0, 0, 0),
-(3, 'BB001', 'VT003', 23, 3233, 3210, 0, 3132, 34, 67);
+INSERT INTO `ct_bbkiemke` (`MaSo`, `SoBienBan`, `MaVT`, `DonGia`, `SLSoSach`, `SLThucTe`, `SLThua`, `SLThieu`, `SLPhamChatTot`, `SLPhamChatKem`, `SLMatPhamChat`) VALUES
+(15, 'BB001', 'VT001', '2009091', 60, 60, 0, 0, 60, 0, 0),
+(16, 'BB001', 'VT002', '1500000', 240, 240, 0, 0, 240, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -129,7 +127,8 @@ CREATE TABLE `ct_phieunhap` (
   `MaSo` int(11) NOT NULL,
   `SoPhieu` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `MaVT` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `SoLuong` double NOT NULL,
+  `SLSoSach` double NOT NULL,
+  `SLThucTe` double NOT NULL,
   `DonGia` decimal(19,0) NOT NULL,
   `ThanhTien` decimal(19,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
@@ -138,13 +137,22 @@ CREATE TABLE `ct_phieunhap` (
 -- Đang đổ dữ liệu cho bảng `ct_phieunhap`
 --
 
-INSERT INTO `ct_phieunhap` (`MaSo`, `SoPhieu`, `MaVT`, `SoLuong`, `DonGia`, `ThanhTien`) VALUES
-(7, NULL, 'VT002', 121, '0', '0'),
-(10, 'PN001', 'VT001', 10, '32132332', '321323320'),
-(11, 'PN001', 'VT002', 954, '34043', '32477022'),
-(12, 'PN001', 'VT003', 1000, '200000', '200000000'),
-(13, 'PN002', 'VT001', 10, '32323232', '323232320'),
-(15, 'PN002', 'VT003', 123, '32323232', '3975757536');
+INSERT INTO `ct_phieunhap` (`MaSo`, `SoPhieu`, `MaVT`, `SLSoSach`, `SLThucTe`, `DonGia`, `ThanhTien`) VALUES
+(18, 'PN001', 'VT001', 10, 10, '2100000', '21000000'),
+(19, 'PN001', 'VT002', 20, 20, '1400000', '28000000'),
+(20, 'PN002', 'VT002', 20, 20, '1600000', '32000000'),
+(21, 'PN003', 'VT003', 30, 30, '900000', '27000000'),
+(22, 'PN003', 'VT002', 15, 15, '1400000', '21000000');
+
+--
+-- Bẫy `ct_phieunhap`
+--
+DELIMITER $$
+CREATE TRIGGER `after_ctpn_update` AFTER UPDATE ON `ct_phieunhap` FOR EACH ROW UPDATE phieunhap
+ SET TongTien = TongTien - OLD.ThanhTien + NEW.ThanhTien
+ WHERE SoPhieu = NEW.SoPhieu
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -156,7 +164,8 @@ CREATE TABLE `ct_phieuxuat` (
   `MaSo` int(11) NOT NULL,
   `SoPhieu` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `MaVT` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `SoLuong` double NOT NULL,
+  `SLSoSach` double NOT NULL,
+  `SLThucTe` double NOT NULL,
   `DonGia` decimal(19,0) NOT NULL,
   `ThanhTien` decimal(19,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
@@ -165,9 +174,20 @@ CREATE TABLE `ct_phieuxuat` (
 -- Đang đổ dữ liệu cho bảng `ct_phieuxuat`
 --
 
-INSERT INTO `ct_phieuxuat` (`MaSo`, `SoPhieu`, `MaVT`, `SoLuong`, `DonGia`, `ThanhTien`) VALUES
-(1, 'PX001', 'VT001', 233212, '123567', '28817307204'),
-(2, 'PX001', 'VT002', 230, '248986', '57266780');
+INSERT INTO `ct_phieuxuat` (`MaSo`, `SoPhieu`, `MaVT`, `SLSoSach`, `SLThucTe`, `DonGia`, `ThanhTien`) VALUES
+(8, 'PX001', 'VT001', 50, 50, '2009091', '100454550'),
+(9, 'PX002', 'VT002', 20, 20, '1494118', '29882360'),
+(10, 'PX003', 'VT003', 30, 30, '986957', '29608710');
+
+--
+-- Bẫy `ct_phieuxuat`
+--
+DELIMITER $$
+CREATE TRIGGER `after_ctpx_update` AFTER UPDATE ON `ct_phieuxuat` FOR EACH ROW UPDATE phieuxuat
+ SET TongTien = TongTien - OLD.ThanhTien + NEW.ThanhTien
+ WHERE SoPhieu = NEW.SoPhieu
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -187,7 +207,9 @@ CREATE TABLE `donvitinh` (
 INSERT INTO `donvitinh` (`MaDVT`, `TenDVT`) VALUES
 ('DVT001', 'tấn'),
 ('DVT002', 'tạ'),
-('DVT003', 'bao');
+('DVT003', 'bao'),
+('DVT004', 'bộ'),
+('DVT005', 'kg');
 
 -- --------------------------------------------------------
 
@@ -204,6 +226,15 @@ CREATE TABLE `dudauvattu` (
   `DonGia` decimal(19,0) NOT NULL,
   `ThanhTien` decimal(19,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `dudauvattu`
+--
+
+INSERT INTO `dudauvattu` (`MaSo`, `MaVT`, `MaKho`, `Ngay`, `SoLuong`, `DonGia`, `ThanhTien`) VALUES
+(15, 'VT001', 'K001', '2021-07-01', 100, '2000000', '200000000'),
+(16, 'VT002', 'K001', '2021-07-01', 200, '1500000', '300000000'),
+(17, 'VT003', 'K001', '2021-07-01', 200, '1000000', '200000000');
 
 -- --------------------------------------------------------
 
@@ -225,8 +256,7 @@ CREATE TABLE `kho` (
 
 INSERT INTO `kho` (`MaKho`, `TenKho`, `DiaChi`, `SDT`, `MaThuKho`) VALUES
 ('K001', 'Kho 1', '01 Hồng Chương', '', 'NV004'),
-('K002', '2323', '12345632', '', 'NV005'),
-('K003', '1233232', '', '', NULL);
+('K002', 'Kho 2', '', '', 'NV005');
 
 -- --------------------------------------------------------
 
@@ -255,6 +285,27 @@ INSERT INTO `loaivattu` (`MaLoai`, `TenLoai`, `MoTa`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `nguoidung`
+--
+
+CREATE TABLE `nguoidung` (
+  `TenDangNhap` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `MatKhau` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
+  `HoTen` varchar(100) COLLATE utf8_vietnamese_ci DEFAULT NULL,
+  `Quyen` varchar(10) COLLATE utf8_vietnamese_ci NOT NULL,
+  `MaBoPhan` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `nguoidung`
+--
+
+INSERT INTO `nguoidung` (`TenDangNhap`, `MatKhau`, `HoTen`, `Quyen`, `MaBoPhan`) VALUES
+('1', '1', 'Cường', 'user', 'BP005');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `nguoigiao`
 --
 
@@ -271,7 +322,7 @@ CREATE TABLE `nguoigiao` (
 
 INSERT INTO `nguoigiao` (`MaNguoiGiao`, `TenNguoiGiao`, `DiaChi`, `MaNCC`) VALUES
 ('NG001', 'Luân', '', 'NCC001'),
-('NG002', 'Tiến Trương', '', 'NCC001');
+('NG002', 'Tiến', '', 'NCC001');
 
 -- --------------------------------------------------------
 
@@ -292,7 +343,7 @@ CREATE TABLE `nguoinhan` (
 
 INSERT INTO `nguoinhan` (`MaNguoiNhan`, `TenNguoiNhan`, `DiaChi`, `MaCongTrinh`) VALUES
 ('NN001', 'Tiến', '', 'CT001'),
-('NN002', 'Hẫu Híu', 'Hướng Hoá', 'CT002');
+('NN002', 'Hiếu', 'Hướng Hoá', 'CT002');
 
 -- --------------------------------------------------------
 
@@ -337,11 +388,9 @@ INSERT INTO `nhanvien` (`MaNV`, `TenNV`, `MaBoPhan`) VALUES
 ('NV003', 'Tiến', 'BP002'),
 ('NV004', 'Hiếu', 'BP006'),
 ('NV005', 'Quân', 'BP006'),
-('NV006', 'Cường 1', 'BP004'),
-('NV007', 'Cường 2', 'BP004'),
-('NV008', 'Cường 3', 'BP004'),
-('NV009', 'Cường 4', 'BP004'),
-('NV010', 'Cường 5', 'BP004');
+('NV006', 'Nguyễn Văn A', 'BP004'),
+('NV007', 'Nguyễn Văn B', 'BP004'),
+('NV008', 'Nguyễn Văn C', 'BP004');
 
 -- --------------------------------------------------------
 
@@ -356,7 +405,6 @@ CREATE TABLE `phieunhap` (
   `MaNguoiGiao` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `MaKho` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `LyDo` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
-  `TKNo` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `TKCo` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `TongTien` decimal(19,0) NOT NULL,
   `ChungTuLQ` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL
@@ -366,9 +414,10 @@ CREATE TABLE `phieunhap` (
 -- Đang đổ dữ liệu cho bảng `phieunhap`
 --
 
-INSERT INTO `phieunhap` (`SoPhieu`, `NgayNhap`, `MaNCC`, `MaNguoiGiao`, `MaKho`, `LyDo`, `TKNo`, `TKCo`, `TongTien`, `ChungTuLQ`) VALUES
-('PN001', '2021-06-24', 'NCC001', 'NG001', 'K001', '', NULL, '1112', '553800342', ''),
-('PN002', '2021-06-04', 'NCC001', 'NG002', 'K002', '41233443', '1113', '111', '4298989856', '');
+INSERT INTO `phieunhap` (`SoPhieu`, `NgayNhap`, `MaNCC`, `MaNguoiGiao`, `MaKho`, `LyDo`, `TKCo`, `TongTien`, `ChungTuLQ`) VALUES
+('PN001', '2021-07-02', 'NCC001', 'NG001', 'K001', 'Nhập mua hàng', '1111', '49000000', ''),
+('PN002', '2021-07-05', 'NCC001', 'NG002', 'K001', '', '1111', '32000000', ''),
+('PN003', '2021-07-10', 'NCC001', 'NG001', 'K001', '', '1111', '48000000', '');
 
 -- --------------------------------------------------------
 
@@ -384,7 +433,6 @@ CREATE TABLE `phieuxuat` (
   `MaKho` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `LyDo` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL,
   `TKNo` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
-  `TKCo` varchar(50) COLLATE utf8_vietnamese_ci DEFAULT NULL,
   `TongTien` decimal(19,0) NOT NULL,
   `ChungTuLQ` varchar(100) COLLATE utf8_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
@@ -393,8 +441,10 @@ CREATE TABLE `phieuxuat` (
 -- Đang đổ dữ liệu cho bảng `phieuxuat`
 --
 
-INSERT INTO `phieuxuat` (`SoPhieu`, `NgayXuat`, `MaCongTrinh`, `MaNguoiNhan`, `MaKho`, `LyDo`, `TKNo`, `TKCo`, `TongTien`, `ChungTuLQ`) VALUES
-('PX001', '2021-06-13', 'CT001', 'NN001', 'K002', '`', '111', '1112', '28874573984', '');
+INSERT INTO `phieuxuat` (`SoPhieu`, `NgayXuat`, `MaCongTrinh`, `MaNguoiNhan`, `MaKho`, `LyDo`, `TKNo`, `TongTien`, `ChungTuLQ`) VALUES
+('PX001', '2021-07-03', 'CT002', 'NN002', 'K001', 'Xuất bán', '1111', '100454550', ''),
+('PX002', '2021-07-14', 'CT001', 'NN001', 'K001', '', '1111', '29882360', ''),
+('PX003', '2021-07-16', 'CT002', 'NN002', 'K001', '', '1111', '29608710', '');
 
 -- --------------------------------------------------------
 
@@ -526,6 +576,13 @@ ALTER TABLE `loaivattu`
   ADD PRIMARY KEY (`MaLoai`);
 
 --
+-- Chỉ mục cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  ADD PRIMARY KEY (`TenDangNhap`),
+  ADD KEY `FK_ND_BP` (`MaBoPhan`);
+
+--
 -- Chỉ mục cho bảng `nguoigiao`
 --
 ALTER TABLE `nguoigiao`
@@ -560,7 +617,6 @@ ALTER TABLE `phieunhap`
   ADD KEY `FK_PhieuNhap_Kho` (`MaKho`),
   ADD KEY `FK_PhieuNhap_NCC` (`MaNCC`),
   ADD KEY `FK_PhieuNhap_NG` (`MaNguoiGiao`),
-  ADD KEY `FK_PN_TKNo` (`TKNo`),
   ADD KEY `FK_PN_TKCo` (`TKCo`);
 
 --
@@ -571,8 +627,7 @@ ALTER TABLE `phieuxuat`
   ADD KEY `FK_PX_Kho` (`MaKho`),
   ADD KEY `FK_PX_NN` (`MaNguoiNhan`),
   ADD KEY `FK_PhieuXuat_CongTrinh` (`MaCongTrinh`),
-  ADD KEY `FK_PX_TKNo` (`TKNo`),
-  ADD KEY `FK_PX_TKCo` (`TKCo`);
+  ADD KEY `FK_PX_TKNo` (`TKNo`);
 
 --
 -- Chỉ mục cho bảng `taikhoan`
@@ -598,25 +653,25 @@ ALTER TABLE `vattu`
 -- AUTO_INCREMENT cho bảng `ct_bbkiemke`
 --
 ALTER TABLE `ct_bbkiemke`
-  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT cho bảng `ct_phieunhap`
 --
 ALTER TABLE `ct_phieunhap`
-  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT cho bảng `ct_phieuxuat`
 --
 ALTER TABLE `ct_phieuxuat`
-  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `dudauvattu`
 --
 ALTER TABLE `dudauvattu`
-  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MaSo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -666,6 +721,12 @@ ALTER TABLE `kho`
   ADD CONSTRAINT `FK_Kho_NhanVien` FOREIGN KEY (`MaThuKho`) REFERENCES `nhanvien` (`MaNV`);
 
 --
+-- Các ràng buộc cho bảng `nguoidung`
+--
+ALTER TABLE `nguoidung`
+  ADD CONSTRAINT `FK_ND_BP` FOREIGN KEY (`MaBoPhan`) REFERENCES `bophan` (`MaBoPhan`);
+
+--
 -- Các ràng buộc cho bảng `nguoigiao`
 --
 ALTER TABLE `nguoigiao`
@@ -688,7 +749,6 @@ ALTER TABLE `nhanvien`
 --
 ALTER TABLE `phieunhap`
   ADD CONSTRAINT `FK_PN_TKCo` FOREIGN KEY (`TKCo`) REFERENCES `taikhoan` (`MaTK`),
-  ADD CONSTRAINT `FK_PN_TKNo` FOREIGN KEY (`TKNo`) REFERENCES `taikhoan` (`MaTK`),
   ADD CONSTRAINT `FK_PhieuNhap_Kho` FOREIGN KEY (`MaKho`) REFERENCES `kho` (`MaKho`),
   ADD CONSTRAINT `FK_PhieuNhap_NCC` FOREIGN KEY (`MaNCC`) REFERENCES `nhacungcap` (`MaNCC`),
   ADD CONSTRAINT `FK_PhieuNhap_NG` FOREIGN KEY (`MaNguoiGiao`) REFERENCES `nguoigiao` (`MaNguoiGiao`);
@@ -699,7 +759,6 @@ ALTER TABLE `phieunhap`
 ALTER TABLE `phieuxuat`
   ADD CONSTRAINT `FK_PX_Kho` FOREIGN KEY (`MaKho`) REFERENCES `kho` (`MaKho`),
   ADD CONSTRAINT `FK_PX_NN` FOREIGN KEY (`MaNguoiNhan`) REFERENCES `nguoinhan` (`MaNguoiNhan`),
-  ADD CONSTRAINT `FK_PX_TKCo` FOREIGN KEY (`TKCo`) REFERENCES `taikhoan` (`MaTK`),
   ADD CONSTRAINT `FK_PX_TKNo` FOREIGN KEY (`TKNo`) REFERENCES `taikhoan` (`MaTK`),
   ADD CONSTRAINT `FK_PhieuXuat_CongTrinh` FOREIGN KEY (`MaCongTrinh`) REFERENCES `congtrinh` (`MaCongTrinh`);
 

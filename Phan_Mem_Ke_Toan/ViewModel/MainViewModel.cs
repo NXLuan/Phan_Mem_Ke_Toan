@@ -104,6 +104,7 @@ namespace Phan_Mem_Ke_Toan.ViewModel
                         new ChucNangViewModel() { text="Kho vật tư", icon="GarageVariant", iconColor="#06CC14", page = new KhoUC() },
                         new ChucNangViewModel() { text="Loại vật tư", icon="Cube", iconColor="#B17CFF", page = new LoaiVatTuUC() },
                         new ChucNangViewModel() { text="Vật tư", icon="Wall", iconColor="#FB7604", page = new VatTuUC() },
+                        new ChucNangViewModel() { text="Đơn vị tính", icon="Apps", iconColor="#bc2d32", page = new DonViTinhUC() },
                     }},
                     new NhomChucNangViewModel() { Title="Công trình", ChucNangVMs=new ObservableCollection<ChucNangViewModel>(){
                         new ChucNangViewModel() { text="Công trình", icon="OfficeBuilding", iconColor="#4DCC89", page = new CongTrinhUC() },

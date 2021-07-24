@@ -118,19 +118,6 @@
                             </Binding>
                         </DatePicker.SelectedDate>
                     </DatePicker>
-                    <materialDesign:TimePicker Width="100"
-                                               Margin="0,0,20,10"
-                                               Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
-                                               materialDesign:HintAssist.Hint="Thời gian">
-                        <materialDesign:TimePicker.SelectedTime>
-                            <Binding Path="selectedNgayLap"
-                                     UpdateSourceTrigger="PropertyChanged">
-                                <Binding.ValidationRules>
-                                    <valid:DateValidRule ValidatesOnTargetUpdated="True" />
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </materialDesign:TimePicker.SelectedTime>
-                    </materialDesign:TimePicker>
                     <Button Content="Lấy dữ liệu vật tư"
                             Background="{DynamicResource Green}"
                             Command="{Binding AddCommandCT}" />
